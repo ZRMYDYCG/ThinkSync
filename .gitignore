@@ -1,0 +1,39 @@
+# Node.js依赖
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# 测试覆盖率
+coverage/
+
+# Next.js输出文件
+.next/
+out/
+
+# 生产构建输出
+build/
+
+# 操作系统和其他杂项文件
+.DS_Store
+*.pem
+
+# 调试日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# 环境变量文件
+.env*
+
+# Vercel相关文件
+.vercel/
+
+# TypeScript生成文件
+*.tsbuildinfo
+packages/next-app/next-env.d.ts
