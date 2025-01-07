@@ -8,6 +8,17 @@ body,
   height: 100%;
 }
 
+/* 隐藏所有滚动条 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* 对于 Firefox */
+html {
+  scrollbar-width: none; /* Firefox */
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
