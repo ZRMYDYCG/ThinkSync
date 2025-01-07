@@ -1,11 +1,12 @@
 'use client'
 
 import { useScrollTop } from "@/hooks/useScrollTop";
+import Link from 'next/link'
 import { cn } from "@/lib/utils";
 import Logo from './logo'
 import { ModeToggle } from '@/components/mode-toggle'
 import { useConvexAuth } from 'convex/react'
-import {SignInButton} from "@clerk/clerk-react";
+import { SignInButton, UserButton } from "@clerk/clerk-react";
 import {Button} from "@/components/ui/button";
 import { Spinner } from '@/components/spinner'
 
@@ -22,9 +23,11 @@ const Navbar = () => {
         }>
             <Logo />
             <div className="md:ml-auto md:justify-end justify-between w-full flex items-center gap-x-2">
-                { isLoading && (
-                    <Spinner></Spinner>
-                ) }
+                {
+                    isLoading && (
+                        <Spinner></Spinner>
+                    )
+                }
                 {
                     !isAuthenticated && !isLoading && (
                         <>
@@ -34,6 +37,18 @@ const Navbar = () => {
                             <SignInButton mode="modal">
                                 <Button size="sm">Get Notion Free</Button>
                             </SignInButton>
+                        </>
+                    )
+                }
+                {
+                    isAuthenticated && !isLoading && (
+                        <>
+                            <Button variant="ghost" size="sm" asChild>
+                                <Link href="/documents">
+                                    Enter Notion
+                                </Link>
+                            </Button>
+                            <UserButton />
                         </>
                     )
                 }
