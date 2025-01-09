@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/providers/theme-provider"
-import { ConvexClientProvider } from '@/components/providers/convex-provider'
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ConvexClientProvider } from "@/components/providers/convex-provider";
 import "./globals.css";
 import React from "react";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,22 +17,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Notion",
-    description: "A new way to work with notes and tasks",
-    icons: {
-      icon: [
-          {
-              media: "(prefers-color-scheme: light)",
-              url: "/logo.svg",
-              href: "/logo.svg"
-          },
-          {
-              media: "(prefers-color-scheme: dark)",
-              url: "/logo-dark.svg",
-              href: "/logo-dark.svg"
-          },
-      ]
-    }
+  title: "Notion",
+  description: "A new way to work with notes and tasks",
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/logo.svg",
+        href: "/logo.svg",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/logo-dark.svg",
+        href: "/logo-dark.svg",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -44,17 +45,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <ConvexClientProvider>
+        <ConvexClientProvider>
           <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-              storageKey="notion-theme"
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="notion-theme"
           >
-              {children}
+            <Toaster position="bottom-center" />
+            {children}
           </ThemeProvider>
-      </ConvexClientProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   );
