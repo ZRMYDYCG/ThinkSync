@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/popover";
 import React, { useRef, ElementRef, useState, useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -35,6 +35,7 @@ const Navigation = () => {
   const pathname = usePathname();
   const params = useParams();
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const router = useRouter();
 
   const create = useMutation(api.documents.create);
 
@@ -121,6 +122,8 @@ const Navigation = () => {
   const handleCreate = () => {
     const promise = create({
       title: "Untitled",
+    }).then((documentId) => {
+      router.push(`/documents/${documentId}`);
     });
 
     toast.promise(promise, {
