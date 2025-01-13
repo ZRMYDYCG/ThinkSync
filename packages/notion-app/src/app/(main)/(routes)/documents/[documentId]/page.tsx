@@ -9,13 +9,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 
-interface DocumentIdPageProps {
+interface PageProps {
   params: {
     documentId: Id<"documents">;
   };
 }
 
-const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
+const DocumentIdPage = ({ params }: PageProps) => {
   const Editor = useMemo(
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
     [],
