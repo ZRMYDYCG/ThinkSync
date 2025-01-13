@@ -11,3 +11,7 @@ https://dashboard.convex.dev/
 https://dashboard.clerk.com/
 
 hooks 库
+
+静态资源存储
+
+https://dashboard.edgestore.dev/
