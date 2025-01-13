@@ -10,14 +10,8 @@ import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
-// 手动定义 PageProps 类型
-interface PageProps {
-  params: {
-    documentId: string;
-  };
-}
-
-const DocumentIdPage = ({ params }: PageProps) => {
+const DocumentIdPage = () => {
+  const params = useParams();
   const Editor = useMemo(
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
     [],
