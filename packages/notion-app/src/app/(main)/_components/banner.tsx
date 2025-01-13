@@ -1,9 +1,9 @@
 "use client";
 
-import { Id } from "../../../../convex/_generated/dataModel";
+import { Id } from "@/../convex/_generated/dataModel";
 import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@/../convex/_generated/api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import ConfirmModal from "@/components/modals/confirm-modal";

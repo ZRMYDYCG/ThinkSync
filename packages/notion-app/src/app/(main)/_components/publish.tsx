@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/popover";
 import { useOrigin } from "@/hooks/use-origin";
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Doc } from "../../../../convex/_generated/dataModel";
+import { api } from "@/../convex/_generated/api";
+import { Doc } from "@/../convex/_generated/dataModel";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";

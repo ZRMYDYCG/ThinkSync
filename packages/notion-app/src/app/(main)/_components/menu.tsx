@@ -1,6 +1,6 @@
 "use client";
 
-import { Id } from "../../../../convex/_generated/dataModel";
+import { Id } from "@/../convex/_generated/dataModel";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@/../convex/_generated/api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontalIcon, Trash } from "lucide-react";

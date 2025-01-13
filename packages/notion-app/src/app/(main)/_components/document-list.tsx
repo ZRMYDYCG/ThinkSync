@@ -1,11 +1,11 @@
 "use client";
 
-import { Id, Doc } from "../../../../convex/_generated/dataModel";
+import { Id, Doc } from "@/../convex/_generated/dataModel";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "@/../convex/_generated/api";
 import Item from "./item";
 import { cn } from "@/lib/utils";
 import { FileIcon } from "lucide-react";
