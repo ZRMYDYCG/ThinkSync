@@ -8,27 +8,24 @@ import Cover from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
+import { useParams } from "next/navigation";
 
-interface DocumentIdPageProps {
-  params: {
-    documentId: Id<"documents">;
-  };
-}
+const DocumentIdPage = () => {
+  const params = useParams();
 
-const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
   const Editor = useMemo(
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
     [],
   );
   const document = useQuery(api.documents.getById, {
-    documentId: params.documentId,
+    documentId: params.documentId as Id<"documents">,
   });
 
   const update = useMutation(api.documents.update);
 
   const onChange = async (content: string) => {
     await update({
-      id: params.documentId,
+      id: params.documentId as Id<"documents">,
       content,
     });
   };
