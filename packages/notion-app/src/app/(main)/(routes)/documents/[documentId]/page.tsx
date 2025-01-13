@@ -7,11 +7,13 @@ import { Toolbar } from "@/components/toolbar";
 import Cover from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
 import dynamic from "next/dynamic";
+import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
+// 手动定义 PageProps 类型
 interface PageProps {
   params: {
-    documentId: Id<"documents">;
+    documentId: string;
   };
 }
 
@@ -20,15 +22,17 @@ const DocumentIdPage = ({ params }: PageProps) => {
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
     [],
   );
+
+  // 使用 useQuery 获取文档数据
   const document = useQuery(api.documents.getById, {
-    documentId: params.documentId,
+    documentId: params.documentId as Id<"documents">,
   });
 
   const update = useMutation(api.documents.update);
 
   const onChange = async (content: string) => {
     await update({
-      id: params.documentId,
+      id: params.documentId as Id<"documents">,
       content,
     });
   };
