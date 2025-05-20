@@ -27,7 +27,7 @@ const UserItem = () => {
               <AvatarImage src={user?.imageUrl} />
             </Avatar>
             <span className="text-start font-medium line-clamp-1">
-              {user?.fullName}&apos;s Notion
+              {user?.fullName}&apos;s ThinkSync
             </span>
             <ChevronsLeftRight className="rotate-90 h-4 w-4 ml-2 text-muted-foreground" />
           </div>
@@ -51,7 +51,7 @@ const UserItem = () => {
             </div>
             <div className="space-y-1">
               <p className="text-sm line-clamp-1">
-                {user?.fullName}&apos;s Notion
+                {user?.fullName}&apos;s ThinkSync
               </p>
             </div>
           </div>

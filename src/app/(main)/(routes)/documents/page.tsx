@@ -45,7 +45,7 @@ const DocumentsPage = () => {
         className="hidden dark:block"
       ></Image>
       <h2 className="text-lg font-medium">
-        Welcome to {user?.firstName}&apos;s Notion
+        Welcome to {user?.firstName}&apos;s ThinkSync
       </h2>
       <Button onClick={onCreate}>
         <PlusCircle className="h-4 w-4 mr-2" />

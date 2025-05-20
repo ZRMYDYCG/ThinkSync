@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 const Error = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <Image src="/error.png" alt="Notion logo" width={200} height={200} />
+      <Image src="/error.png" alt="ThinkSync logo" width={200} height={200} />
       <Image
         src="/error-dark.png"
-        alt="Notion logo"
+        alt="ThinkSync logo"
         className="hidden dark:block"
         width={200}
         height={200}

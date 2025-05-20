@@ -11,9 +11,9 @@ const font = Poppins({
 const Logo = () => {
     return (
         <div className="hidden md:flex items-center gap-x-2">
-            <Image src="/logo.svg" alt="Notion" width="40" height="40" className="dark:hidden"></Image>
-            <Image src="/logo-dark.svg" alt="Notion" width="40" height="40" className="dark:block"></Image>
-            <p className={cn("font-semibold", font)}>Notion</p>
+            <Image src="/logo.svg" alt="ThinkSync" width="40" height="40" className="dark:hidden"></Image>
+            <Image src="/logo-dark.svg" alt="ThinkSync" width="40" height="40" className="dark:block"></Image>
+            <p className={cn("font-semibold", font)}>ThinkSync</p>
         </div>
     )
 }

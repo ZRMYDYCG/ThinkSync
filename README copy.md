@@ -16,3 +16,4 @@ https://dashboard.edgestore.dev/
 
 部署
 
+Vercel

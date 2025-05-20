@@ -35,7 +35,7 @@ const Navbar = () => {
                                 <Button variant="ghost" size="sm">Log in</Button>
                             </SignInButton>
                             <SignInButton mode="modal">
-                                <Button size="sm">Get Notion Free</Button>
+                                <Button size="sm">Get ThinkSync Free</Button>
                             </SignInButton>
                         </>
                     )
@@ -45,7 +45,7 @@ const Navbar = () => {
                         <>
                             <Button variant="ghost" size="sm" asChild>
                                 <Link href="/documents">
-                                    Enter Notion
+                                    Enter ThinkSync
                                 </Link>
                             </Button>
                             <UserButton />

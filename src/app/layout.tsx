@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Notion",
+  title: "ThinkSync",
   description: "A new way to work with notes and tasks",
   icons: {
     icon: [
@@ -54,7 +54,7 @@ export default function RootLayout({
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange
-              storageKey="notion-theme"
+              storageKey="think-sync-theme"
             >
               <Toaster position="bottom-center" />
               <ModalProvider />
