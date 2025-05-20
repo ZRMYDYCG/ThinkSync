@@ -1,13 +1,17 @@
 import Header from './_components/header'
 import Heroes from './_components/heroes'
 import Footer from './_components/footer'
+import Features from './_components/features'
+import Testimonials from './_components/testimonials'
 
 const MarketingPage = () => {
     return (
-        <div className="min-h-full flex flex-col">
-            <div className="flex flex-col items-center justify-center md:justify-start text-center gap-y-8 flex-1 px-6 pb-10">
+        <div className="min-h-full flex flex-col px-4">
+            <div className="flex flex-col items-center justify-center md:justify-start text-center gap-y-8 flex-1 pb-10">
                 <Header></Header>
                 <Heroes></Heroes>
+                <Features></Features>
+                <Testimonials></Testimonials>
             </div>
             <Footer></Footer>
         </div>
