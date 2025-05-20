@@ -66,7 +66,12 @@ const Title = ({ initialData }: TitleProps) => {
           size="sm"
           className="font-normal h-auto p-1"
         >
-          <span className="truncate">{initialData?.title}</span>
+          <span className="hidden sm:inline truncate max-w-[200px]">
+            {initialData?.title}
+          </span>
+          <span className="sm:hidden truncate max-w-[100px]">
+            {initialData?.title}
+          </span>
         </Button>
       )}
     </div>
