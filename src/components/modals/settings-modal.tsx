@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { useSetting } from "@/hooks/useSetting";
 import { Label } from "@/components/ui/label";
 import { ModeToggle } from "@/components/mode-toggle";
+import { LanguageToggle } from '@/components/language-toggle'
 
 export const SettingsModal = () => {
   const setting = useSetting();
@@ -21,9 +22,18 @@ export const SettingsModal = () => {
               Customize the look and feel of the app
             </span>
           </div>
-          <ModeToggle />
+          <ModeToggle/>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-y-1">
+            <Label>Language</Label>
+            <span className="text-[0.8rem] text-muted-foreground">
+              Current supported language is English and Chinese
+            </span>
+          </div>
+          <LanguageToggle/>
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
