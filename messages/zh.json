@@ -21,14 +21,19 @@
       "search": "搜索",
       "setting": "设置",
       "newDocument": "新建文档",
-      "Trash": "回收站",
+      "trash": "回收站",
       "logout": "退出登录"
     },
     "tips": {
       "lastEditedBy": "最后编辑于",
       "ThisDocumentIsPublished": "此文档已公开",
       "ShareYourDocumentWithTheWorld": "与世界分享你的文档",
-      "PublishThisDocument": "发布此文档"
+      "PublishThisDocument": "发布此文档",
+      "MySettings": "偏好设置",
+      "Appearance": "外观",
+      "CustomizeTheLookAndFeelOfTheApp": "自定义应用外观(白天/黑夜)",
+      "Language": "语言",
+      "CurrentSupportedLanguageIsEnglishAndChinese": "当前仅支持英文和中文模式"
     }
   }
 }

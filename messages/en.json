@@ -21,14 +21,19 @@
         "search": "Search",
         "setting": "Setting",
         "newDocument": "New Document",
-        "Trash": "Trash",
+        "trash": "Trash",
         "logout": "Log out"
       },
       "tips": {
         "LastEditedBy": "Last edited by",
         "ThisDocumentIsPublished": "This document is published",
         "ShareYourDocumentWithTheWorld": "Share your document with the world",
-        "PublishThisDocument": "Publish this document"
+        "PublishThisDocument": "Publish this document",
+        "MySettings": "My Settings",
+        "Appearance": "Appearance",
+        "CustomizeTheLookAndFeelOfTheApp": "Customize the look and feel of the app",
+        "Language": "Language",
+        "CurrentSupportedLanguageIsEnglishAndChinese": "Current supported language is English and Chinese"
       }
     }
   }

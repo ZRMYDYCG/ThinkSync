@@ -19,6 +19,7 @@ import React, { useRef, ElementRef, useState, useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import Item from "./item";
@@ -38,6 +39,8 @@ const Navigation = () => {
   const router = useRouter();
 
   const create = useMutation(api.documents.create);
+
+  const tApp = useTranslations("App");
 
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -156,24 +159,24 @@ const Navigation = () => {
         <div>
           <UserItem />
           <Item
-            label="Search"
+            label={tApp('navbar.search')}
             icon={Search}
             isSearch
             onClick={search.onOpen}
           ></Item>
           <Item
-            label="Settings"
+            label={tApp('navbar.setting')}
             icon={Settings}
             onClick={setting.onOpen}
           ></Item>
-          <Item icon={PlusCircle} label="New Document" onClick={handleCreate} />
+          <Item icon={PlusCircle} label={tApp('navbar.newDocument')} onClick={handleCreate} />
         </div>
         <div className="mt-4">
           <DocumentList />
           {/* <Item onClick={handleCreate} icon={Plus} label="New Document" /> */}
           <Popover>
             <PopoverTrigger className="w-full mt-4">
-              <Item label="Trash" icon={Trash}></Item>
+              <Item label={tApp('navbar.trash')} icon={Trash}></Item>
             </PopoverTrigger>
             <PopoverContent
               className="p-0 w-72"
