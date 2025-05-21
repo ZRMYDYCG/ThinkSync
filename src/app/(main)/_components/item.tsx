@@ -24,6 +24,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useUser } from "@clerk/clerk-react";
+import { useTranslations } from "next-intl";
 
 interface ItemProps {
   id?: Id<"documents">;
@@ -97,6 +98,8 @@ const Item = ({
   };
 
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
+
+  const t = useTranslations('App.navbar');
 
   return (
     <div
@@ -181,7 +184,7 @@ Item.Skeleton = function ItemSkeleton({ level }: { level: number }) {
       <Skeleton className="h-4 w-4" />
       <Skeleton className="h-4 w-[30%]" />
     </div>
-  );
-};
+  )
+}
 
 export default Item;

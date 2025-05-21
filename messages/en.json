@@ -1,12 +1,7 @@
 {
     "Route":{
-      "login":"Login"
     },
     "Pages":{
-      "internationalization":{
-        "zh":"Chinese",
-        "en":"English"
-      }
     },
     "Global":{
       "action":"Action",
@@ -15,6 +10,20 @@
     },
     "App":{
       "light":"Light Mode",
-      "dark":"Dark Mode"
+      "dark":"Dark Mode",
+      "internationalization":{
+        "zh":"Chinese",
+        "en":"English"
+      },
+      "navbar": {
+        "search": "Search",
+        "setting": "Setting",
+        "newDocument": "New Document",
+        "Trash": "Trash",
+        "logout": "Log out"
+      },
+      "tips": {
+        "LastEditedBy": "Last edited by"
+      }
     }
   }

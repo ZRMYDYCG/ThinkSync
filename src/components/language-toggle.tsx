@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function LanguageToggle() {
-    const t = useTranslations('Pages.internationalization')
+    const t = useTranslations('App.internationalization')
     const [ZH, EN] = locales
     const locale = useLocale()
     const isZh = locale === ZH

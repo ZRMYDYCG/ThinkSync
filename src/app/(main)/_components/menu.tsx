@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontalIcon, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslations } from 'next-intl'
 
 interface MenuProps {
   documentId: Id<"documents">;
@@ -25,6 +26,9 @@ const Menu = ({ documentId }: MenuProps) => {
   const router = useRouter();
   const { user } = useUser();
   const archive = useMutation(api.documents.archive);
+  
+  const tClobal = useTranslations('Global')
+  const tApp = useTranslations('App')
 
   const onArchive = () => {
     const promise = archive({ id: documentId });
@@ -53,11 +57,11 @@ const Menu = ({ documentId }: MenuProps) => {
         >
           <DropdownMenuItem onClick={onArchive}>
             <Trash className="mr-2 h-4 w-4" />
-            Delete
+            { tClobal('delete') }
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <div className="text-xs text-muted-foreground p-2">
-            Last edited by {user?.fullName}
+            { tApp('tips.lastEditedBy') }: {user?.fullName}
           </div>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -1,20 +1,29 @@
 {
-    "Route":{
-      "login":"登录"
+  "Route":{
+  },
+  "Pages":{
+  },
+  "Global":{
+    "action":"操作",
+    "edit":"编辑",
+    "delete":"删除"
+  },
+  "App":{
+    "light":"浅色模式",
+    "dark":"深色模式",
+    "internationalization":{
+      "zh":"中文",
+      "en":"英文"
     },
-    "Pages":{
-      "internationalization":{
-        "zh":"中文",
-        "en":"英文"
-      }
+    "navbar": {
+      "search": "搜索",
+      "setting": "设置",
+      "newDocument": "新建文档",
+      "Trash": "回收站",
+      "logout": "退出登录"
     },
-    "Global":{
-      "action":"操作",
-      "edit":"编辑",
-      "delete":"删除"
-    },
-    "App":{
-      "light":"浅色模式",
-      "dark":"深色模式"
+    "tips": {
+      "lastEditedBy": "最后编辑于"
     }
   }
+}
