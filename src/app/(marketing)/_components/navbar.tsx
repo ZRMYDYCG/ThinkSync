@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { cn } from "@/lib/utils";
 import Logo from './logo'
 import { ModeToggle } from '@/components/mode-toggle'
+import { LanguageToggle } from '@/components/language-toggle'
 import { useConvexAuth } from 'convex/react'
 import { SignInButton, UserButton } from "@clerk/clerk-react";
 import {Button} from "@/components/ui/button";
@@ -53,6 +54,7 @@ const Navbar = () => {
                     )
                 }
                 <ModeToggle />
+                <LanguageToggle />
             </div>
         </div>
     )

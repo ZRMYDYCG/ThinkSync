@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import { useTranslations } from "next-intl"
 
 interface FeatureItem {
     title: string
@@ -10,32 +11,31 @@ interface FeatureItem {
 }
 
 const Features: React.FC = () => {
+    const t = useTranslations('Route.marketing.features')
     const features: FeatureItem[] = [
         {
-            title: 'Immersive Content Creation Experience',
-            description: 'A simple and elegant editing interface that supports mixed editing of Markdown and rich text, focusing on your content creation',
+            title: t('items.0.title'),
+            description: t('items.0.description'),
             image: 'https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/20/0f0503a83eb568239afebc2f4ca8424.jpg',
             reverse: false
         },
         {
-            title: 'Publish and Share Across the Web',
-            description: 'One-click publishing + wide dissemination + interactive comments',
+            title: t('items.1.title'),
+            description: t('items.1.description'),
             image: 'https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/20/b62fd7d3778b953e1b174d170a82dbe.jpg',
             reverse: true
         },
     ];
-
 
     return (
         <section className="w-full py-12 md:py-24 lg:py-32" id="features">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight sm:text-4xl">
-                        Powerful Features, Exceptional Experience
+                        {t('title')}
                     </h2>
                     <p className="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                        We offer comprehensive and powerful features to help you easily tackle various challenges,
-                        enhancing your productivity and user experience.
+                        {t('description')}
                     </p>
                 </div>
 

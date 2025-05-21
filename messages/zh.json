@@ -1,5 +1,82 @@
 {
   "Route":{
+      "marketing": {
+          "header": {
+              "title": "您的想法、文档和计划。统一在一起。欢迎来到",
+              "brandName": "ThinkSync",
+              "subtitle": "ThinkSync 是一种新型的工作空间，它将您的笔记、文档和任务融合到一个单一、有序的空间中。",
+              "enterButton": "进入 ThinkSync",
+              "getStartedButton": "免费获取 ThinkSync"
+          },
+          "features": {
+            "title": "强大的功能，卓越的体验",
+            "description": "我们提供全面而强大的功能，帮助您轻松应对各种挑战，提高生产力和用户体验。",
+            "items": [
+                {
+                    "title": "沉浸式内容创作体验",
+                    "description": "简洁优雅的编辑界面，支持 Markdown 和富文本混合编辑，专注于您的内容创作"
+                },
+                {
+                    "title": "发布并分享到网络",
+                    "description": "一键发布 + 广泛传播 + 互动评论"
+                }
+            ]
+        },
+        "wiki": {
+          "title": "探索ThinkSync的无限可能",
+          "items": [
+              {
+                  "title": "团队协作新方式",
+                  "description": "打破信息孤岛，实现跨部门无缝协作，让项目进展一目了然。"
+              },
+              {
+                  "title": "知识沉淀与传承",
+                  "description": "构建企业知识库，让经验与智慧得以积累和传承。"
+              },
+              {
+                  "title": "个人成长加速器",
+                  "description": "打造个人知识体系，支持Markdown，让学习笔记更专业。"
+              }
+          ]
+      },
+      "teamMember": {
+        "title": "项目成员",
+        "members": [
+            {
+                "name": "一勺",
+                "alt": "秋风"
+            },
+            {
+                "name": "轻叶",
+                "alt": "轻叶"
+            }
+        ]
+    },
+    "testimonials": {
+      "title": "用户评价",
+      "description": "加入全球数千名满意用户的行列",
+      "items": [
+          {
+              "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/20/_20250520190857.jpg",
+              "name": "一勺",
+              "role": "产品经理",
+              "quote": "这款产品的用户体验非常出色！"
+          },
+          {
+              "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/17/41.jpg",
+              "name": "匿名用户",
+              "role": "自由职业者",
+              "quote": "非常满意，界面简洁易用。"
+          },
+          {
+              "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/17/6.jpg",
+              "name": "亚历克斯·约翰逊",
+              "role": "首席技术官",
+              "quote": "这个工具彻底改变了我的工作流程！"
+          }
+      ]
+  }
+      }
   },
   "Pages":{
   },
@@ -25,15 +102,15 @@
       "logout": "退出登录"
     },
     "tips": {
-      "lastEditedBy": "最后编辑于",
-      "ThisDocumentIsPublished": "此文档已公开",
-      "ShareYourDocumentWithTheWorld": "与世界分享你的文档",
+      "LastEditedBy": "最后编辑者",
+      "ThisDocumentIsPublished": "此文档已发布",
+      "ShareYourDocumentWithTheWorld": "与世界分享您的文档",
       "PublishThisDocument": "发布此文档",
-      "MySettings": "偏好设置",
+      "MySettings": "我的设置",
       "Appearance": "外观",
-      "CustomizeTheLookAndFeelOfTheApp": "自定义应用外观(白天/黑夜)",
+      "CustomizeTheLookAndFeelOfTheApp": "自定义应用程序的外观和感觉",
       "Language": "语言",
-      "CurrentSupportedLanguageIsEnglishAndChinese": "当前仅支持英文和中文模式"
+      "CurrentSupportedLanguageIsEnglishAndChinese": "当前支持的语言是英文和中文"
     }
   }
 }

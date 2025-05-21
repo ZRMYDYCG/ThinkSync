@@ -1,39 +1,116 @@
 {
-    "Route":{
-    },
-    "Pages":{
-    },
-    "Global":{
-      "action":"Action",
-      "edit":"Edit",
-      "delete":"Delete",
-      "publish": "Publish",
-      "unpublish": "Unpublish"
-    },
-    "App":{
-      "light":"Light Mode",
-      "dark":"Dark Mode",
-      "internationalization":{
-        "zh":"Chinese",
-        "en":"English"
+  "Route":{
+      "marketing": {
+          "header": {
+              "title": "Your Ideas, Documents, & Plans. Unified. Welcome to",
+              "brandName": "ThinkSync",
+              "subtitle": "ThinkSync is a new kind of workspace that blends your notes, docs, and tasks into a single, organized space.",
+              "enterButton": "Enter ThinkSync",
+              "getStartedButton": "Get ThinkSync free"
+          },
+          "features": {
+            "title": "Powerful Features, Exceptional Experience",
+            "description": "We offer comprehensive and powerful features to help you easily tackle various challenges, enhancing your productivity and user experience.",
+            "items": [
+                {
+                    "title": "Immersive Content Creation Experience",
+                    "description": "A simple and elegant editing interface that supports mixed editing of Markdown and rich text, focusing on your content creation"
+                },
+                {
+                    "title": "Publish and Share Across the Web",
+                    "description": "One-click publishing + wide dissemination + interactive comments"
+                }
+            ]
+        },
+        "wiki": {
+          "title": "Explore the Infinite Possibilities of ThinkSync",
+          "items": [
+              {
+                  "title": "New Way of Team Collaboration",
+                  "description": "Break down information silos, achieve seamless cross-department collaboration, and make project progress clear at a glance."
+              },
+              {
+                  "title": "Knowledge Accumulation and Inheritance",
+                  "description": "Build a corporate knowledge base to accumulate and pass on experience and wisdom."
+              },
+              {
+                  "title": "Personal Growth Accelerator",
+                  "description": "Create a personal knowledge system with Markdown support, making learning notes more professional."
+              }
+          ]
       },
-      "navbar": {
-        "search": "Search",
-        "setting": "Setting",
-        "newDocument": "New Document",
-        "trash": "Trash",
-        "logout": "Log out"
-      },
-      "tips": {
-        "LastEditedBy": "Last edited by",
-        "ThisDocumentIsPublished": "This document is published",
-        "ShareYourDocumentWithTheWorld": "Share your document with the world",
-        "PublishThisDocument": "Publish this document",
-        "MySettings": "My Settings",
-        "Appearance": "Appearance",
-        "CustomizeTheLookAndFeelOfTheApp": "Customize the look and feel of the app",
-        "Language": "Language",
-        "CurrentSupportedLanguageIsEnglishAndChinese": "Current supported language is English and Chinese"
+      "teamMember": {
+        "title": "Project Members",
+        "members": [
+            {
+                "name": "Yi Shao",
+                "alt": "Autumn Wind"
+            },
+            {
+                "name": "Qing Ye",
+                "alt": "Light Leaf"
+            }
+        ]
+    },
+    "testimonials": {
+      "title": "What our users are saying",
+      "description": "Join thousands of satisfied users worldwide",
+      "items": [
+          {
+              "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/20/_20250520190857.jpg",
+              "name": "Yi Shao",
+              "role": "Product Manager",
+              "quote": "The user experience of this product is excellent!"
+          },
+          {
+              "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/17/41.jpg",
+              "name": "Anonymous User",
+              "role": "Freelancer",
+              "quote": "Very satisfied, the interface is simple and easy to use."
+          },
+          {
+              "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/17/6.jpg",
+              "name": "Alex Johnson",
+              "role": "CTO",
+              "quote": "This tool has completely transformed my workflow!"
+          }
+      ]
+  }
       }
+  },
+  "Pages":{
+  },
+  "Global":{
+    "action":"Action",
+    "edit":"Edit",
+    "delete":"Delete",
+    "publish": "Publish",
+    "unpublish": "Unpublish"
+  },
+  "App":{
+    "light":"Light Mode",
+    "dark":"Dark Mode",
+    "internationalization":{
+      "zh":"Chinese",
+      "en":"English"
+    },
+    "navbar": {
+      "search": "Search",
+      "setting": "Setting",
+      "newDocument": "New Document",
+      "trash": "Trash",
+      "logout": "Log out"
+    },
+    "tips": {
+      "LastEditedBy": "Last edited by",
+      "ThisDocumentIsPublished": "This document is published",
+      "ShareYourDocumentWithTheWorld": "Share your document with the world",
+      "PublishThisDocument": "Publish this document",
+      "MySettings": "My Settings",
+      "Appearance": "Appearance",
+      "CustomizeTheLookAndFeelOfTheApp": "Customize the look and feel of the app",
+      "Language": "Language",
+      "CurrentSupportedLanguageIsEnglishAndChinese": "Current supported language is English and Chinese"
     }
   }
+}
