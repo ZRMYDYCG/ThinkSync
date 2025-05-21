@@ -6,7 +6,9 @@
   "Global":{
     "action":"操作",
     "edit":"编辑",
-    "delete":"删除"
+    "delete":"删除",
+    "publish": "发布",
+    "unpublish": "取消发布"
   },
   "App":{
     "light":"浅色模式",
@@ -23,7 +25,10 @@
       "logout": "退出登录"
     },
     "tips": {
-      "lastEditedBy": "最后编辑于"
+      "lastEditedBy": "最后编辑于",
+      "ThisDocumentIsPublished": "此文档已公开",
+      "ShareYourDocumentWithTheWorld": "与世界分享你的文档",
+      "PublishThisDocument": "发布此文档"
     }
   }
 }

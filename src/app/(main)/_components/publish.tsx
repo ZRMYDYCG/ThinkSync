@@ -13,6 +13,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Check, Copy, Globe } from "lucide-react";
+import { useTranslations } from 'next-intl'
 
 interface PublishProps {
   initialData: Doc<"documents">;
@@ -26,6 +27,9 @@ const Publish = ({ initialData }: PublishProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const url = `${origin}/preview/${initialData._id}`;
+
+  const tGlobal = useTranslations('Global')
+  const tTips = useTranslations('App.tips')
 
   const onPublish = () => {
     setIsSubmitting(true);
@@ -71,10 +75,7 @@ const Publish = ({ initialData }: PublishProps) => {
     <Popover>
       <PopoverTrigger asChild>
         <Button size="sm" variant="ghost">
-          Publish
-          {initialData.isPublished && (
-            <Globe className="h-4 w-4 ml-2 text-sky-500"></Globe>
-          )}
+            <Globe className="h-4 w-4 text-sky-500"></Globe>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-72" align="end" alignOffset={8} forceMount>
@@ -83,7 +84,7 @@ const Publish = ({ initialData }: PublishProps) => {
             <div className="flex items-center gap-x-2">
               <Globe className="text-sky-500 animate-pulse h-4 w-4" />
               <p className="text-sm font-medium text-sky-500">
-                This document is published
+                { tTips('ThisDocumentIsPublished') }
               </p>
             </div>
             <div className="flex items-center">
@@ -110,15 +111,15 @@ const Publish = ({ initialData }: PublishProps) => {
               disabled={isSubmitting}
               onClick={onUnPublish}
             >
-              Unpublish
+              { tGlobal('unpublish') }
             </Button>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center">
             <Globe className="h-8 w-8 text-sky-500 text-muted-foreground mb-2"></Globe>
-            <p className="text-sm font-medium mb-2">Publish this document</p>
+            <p className="text-sm font-medium mb-2">{ tTips('PublishThisDocument') }</p>
             <span className="text-xs text-muted-foreground mb-4">
-              Share your document with the world
+              { tTips('ShareYourDocumentWithTheWorld') }
             </span>
             <Button
               disabled={isSubmitting}
@@ -126,7 +127,7 @@ const Publish = ({ initialData }: PublishProps) => {
               className="w-full text-xs"
               size="sm"
             >
-              Publish
+              { tGlobal('publish') }
             </Button>
           </div>
         )}

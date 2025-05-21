@@ -6,7 +6,9 @@
     "Global":{
       "action":"Action",
       "edit":"Edit",
-      "delete":"Delete"
+      "delete":"Delete",
+      "publish": "Publish",
+      "unpublish": "Unpublish"
     },
     "App":{
       "light":"Light Mode",
@@ -23,7 +25,10 @@
         "logout": "Log out"
       },
       "tips": {
-        "LastEditedBy": "Last edited by"
+        "LastEditedBy": "Last edited by",
+        "ThisDocumentIsPublished": "This document is published",
+        "ShareYourDocumentWithTheWorld": "Share your document with the world",
+        "PublishThisDocument": "Publish this document"
       }
     }
   }
