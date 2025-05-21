@@ -7,6 +7,8 @@ import React from "react";
 import { Toaster } from "sonner";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { EdgeStoreProvider } from "@/lib/edgestore";
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,11 +39,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const messages = await getMessages()
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -49,6 +53,8 @@ export default function RootLayout({
       >
         <ConvexClientProvider>
           <EdgeStoreProvider>
+            
+          <NextIntlClientProvider messages={messages}>
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
@@ -58,8 +64,9 @@ export default function RootLayout({
             >
               <Toaster position="bottom-center" />
               <ModalProvider />
-              {children}
+                {children}
             </ThemeProvider>
+          </NextIntlClientProvider>
           </EdgeStoreProvider>
         </ConvexClientProvider>
       </body>

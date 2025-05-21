@@ -12,8 +12,8 @@ const MarketingPage = () => {
             <div className="flex flex-col items-center justify-center md:justify-start text-center gap-y-8 flex-1 pb-10">
                 <Header></Header>
                 <Heroes></Heroes>
-                <Wiki></Wiki>
                 <Features></Features>
+                <Wiki></Wiki>
                 <Testimonials></Testimonials>
                 <TeamMember></TeamMember>
             </div>

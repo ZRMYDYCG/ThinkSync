@@ -1,0 +1,20 @@
+{
+    "Route":{
+      "login":"登录"
+    },
+    "Pages":{
+      "internationalization":{
+        "zh":"中文",
+        "en":"英文"
+      }
+    },
+    "Global":{
+      "action":"操作",
+      "edit":"编辑",
+      "delete":"删除"
+    },
+    "App":{
+      "light":"浅色模式",
+      "dark":"深色模式"
+    }
+  }

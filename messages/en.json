@@ -1,0 +1,20 @@
+{
+    "Route":{
+      "login":"Login"
+    },
+    "Pages":{
+      "internationalization":{
+        "zh":"Chinese",
+        "en":"English"
+      }
+    },
+    "Global":{
+      "action":"Action",
+      "edit":"Edit",
+      "delete":"Delete"
+    },
+    "App":{
+      "light":"Light Mode",
+      "dark":"Dark Mode"
+    }
+  }
