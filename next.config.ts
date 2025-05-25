@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["files.edgestore.dev"],
   },
+
+  productionBrowserSourceMaps: true,
 }
 
 export default withNextIntl(nextConfig)
