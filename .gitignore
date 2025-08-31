@@ -37,3 +37,4 @@ yarn-error.log*
 # TypeScript生成文件
 *.tsbuildinfo
 packages/next-app/next-env.d.ts
+.vercel
