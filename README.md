@@ -22,6 +22,7 @@ ThinkSync是一款基于现代Web技术构建的个人笔记应用，旨在帮�
 + EdgeStore
 + TailwindCSS
 + Schadui
++ Blocknote
 
 ### 部署 🌿
 
