@@ -1,9 +1,9 @@
 'use client'
 
-import { ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from 'lucide-react'
+import { MenuIcon, PlusCircle, Search, Settings, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useParams, usePathname, useRouter } from 'next/navigation'
-import React, { useRef, ElementRef, useState, useEffect } from 'react'
+import React, { useRef, ElementRef, useState, useEffect, useCallback } from 'react'
 import { toast } from 'sonner'
 import { useMediaQuery } from 'usehooks-ts'
 
@@ -39,21 +39,7 @@ const Navigation = () => {
   const [isResetting, setIsResetting] = useState(true)
   const [isCollapsed, setIsCollapsed] = useState(isMobile)
 
-  useEffect(() => {
-    if (isMobile) {
-      collapse()
-    } else {
-      resetWidth()
-    }
-  }, [isMobile])
-
-  useEffect(() => {
-    if (isMobile) {
-      collapse()
-    }
-  }, [pathname, isMobile])
-
-  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
     event.stopPropagation()
     isResizingRef.current = true
@@ -75,13 +61,13 @@ const Navigation = () => {
     }
   }
 
-  const handleMouseUp = (e: MouseEvent) => {
+  const handleMouseUp = () => {
     isResizingRef.current = false
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
   }
 
-  const resetWidth = () => {
+  const resetWidth = useCallback(() => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(false)
       setIsResetting(false)
@@ -91,9 +77,9 @@ const Navigation = () => {
       navbarRef.current.style.setProperty('left', isMobile ? '100%' : '240px')
       setTimeout(() => setIsResetting(false), 300)
     }
-  }
+  }, [isMobile])
 
-  const collapse = () => {
+  const collapse = useCallback(() => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true)
       setIsResetting(true)
@@ -103,7 +89,21 @@ const Navigation = () => {
       navbarRef.current.style.setProperty('left', '0')
       setTimeout(() => setIsResetting(false), 300)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse()
+    } else {
+      resetWidth()
+    }
+  }, [isMobile, collapse, resetWidth])
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse()
+    }
+  }, [pathname, isMobile, collapse])
 
   const handleCreate = () => {
     const promise = create({
@@ -111,6 +111,7 @@ const Navigation = () => {
     }).then((document) => {
       bump()
       router.push(`/documents/${document.id}`)
+      return document
     })
 
     toast.promise(promise, {
@@ -130,16 +131,6 @@ const Navigation = () => {
           isMobile && 'w-0',
         )}
       >
-        <div
-          onClick={collapse}
-          role="button"
-          className={cn(
-            'h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition',
-            isMobile && 'opacity-100',
-          )}
-        >
-          <ChevronsLeft className="h-6 w-6" />
-        </div>
         <div>
           <UserItem />
           <Item label={tApp('navbar.search')} icon={Search} isSearch onClick={search.onOpen}></Item>
@@ -148,7 +139,6 @@ const Navigation = () => {
         </div>
         <div className="mt-4">
           <DocumentList />
-          {/* <Item onClick={handleCreate} icon={Plus} label="New Document" /> */}
           <Popover>
             <PopoverTrigger className="mt-4 w-full">
               <Item label={tApp('navbar.trash')} icon={Trash}></Item>
@@ -158,11 +148,13 @@ const Navigation = () => {
             </PopoverContent>
           </Popover>
         </div>
-        <div
+        <button
+          type="button"
           onMouseDown={handleMouseDown}
           onClick={resetWidth}
+          aria-label="Resize sidebar"
           className="absolute right-0 top-0 h-full w-1 cursor-ew-resize bg-primary/10 opacity-0 transition group-hover/sidebar:opacity-100"
-        ></div>
+        ></button>
       </aside>
       <div
         ref={navbarRef}
@@ -172,16 +164,14 @@ const Navigation = () => {
           isMobile && 'left-0 w-full',
         )}
       >
-        {!!params.documentId ? (
+        {params.documentId ? (
           <Navbar isCollapsed={isCollapsed} onResizeWidth={resetWidth} />
         ) : (
           <nav className="w-full bg-transparent px-3 py-2">
             {isCollapsed && (
-              <MenuIcon
-                onClick={resetWidth}
-                role="button"
-                className="h-6 w-6 text-muted-foreground"
-              />
+              <button type="button" onClick={resetWidth} aria-label="Open navigation">
+                <MenuIcon className="h-6 w-6 text-muted-foreground" />
+              </button>
             )}
           </nav>
         )}
