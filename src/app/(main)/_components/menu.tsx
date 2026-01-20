@@ -1,46 +1,49 @@
-"use client";
+'use client'
 
-import { Id } from "@/../convex/_generated/dataModel";
+import { MoreHorizontalIcon, Trash } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/clerk-react";
-import { useMutation } from "convex/react";
-import { api } from "@/../convex/_generated/api";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontalIcon, Trash } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useTranslations } from 'next-intl'
+} from '@/components/ui/dropdown-menu'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useAuth } from '@/hooks/use-auth'
+import { useDocumentsApi } from '@/hooks/use-documents-api'
+import { useDocumentsRefresh } from '@/hooks/use-documents-refresh'
 
 interface MenuProps {
-  documentId: Id<"documents">;
+  documentId: string
 }
 
 const Menu = ({ documentId }: MenuProps) => {
-  const router = useRouter();
-  const { user } = useUser();
-  const archive = useMutation(api.documents.archive);
-  
+  const router = useRouter()
+  const { user } = useAuth()
+  const { archive } = useDocumentsApi()
+  const bump = useDocumentsRefresh((state) => state.bump)
+
   const tClobal = useTranslations('Global')
   const tApp = useTranslations('App')
 
   const onArchive = () => {
-    const promise = archive({ id: documentId });
+    const promise = archive(documentId).then(() => {
+      bump()
+    })
 
     toast.promise(promise, {
-      loading: "Archiving...",
-      success: "Document archived",
-      error: "Failed to archive document",
-    });
+      loading: 'Archiving...',
+      success: 'Document archived',
+      error: 'Failed to archive document',
+    })
 
-    router.push("/documents");
-  };
+    router.push('/documents')
+  }
   return (
     <div>
       <DropdownMenu>
@@ -49,28 +52,23 @@ const Menu = ({ documentId }: MenuProps) => {
             <MoreHorizontalIcon />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className="w-60"
-          align="end"
-          alignOffset={8}
-          forceMount
-        >
+        <DropdownMenuContent className="w-60" align="end" alignOffset={8} forceMount>
           <DropdownMenuItem onClick={onArchive}>
             <Trash className="mr-2 h-4 w-4" />
-            { tClobal('delete') }
+            {tClobal('delete')}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <div className="text-xs text-muted-foreground p-2">
-            { tApp('tips.lastEditedBy') }: {user?.fullName}
+          <div className="p-2 text-xs text-muted-foreground">
+            {tApp('tips.lastEditedBy')}: {user?.name ?? user?.email}
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  );
-};
+  )
+}
 
 Menu.Skeleton = function MenuSkeleton() {
-  return <Skeleton className="h-4 w-10" />;
-};
+  return <Skeleton className="h-4 w-10" />
+}
 
-export default Menu;
+export default Menu

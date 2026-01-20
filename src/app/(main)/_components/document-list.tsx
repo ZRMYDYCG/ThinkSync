@@ -1,41 +1,43 @@
-"use client";
+'use client'
 
-import { Id, Doc } from "@/../convex/_generated/dataModel";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useQuery } from "convex/react";
-import { api } from "@/../convex/_generated/api";
-import Item from "./item";
-import { cn } from "@/lib/utils";
-import { FileIcon } from "lucide-react";
+import { FileIcon } from 'lucide-react'
+import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+
+import { useDocumentsList } from '@/hooks/use-documents-list'
+import { cn } from '@/lib/utils'
+import { Document } from '@/types/document'
+
+import Item from './item'
 
 interface DocumentListProps {
-  parentDocumentId?: Id<"documents">;
-  level?: number;
-  data?: Doc<"documents">[];
+  parentDocumentId?: string
+  level?: number
+  data?: Document[]
 }
 
 const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
-  const params = useParams();
-  const router = useRouter();
+  const params = useParams()
+  const router = useRouter()
 
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
   const onExpand = (documentId: string) => {
     setExpanded((prevExpanded) => ({
       ...prevExpanded,
       [documentId]: !prevExpanded[documentId],
-    }));
-  };
+    }))
+  }
 
-  const documents = useQuery(api.documents.getSidebar, {
-    parentDocument: parentDocumentId,
-  });
+  const { documents } = useDocumentsList({
+    type: 'sidebar',
+    parentDocumentId,
+  })
 
   const onRedirect = (documentId: string) => {
-    router.push(`/documents/${documentId}`);
-  };
+    router.push(`/documents/${documentId}`)
+  }
 
   if (documents === undefined) {
     return (
@@ -48,7 +50,7 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
           </>
         )}
       </>
-    );
+    )
   }
 
   return (
@@ -58,33 +60,33 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
           paddingLeft: level ? `${level * 12 + 25}px` : undefined,
         }}
         className={cn(
-          "hidden text-sm font-medium text-muted-foreground/80",
-          expanded && "last:block",
-          level === 0 && "hidden",
+          'hidden text-sm font-medium text-muted-foreground/80',
+          expanded && 'last:block',
+          level === 0 && 'hidden',
         )}
       >
         No pages inside
       </p>
       {documents.map((document) => (
-        <div key={document._id}>
+        <div key={document.id}>
           <Item
-            id={document._id}
-            onClick={() => onRedirect(document._id)}
+            id={document.id}
+            onClick={() => onRedirect(document.id)}
             label={document.title}
             icon={FileIcon}
             documentIcon={document.icon}
-            active={params.documentId === document._id}
+            active={params.documentId === document.id}
             level={level}
-            onExpand={() => onExpand(document._id)}
-            expanded={expanded[document._id]}
+            onExpand={() => onExpand(document.id)}
+            expanded={expanded[document.id]}
           ></Item>
-          {expanded[document._id] && (
-            <DocumentList parentDocumentId={document._id} level={level + 1} />
+          {expanded[document.id] && (
+            <DocumentList parentDocumentId={document.id} level={level + 1} />
           )}
         </div>
       ))}
     </>
-  );
-};
+  )
+}
 
-export default DocumentList;
+export default DocumentList

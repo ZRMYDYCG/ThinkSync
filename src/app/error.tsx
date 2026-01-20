@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 
 const Error = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex h-screen flex-col items-center justify-center">
       <Image src="/error.png" alt="ThinkSync logo" width={200} height={200} />
       <Image
         src="/error-dark.png"
@@ -16,13 +16,12 @@ const Error = () => {
         width={200}
         height={200}
       />
-      <h2 className="text-xl font-medium py-2">Something went wrong</h2>
+      <h2 className="py-2 text-xl font-medium">Something went wrong</h2>
       <Button asChild>
         <Link href="/documents">Go Back</Link>
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default Error;
-
+export default Error

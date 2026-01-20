@@ -1,6 +1,7 @@
-import { Module } from "@nestjs/common";
-import { DocumentsService } from "./documents.service";
-import { DocumentsController } from "./documents.controller";
+import { Module } from '@nestjs/common'
+
+import { DocumentsController } from './documents.controller'
+import { DocumentsService } from './documents.service'
 
 @Module({
   providers: [DocumentsService],

@@ -1,0 +1,23 @@
+pre-commit:
+  parallel: true
+  commands:
+    fmt:
+      glob: '*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx,yml,yaml,html}'
+      run: pnpm oxfmt --write {staged_files}
+      stage_fixed: true
+    lint:
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm oxlint {staged_files}
+
+prepare-commit-msg:
+  commands:
+    commitizen:
+      interactive: true
+      run: pnpm cz --hook
+      env:
+        LEFTHOOK: 0
+
+commit-msg:
+  commands:
+    'lint commit message':
+      run: pnpm commitlint --edit {1}

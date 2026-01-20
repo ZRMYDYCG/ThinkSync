@@ -1,52 +1,48 @@
+import { useTranslations } from 'next-intl'
 import React from 'react'
-import { useTranslations } from "next-intl"
 
 const Wiki = () => {
-    const t = useTranslations('Route.marketing.wiki')
+  const t = useTranslations('Route.marketing.wiki')
 
-    return (
-        <div className="flex flex-col lg:flex-row rounded-lg overflow-hidden transition-colors duration-300">
-            <div className="w-full lg:w-1/2 order-1 lg:order-none">
-                <img
-                    src="/wiki-template.png"
-                    alt="Wiki Template"
-                    className="w-full h-full object-cover"
-                />
-            </div>
-            
-            <div className="w-full lg:w-1/2 p-4 lg:p-8 order-2 lg:order-none">
-                <h2 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 text-gray-800 dark:text-gray-100">
-                    {t('title')}
-                </h2>
-                <div className="space-y-4 lg:space-y-6 ">
-                    <div className="p-4 lg:p-6 bg-white dark:bg-gray-700 rounded-lg transition-colors duration-300">
-                        <h3 className="text-base lg:text-lg font-semibold mb-2 text-blue-600 dark:text-blue-400">
-                            {t('items.0.title')}
-                        </h3>
-                        <p className="text-sm lg:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                            {t('items.0.description')}
-                        </p>
-                    </div>
-                    <div className="p-4 lg:p-6 bg-white dark:bg-gray-700 rounded-lg transition-colors duration-300">
-                        <h3 className="text-base lg:text-lg font-semibold mb-2 text-green-600 dark:text-green-400">
-                            {t('items.1.title')}
-                        </h3>
-                        <p className="text-sm lg:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                            {t('items.1.description')}
-                        </p>
-                    </div>
-                    <div className="p-4 lg:p-6 bg-white dark:bg-gray-700 rounded-lg transition-colors duration-300">
-                        <h3 className="text-base lg:text-lg font-semibold mb-2 text-purple-600 dark:text-purple-400">
-                            {t('items.2.title')}
-                        </h3>
-                        <p className="text-sm lg:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                            {t('items.2.description')}
-                        </p>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="flex flex-col overflow-hidden rounded-lg transition-colors duration-300 lg:flex-row">
+      <div className="order-1 w-full lg:order-none lg:w-1/2">
+        <img src="/wiki-template.png" alt="Wiki Template" className="h-full w-full object-cover" />
+      </div>
+
+      <div className="order-2 w-full p-4 lg:order-none lg:w-1/2 lg:p-8">
+        <h2 className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100 lg:mb-6 lg:text-2xl">
+          {t('title')}
+        </h2>
+        <div className="space-y-4 lg:space-y-6">
+          <div className="rounded-lg bg-white p-4 transition-colors duration-300 dark:bg-gray-700 lg:p-6">
+            <h3 className="mb-2 text-base font-semibold text-blue-600 dark:text-blue-400 lg:text-lg">
+              {t('items.0.title')}
+            </h3>
+            <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300 lg:text-base">
+              {t('items.0.description')}
+            </p>
+          </div>
+          <div className="rounded-lg bg-white p-4 transition-colors duration-300 dark:bg-gray-700 lg:p-6">
+            <h3 className="mb-2 text-base font-semibold text-green-600 dark:text-green-400 lg:text-lg">
+              {t('items.1.title')}
+            </h3>
+            <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300 lg:text-base">
+              {t('items.1.description')}
+            </p>
+          </div>
+          <div className="rounded-lg bg-white p-4 transition-colors duration-300 dark:bg-gray-700 lg:p-6">
+            <h3 className="mb-2 text-base font-semibold text-purple-600 dark:text-purple-400 lg:text-lg">
+              {t('items.2.title')}
+            </h3>
+            <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300 lg:text-base">
+              {t('items.2.description')}
+            </p>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  )
 }
 
 export default Wiki

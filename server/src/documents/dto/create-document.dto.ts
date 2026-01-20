@@ -1,11 +1,11 @@
-import { IsOptional, IsString, MinLength } from "class-validator";
+import { IsOptional, IsString, MinLength } from 'class-validator'
 
 export class CreateDocumentDto {
   @IsString()
   @MinLength(1)
-  title: string;
+  title: string
 
   @IsOptional()
   @IsString()
-  parentDocumentId?: string;
+  parentDocumentId?: string
 }

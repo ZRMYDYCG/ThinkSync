@@ -1,50 +1,52 @@
-"use client";
+'use client'
 
-import { useMutation } from "convex/react";
-import { Doc } from "@/../convex/_generated/dataModel";
-import { api } from "@/../convex/_generated/api";
-import React, { useRef, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import React, { useRef, useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useDocumentsApi } from '@/hooks/use-documents-api'
+import { useDocumentsRefresh } from '@/hooks/use-documents-refresh'
+import { Document } from '@/types/document'
 
 interface TitleProps {
-  initialData: Doc<"documents">;
+  initialData: Document
 }
 
 const Title = ({ initialData }: TitleProps) => {
-  const update = useMutation(api.documents.update);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { update } = useDocumentsApi()
+  const bump = useDocumentsRefresh((state) => state.bump)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(initialData.title || "Untitled");
+  const [isEditing, setIsEditing] = useState(false)
+  const [title, setTitle] = useState(initialData.title || 'Untitled')
 
   const enableInput = () => {
-    setTitle(initialData.title);
-    setIsEditing(true);
+    setTitle(initialData.title)
+    setIsEditing(true)
     setTimeout(() => {
-      inputRef.current?.focus();
-      inputRef.current?.setSelectionRange(0, inputRef.current.value.length);
-    }, 0);
-  };
+      inputRef.current?.focus()
+      inputRef.current?.setSelectionRange(0, inputRef.current.value.length)
+    }, 0)
+  }
 
   const disableInput = () => {
-    setIsEditing(false);
-  };
+    setIsEditing(false)
+    bump()
+  }
 
   const onChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-    await update({
-      id: initialData._id,
-      title: event.target.value || "Untitled",
-    });
-  };
+    setTitle(event.target.value)
+    await update(initialData.id, {
+      title: event.target.value || 'Untitled',
+    })
+  }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      disableInput();
+    if (event.key === 'Enter') {
+      disableInput()
     }
-  };
+  }
 
   return (
     <div className="flex items-center gap-x-1">
@@ -60,26 +62,17 @@ const Title = ({ initialData }: TitleProps) => {
           value={title}
         />
       ) : (
-        <Button
-          variant="ghost"
-          onClick={enableInput}
-          size="sm"
-          className="font-normal h-auto p-1"
-        >
-          <span className="hidden sm:inline truncate max-w-[200px]">
-            {initialData?.title}
-          </span>
-          <span className="sm:hidden truncate max-w-[100px]">
-            {initialData?.title}
-          </span>
+        <Button variant="ghost" onClick={enableInput} size="sm" className="h-auto p-1 font-normal">
+          <span className="hidden max-w-[200px] truncate sm:inline">{initialData?.title}</span>
+          <span className="max-w-[100px] truncate sm:hidden">{initialData?.title}</span>
         </Button>
       )}
     </div>
-  );
-};
+  )
+}
 
 Title.Skeleton = function TitleSkeleton() {
-  return <Skeleton className="h-6 w-16 rounded-md" />;
-};
+  return <Skeleton className="h-6 w-16 rounded-md" />
+}
 
-export default Title;
+export default Title

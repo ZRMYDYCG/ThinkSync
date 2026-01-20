@@ -1,23 +1,23 @@
-import { IsBoolean, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsOptional, IsString } from 'class-validator'
 
 export class UpdateDocumentDto {
   @IsOptional()
   @IsString()
-  title?: string;
+  title?: string
 
   @IsOptional()
   @IsString()
-  content?: string;
+  content?: string
 
   @IsOptional()
   @IsString()
-  coverImage?: string;
+  coverImage?: string
 
   @IsOptional()
   @IsString()
-  icon?: string;
+  icon?: string
 
   @IsOptional()
   @IsBoolean()
-  isPublished?: boolean;
+  isPublished?: boolean
 }

@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+
+  "printWidth": 100,
+  "singleQuote": true,
+  "semi": false,
+  "trailingComma": "all",
+
+  // 开启 import 排序、Tailwind class 排序（默认是关闭的）
+  "experimentalSortImports": {},
+  "experimentalTailwindcss": {},
+}

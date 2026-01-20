@@ -1,15 +1,16 @@
-"use client";
+'use client'
 
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { useSetting } from "@/hooks/useSetting";
-import { Label } from "@/components/ui/label";
-import { ModeToggle } from "@/components/mode-toggle";
+import { useTranslations } from 'next-intl'
+
 import { LanguageToggle } from '@/components/language-toggle'
-import { useTranslations } from "next-intl";
+import { ModeToggle } from '@/components/mode-toggle'
+import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { useSetting } from '@/hooks/useSetting'
 
 export const SettingsModal = () => {
-  const setting = useSetting();
-  
+  const setting = useSetting()
+
   const tApp = useTranslations('App')
 
   return (
@@ -25,16 +26,16 @@ export const SettingsModal = () => {
               {tApp('tips.CustomizeTheLookAndFeelOfTheApp')}
             </span>
           </div>
-          <ModeToggle/>
+          <ModeToggle />
         </div>
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-1">
             <Label>{tApp('tips.Language')}</Label>
             <span className="text-[0.8rem] text-muted-foreground">
-              { tApp('tips.CurrentSupportedLanguageIsEnglishAndChinese') }
+              {tApp('tips.CurrentSupportedLanguageIsEnglishAndChinese')}
             </span>
           </div>
-          <LanguageToggle/>
+          <LanguageToggle />
         </div>
       </DialogContent>
     </Dialog>

@@ -1,76 +1,64 @@
-"use client";
+'use client'
 
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { ImageIcon, X } from "lucide-react";
-import { useCoverImage } from "@/hooks/use-cover-image";
-import { api } from "@/../convex/_generated/api";
-import { Id } from "@/../convex/_generated/dataModel";
-import { useMutation } from "convex/react";
-import { useParams } from "next/navigation";
-import { useEdgeStore } from "@/lib/edgestore";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ImageIcon, X } from 'lucide-react'
+import Image from 'next/image'
+import { useParams } from 'next/navigation'
+
+import ConfirmModal from '@/components/modals/confirm-modal'
+import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useCoverImage } from '@/hooks/use-cover-image'
+import { useDocumentsApi } from '@/hooks/use-documents-api'
+import { useDocumentsRefresh } from '@/hooks/use-documents-refresh'
+import { cn } from '@/lib/utils'
 
 interface CoverProps {
-  url?: string;
-  preview?: boolean;
+  url?: string
+  preview?: boolean
 }
 
 const Cover = ({ url, preview }: CoverProps) => {
-  const { edgestore } = useEdgeStore();
-  const params = useParams();
-  const coverImage = useCoverImage();
-  const removeCoverImage = useMutation(api.documents.removeCoverImage);
+  const params = useParams()
+  const coverImage = useCoverImage()
+  const { removeCover } = useDocumentsApi()
+  const bump = useDocumentsRefresh((state) => state.bump)
+  const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(/\/$/, '')
+  const coverUrl = url && url.startsWith('http') ? url : url ? `${baseUrl}${url}` : undefined
 
   const onRemove = async () => {
-    if (url) {
-      await edgestore.publicFiles.delete({
-        url: url,
-      });
-    }
-    await removeCoverImage({
-      id: params.documentId as Id<"documents">,
-    });
-  };
+    if (!params.documentId) return
+    await removeCover(params.documentId as string)
+    bump()
+  }
 
   return (
-    <div
-      className={cn(
-        "relative w-full h-[35vh] group",
-        !url && "h-[12vh]",
-        url && "bg-muted",
-      )}
-    >
-      {!!url && <Image src={url} fill className="object-cover" alt="Cover" />}
+    <div className={cn('relative w-full h-[35vh] group', !url && 'h-[12vh]', url && 'bg-muted')}>
+      {!!coverUrl && <Image src={coverUrl} fill className="object-cover" alt="Cover" />}
       {url && !preview && (
-        <div className="opacity-0 group-hover:opacity-100 absolute bottom-5 right-5 flex items-center gap-x-2">
+        <div className="absolute bottom-5 right-5 flex items-center gap-x-2 opacity-0 group-hover:opacity-100">
           <Button
             onClick={() => coverImage.onReplace(url)}
-            className="text-muted-foreground text-xs"
+            className="text-xs text-muted-foreground"
             variant="outline"
             size="sm"
           >
-            <ImageIcon className="h-4 w-4 mr-2" />
+            <ImageIcon className="mr-2 h-4 w-4" />
             Change Cover
           </Button>
-          <Button
-            onClick={onRemove}
-            className="text-muted-foreground text-xs"
-            variant="outline"
-            size="sm"
-          >
-            <X className="h-4 w-4 mr-2" />
-            Remove Cover
-          </Button>
+          <ConfirmModal onConfirm={onRemove}>
+            <Button className="text-xs text-muted-foreground" variant="outline" size="sm">
+              <X className="mr-2 h-4 w-4" />
+              Remove Cover
+            </Button>
+          </ConfirmModal>
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 Cover.Skeleton = function CoverSkeleton() {
-  return <Skeleton className="w-full h-[12vh] bg-skeleton" />;
-};
+  return <Skeleton className="bg-skeleton h-[12vh] w-full" />
+}
 
-export default Cover;
+export default Cover

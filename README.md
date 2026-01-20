@@ -16,14 +16,12 @@ ThinkSync是一款基于现代Web技术构建的个人笔记应用，旨在帮�
 
 ### 技术栈 🌿
 
-+ Next14
-+ TypeScript
-+ Convex
-+ EdgeStore
-+ TailwindCSS
-+ Schadui
-+ Blocknote
+- Next14
+- TypeScript
+- TailwindCSS
+- Schadui
+- Blocknote
 
 ### 部署 🌿
 
-+ Vercel
+- Vercel

@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+
+  // 注意：一旦写 plugins，它会“覆盖默认插件集合”
+  // 所以要把默认的 eslint/typescript/unicorn/oxc 也一起写上
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "oxc",
+    "react",
+    "nextjs",
+    "import",
+    "jsx-a11y",
+    "promise",
+    "node"
+  ],
+
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2022": true
+  },
+
+  "ignorePatterns": ["node_modules/", ".next/", "out/", "dist/", "build/", "coverage/"],
+
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+
+  "rules": {
+    "eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
+  }
+}

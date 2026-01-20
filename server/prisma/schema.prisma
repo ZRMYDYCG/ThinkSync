@@ -26,7 +26,7 @@ model Document {
   parentDocumentId String?
   parentDocument   Document?  @relation("DocumentToChildren", fields: [parentDocumentId], references: [id])
   children         Document[] @relation("DocumentToChildren")
-  content          String?
+  content          String?    @db.LongText
   coverImage       String?
   icon             String?
   isPublished      Boolean    @default(false)
