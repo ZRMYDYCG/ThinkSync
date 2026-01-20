@@ -3,7 +3,7 @@
 import '@blocknote/core/fonts/inter.css'
 import '@blocknote/mantine/style.css'
 import '@/assets/css/editor.css'
-import { createGroq } from '@ai-sdk/groq'
+import { createOpenAI } from '@ai-sdk/openai'
 import { PartialBlock, filterSuggestionItems } from '@blocknote/core'
 import { en } from '@blocknote/core/locales'
 import { BlockNoteView } from '@blocknote/mantine'
@@ -19,13 +19,12 @@ import {
   AIMenuController,
   AIToolbarButton,
   createAIExtension,
-  createBlockNoteAIClient,
   getAISlashMenuItems,
 } from '@blocknote/xl-ai'
 import { en as aiEn } from '@blocknote/xl-ai/locales'
 import '@blocknote/xl-ai/style.css'
 import { useTheme } from 'next-themes'
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { useUploadsApi } from '@/hooks/use-uploads-api'
 
@@ -35,16 +34,12 @@ interface EditorProps {
   editable?: boolean
 }
 
-const client = createBlockNoteAIClient({
-  apiKey: 'PLACEHOLDER',
-  baseURL: 'https://localhost:3000/ai',
+const openai = createOpenAI({
+  apiKey: 'unused',
+  baseURL: 'http://localhost:3000/ai/v1',
 })
 
-// Use an "open" model such as llama, in this case via groq.com
-const model = createGroq({
-  // call via our proxy client
-  ...client.getProviderSettings('groq'),
-})('llama-3.3-70b-versatile')
+const model = openai('Qwen/QwQ-32B')
 
 const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   const { resolvedTheme } = useTheme()
@@ -52,25 +47,34 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   const normalizedContent =
     typeof initialContent === 'string' && initialContent.length > 0 ? initialContent : undefined
 
-  const handleUpload = async (file: File) => {
-    return uploadImage(file)
-  }
-
-  const editor = useCreateBlockNote({
-    initialContent: normalizedContent
-      ? (JSON.parse(normalizedContent) as PartialBlock[])
-      : undefined,
-    uploadFile: handleUpload,
-    dictionary: {
-      ...en,
-      ai: aiEn, // add default translations for the AI extension
+  const handleUpload = useCallback(
+    async (file: File) => {
+      return uploadImage(file)
     },
-    extensions: [
-      createAIExtension({
-        model,
-      }),
-    ],
-  } as any)
+    [uploadImage],
+  )
+
+  const editor = useCreateBlockNote(
+    useMemo(
+      () =>
+        ({
+          initialContent: normalizedContent
+            ? (JSON.parse(normalizedContent) as PartialBlock[])
+            : undefined,
+          uploadFile: handleUpload,
+          dictionary: {
+            ...en,
+            ai: aiEn,
+          },
+          extensions: [
+            createAIExtension({
+              model,
+            }),
+          ],
+        }) as any,
+      [normalizedContent, handleUpload],
+    ),
+  )
 
   const onContentChange = () => {
     onChange(JSON.stringify(editor.document, null, 2))
@@ -85,26 +89,14 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
         slashMenu={false}
         theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
       >
-        {/* Add the AI Command menu to the editor */}
         <AIMenuController />
-
-        {/* We disabled the default formatting toolbar with `formattingToolbar=false`
-        and replace it for one with an "AI button" (defined below).
-        (See "Formatting Toolbar" in docs)
-        */}
         <FormattingToolbarWithAI />
-
-        {/* We disabled the default SlashMenu with `slashMenu=false`
-        and replace it for one with an AI option (defined below).
-        (See "Suggestion Menus" in docs)
-        */}
         <SuggestionMenuWithAI editor={editor} />
       </BlockNoteView>
     </div>
   )
 }
 
-// Formatting toolbar with the `AIToolbarButton` added
 function FormattingToolbarWithAI() {
   return (
     <FormattingToolbarController
@@ -119,18 +111,13 @@ function FormattingToolbarWithAI() {
   )
 }
 
-// Slash menu with the AI option added
 function SuggestionMenuWithAI(props: { editor: any }) {
   return (
     <SuggestionMenuController
       triggerCharacter="/"
       getItems={async (query) =>
         filterSuggestionItems(
-          [
-            ...getDefaultReactSlashMenuItems(props.editor),
-            // add the default AI slash menu items, or define your own
-            ...getAISlashMenuItems(props.editor),
-          ],
+          [...getDefaultReactSlashMenuItems(props.editor), ...getAISlashMenuItems(props.editor)],
           query,
         )
       }
