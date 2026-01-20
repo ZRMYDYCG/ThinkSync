@@ -23,8 +23,24 @@ const Cover = ({ url, preview }: CoverProps) => {
   const coverImage = useCoverImage()
   const { removeCover } = useDocumentsApi()
   const bump = useDocumentsRefresh((state) => state.bump)
-  const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(/\/$/, '')
-  const coverUrl = url && url.startsWith('http') ? url : url ? `${baseUrl}${url}` : undefined
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3000'
+  const coverUrl = (() => {
+    if (!url) return undefined
+    const normalized = url.replace(/\\/g, '/')
+    if (
+      /^https?:\/\//i.test(normalized) ||
+      normalized.startsWith('data:') ||
+      normalized.startsWith('blob:')
+    ) {
+      return normalized
+    }
+    const pathname = normalized.startsWith('/') ? normalized : `/${normalized}`
+    try {
+      return new URL(pathname, apiBaseUrl).toString()
+    } catch {
+      return pathname
+    }
+  })()
 
   const onRemove = async () => {
     if (!params.documentId) return

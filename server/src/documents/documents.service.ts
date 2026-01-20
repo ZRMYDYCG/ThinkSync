@@ -166,8 +166,11 @@ export class DocumentsService {
     if (!existing) {
       throw new NotFoundException('Not found')
     }
+    if (!userId) {
+      throw new UnauthorizedException('Not authenticated')
+    }
     if (existing.userId !== userId) {
-      throw new ForbiddenException('Not authenticated')
+      throw new ForbiddenException('Document does not belong to user')
     }
     const shouldReplaceCover =
       dto.coverImage !== undefined && dto.coverImage !== existing.coverImage

@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
+import { toast } from 'sonner'
 
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
 import { useCoverImage } from '@/hooks/use-cover-image'
@@ -25,20 +26,26 @@ export const CoverImageModal = () => {
   }
 
   const onChange = async (file?: File) => {
-    if (file) {
-      setIsSubmitting(true)
-      setFile(file)
+    if (!file) return
+    if (!params.documentId) {
+      toast.error('缺少 documentId，无法上传封面')
+      return
+    }
 
-      if (params.documentId) {
-        await uploadCover(params.documentId as string, file)
-        bump()
-      }
+    setIsSubmitting(true)
+    setFile(file)
+    try {
+      await uploadCover(params.documentId as string, file)
+      bump()
       onClose()
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : '封面上传失败')
+      setIsSubmitting(false)
     }
   }
 
   return (
-    <Dialog open={coverImage.isOpen} onOpenChange={coverImage.onClose}>
+    <Dialog open={coverImage.isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
         <DialogHeader>
           <h2 className="text-center text-lg font-semibold">Select a cover image</h2>
@@ -47,6 +54,11 @@ export const CoverImageModal = () => {
           className="w-full outline-none"
           disabled={isSubmitting}
           value={file}
+          dropzoneOptions={{
+            maxFiles: 1,
+            maxSize: 5 * 1024 * 1024,
+            accept: { 'image/*': [] },
+          }}
           onChange={onChange}
         />
       </DialogContent>

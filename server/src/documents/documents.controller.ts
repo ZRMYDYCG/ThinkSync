@@ -9,6 +9,7 @@ import {
   Post,
   Query,
   Req,
+  UnauthorizedException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -138,10 +139,13 @@ export class DocumentsController {
     @Param('id') id: string,
     @UploadedFile() file?: Express.Multer.File,
   ) {
+    if (!req.user?.userId) {
+      throw new UnauthorizedException('Not authenticated')
+    }
     if (!file) {
       throw new BadRequestException('Cover file is required')
     }
     const coverImage = `/uploads/covers/${file.filename}`
-    return this.documentsService.update(req.user?.userId ?? '', id, { coverImage })
+    return this.documentsService.update(req.user.userId, id, { coverImage })
   }
 }

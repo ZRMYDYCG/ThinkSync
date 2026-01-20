@@ -7,6 +7,17 @@ import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
 import { UpdateProfileDto } from './dto/update-profile.dto'
 
+type UserIdentity = {
+  id: string
+  email: string
+  name: string | null
+  avatarUrl: string | null
+}
+
+type UserWithPassword = UserIdentity & {
+  password: string
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -14,12 +25,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  private sanitizeUser(user: {
-    id: string
-    email: string
-    name: string | null
-    avatarUrl: string | null
-  }) {
+  private sanitizeUser(user: UserIdentity) {
     return { id: user.id, email: user.email, name: user.name, avatarUrl: user.avatarUrl }
   }
 
@@ -47,10 +53,10 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
-    const user = await this.prisma.user.findUnique({
+    const user = (await this.prisma.user.findUnique({
       where: { email: dto.email },
-      select: { id: true, email: true, password: true, name: true, avatarUrl: true } as any,
-    })
+      select: { id: true, email: true, password: true, name: true, avatarUrl: true },
+    })) as UserWithPassword | null
     if (!user) {
       throw new UnauthorizedException('Invalid credentials')
     }
@@ -96,7 +102,7 @@ export class AuthService {
     const user = await this.prisma.user.update({
       where: { id: userId },
       data,
-      select: { id: true, email: true, name: true, avatarUrl: true } as any,
+      select: { id: true, email: true, name: true, avatarUrl: true },
     })
     return user
   }
