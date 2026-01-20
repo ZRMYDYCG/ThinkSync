@@ -74,7 +74,7 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
             onClick={() => onRedirect(document.id)}
             label={document.title}
             icon={FileIcon}
-            documentIcon={document.icon}
+            documentIcon={document.icon ?? undefined}
             active={params.documentId === document.id}
             level={level}
             onExpand={() => onExpand(document.id)}

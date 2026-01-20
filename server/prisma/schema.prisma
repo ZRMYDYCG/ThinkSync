@@ -12,6 +12,7 @@ model User {
   email     String     @unique
   password  String
   name      String?
+  avatarUrl String?
   documents Document[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt

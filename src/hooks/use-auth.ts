@@ -21,6 +21,11 @@ type RegisterPayload = {
   name?: string
 }
 
+type UpdateProfilePayload = Partial<{
+  name: string | null
+  avatarUrl: string | null
+}>
+
 export const useAuth = () => {
   const { request } = useRequest()
   const token = useAuthStore((state) => state.token)
@@ -70,6 +75,15 @@ export const useAuth = () => {
     return data
   }, [request, setUser, token])
 
+  const updateProfile = useCallback(
+    async (payload: UpdateProfilePayload) => {
+      const data = await request<AuthUser>('/auth/me', { method: 'PATCH', body: payload })
+      setUser(data)
+      return data
+    },
+    [request, setUser],
+  )
+
   const logout = useCallback(() => {
     clear()
   }, [clear])
@@ -82,6 +96,7 @@ export const useAuth = () => {
     login,
     register,
     refresh,
+    updateProfile,
     logout,
     setLoading,
   }

@@ -17,6 +17,13 @@ type ApiResponse<T> = {
   message?: string
 }
 
+type ApiErrorResponse = {
+  success?: boolean
+  message?: string
+  errors?: string[]
+  statusCode?: number
+}
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3000'
 
 const buildUrl = (path: string, params?: RequestOptions['params']) => {
@@ -61,18 +68,27 @@ export const useRequest = () => {
 
       const contentType = response.headers.get('content-type') ?? ''
       const isJson = contentType.includes('application/json')
-      const payload = (isJson ? await response.json() : null) as ApiResponse<T> | null
+      const payload = (isJson ? await response.json() : null) as
+        | ApiResponse<T>
+        | ApiErrorResponse
+        | null
 
       if (!response.ok) {
-        const message = payload?.message ?? `Request failed with status ${response.status}`
-        throw new Error(message)
+        const baseMessage = payload?.message ?? `Request failed with status ${response.status}`
+        const errors = Array.isArray((payload as ApiErrorResponse | null)?.errors)
+          ? (payload as ApiErrorResponse).errors
+          : null
+        throw new Error(errors?.length ? `${baseMessage}: ${errors.join('、')}` : baseMessage)
       }
 
       if (payload && typeof payload === 'object' && 'success' in payload) {
         if (!payload.success) {
           throw new Error(payload.message ?? 'Request failed')
         }
-        return payload.data as T
+        if ('data' in payload) {
+          return (payload as ApiResponse<T>).data as T
+        }
+        return payload as T
       }
 
       return payload as T
