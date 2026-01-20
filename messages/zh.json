@@ -75,6 +75,20 @@
             "quote": "这个工具彻底改变了我的工作流程！"
           }
         ]
+      },
+      "footer": {
+        "privacyPolicy": "隐私政策",
+        "termsOfService": "服务条款"
+      },
+      "navbar": {
+        "login": "登录",
+        "getStarted": "免费获取 ThinkSync",
+        "enterApp": "进入 ThinkSync",
+        "logout": "退出登录"
+      },
+      "heroes": {
+        "documentsAlt": "文档",
+        "readingAlt": "阅读"
       }
     }
   },
@@ -110,6 +124,26 @@
       "CustomizeTheLookAndFeelOfTheApp": "自定义应用程序的外观和感觉",
       "Language": "语言",
       "CurrentSupportedLanguageIsEnglishAndChinese": "当前支持的语言是英文和中文"
+    },
+    "AuthModal": {
+      "LoggedInSuccessfully": "登录成功",
+      "AccountCreatedSuccessfully": "账号创建成功",
+      "AuthenticationFailed": "认证失败",
+      "WelcomeBack": "欢迎回来",
+      "CreateAnAccount": "创建账号",
+      "LoginToContinue": "登录以继续使用 ThinkSync。",
+      "StartOrganizing": "开始使用 ThinkSync 整理您的笔记。",
+      "Name": "姓名",
+      "YourName": "您的姓名",
+      "Email": "邮箱",
+      "EmailPlaceholder": "you@example.com",
+      "Password": "密码",
+      "Loading": "加载中...",
+      "LogIn": "登录",
+      "CreateAccount": "创建账号",
+      "NoAccount": "没有账号？",
+      "AlreadyHaveAccount": "已有账号？",
+      "CreateOne": "创建一个"
     }
   }
 }

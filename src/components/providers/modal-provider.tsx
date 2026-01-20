@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 
+import { AuthModal } from '@/components/modals/auth-modal'
 import { CoverImageModal } from '@/components/modals/cover-image-modal'
 import { SettingsModal } from '@/components/modals/settings-modal'
 
@@ -20,6 +21,7 @@ export const ModalProvider = () => {
     <>
       <SettingsModal />
       <CoverImageModal />
+      <AuthModal />
     </>
   )
 }

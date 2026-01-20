@@ -7,9 +7,11 @@ import React from 'react'
 import { Spinner } from '@/components/spinner'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/use-auth'
+import { useAuthModal } from '@/hooks/use-auth-modal'
 
 const Header = () => {
   const { isAuthenticated, isLoading } = useAuth()
+  const { onOpen } = useAuthModal()
   const t = useTranslations('Route.marketing.header')
 
   return (
@@ -33,11 +35,9 @@ const Header = () => {
         </Button>
       )}
       {!isAuthenticated && !isLoading && (
-        <Button asChild>
-          <Link href="/register">
-            {t('getStartedButton')}
-            <ArrowRight className="ml-2 h-4 w-4"></ArrowRight>
-          </Link>
+        <Button onClick={() => onOpen('register')}>
+          {t('getStartedButton')}
+          <ArrowRight className="ml-2 h-4 w-4"></ArrowRight>
         </Button>
       )}
     </div>

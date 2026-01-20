@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import React from 'react'
 
@@ -8,6 +9,7 @@ import { ModeToggle } from '@/components/mode-toggle'
 import { Spinner } from '@/components/spinner'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/use-auth'
+import { useAuthModal } from '@/hooks/use-auth-modal'
 import { useScrollTop } from '@/hooks/useScrollTop'
 import { cn } from '@/lib/utils'
 
@@ -15,7 +17,9 @@ import Logo from './logo'
 
 const Navbar = () => {
   const { isAuthenticated, isLoading, logout } = useAuth()
+  const { onOpen } = useAuthModal()
   const scrolled = useScrollTop()
+  const t = useTranslations('Route.marketing.navbar')
 
   return (
     <div
@@ -29,21 +33,21 @@ const Navbar = () => {
         {isLoading && <Spinner></Spinner>}
         {!isAuthenticated && !isLoading && (
           <>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/login">Log in</Link>
+            <Button variant="ghost" size="sm" onClick={() => onOpen('login')}>
+              {t('login')}
             </Button>
-            <Button size="sm" asChild>
-              <Link href="/register">Get ThinkSync Free</Link>
+            <Button size="sm" onClick={() => onOpen('register')}>
+              {t('getStarted')}
             </Button>
           </>
         )}
         {isAuthenticated && !isLoading && (
           <>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/documents">Enter ThinkSync</Link>
+              <Link href="/documents">{t('enterApp')}</Link>
             </Button>
             <Button variant="ghost" size="sm" onClick={logout}>
-              Log out
+              {t('logout')}
             </Button>
           </>
         )}

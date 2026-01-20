@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next'
 
+import { codeInspectorPlugin } from 'code-inspector-plugin'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin()
@@ -28,6 +29,12 @@ const nextConfig: NextConfig = {
   },
 
   productionBrowserSourceMaps: true,
+
+  turbopack: {
+    rules: codeInspectorPlugin({
+      bundler: 'turbopack',
+    }),
+  },
 }
 
 export default withNextIntl(nextConfig)

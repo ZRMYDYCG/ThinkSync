@@ -75,6 +75,20 @@
             "quote": "This tool has completely transformed my workflow!"
           }
         ]
+      },
+      "footer": {
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service"
+      },
+      "navbar": {
+        "login": "Log in",
+        "getStarted": "Get ThinkSync Free",
+        "enterApp": "Enter ThinkSync",
+        "logout": "Log out"
+      },
+      "heroes": {
+        "documentsAlt": "Documents",
+        "readingAlt": "Reading"
       }
     }
   },
@@ -110,6 +124,26 @@
       "CustomizeTheLookAndFeelOfTheApp": "Customize the look and feel of the app",
       "Language": "Language",
       "CurrentSupportedLanguageIsEnglishAndChinese": "Current supported language is English and Chinese"
+    },
+    "AuthModal": {
+      "LoggedInSuccessfully": "Logged in successfully",
+      "AccountCreatedSuccessfully": "Account created successfully",
+      "AuthenticationFailed": "Authentication failed",
+      "WelcomeBack": "Welcome back",
+      "CreateAnAccount": "Create an account",
+      "LoginToContinue": "Log in to continue to ThinkSync.",
+      "StartOrganizing": "Start organizing your notes with ThinkSync.",
+      "Name": "Name",
+      "YourName": "Your name",
+      "Email": "Email",
+      "EmailPlaceholder": "you@example.com",
+      "Password": "Password",
+      "Loading": "Loading...",
+      "LogIn": "Log in",
+      "CreateAccount": "Create account",
+      "NoAccount": "No account? ",
+      "AlreadyHaveAccount": "Already have an account? ",
+      "CreateOne": "Create one"
     }
   }
 }
