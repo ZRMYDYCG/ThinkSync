@@ -1,6 +1,7 @@
 'use client'
 
 import { ImageIcon, MoveVertical, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
@@ -33,16 +34,18 @@ const normalizeCoverPosition = (value?: number | null) => {
 
 const Cover = ({ url, position, preview }: CoverProps) => {
   const params = useParams()
+  const t = useTranslations('App.cover')
   const coverImage = useCoverImage()
   const { removeCover, update } = useDocumentsApi()
   const bump = useDocumentsRefresh((state) => state.bump)
   const containerRef = useRef<HTMLDivElement | null>(null)
   const dragStateRef = useRef<{ startY: number; startPosition: number } | null>(null)
+  const normalizedPosition = normalizeCoverPosition(position)
+  const lastNormalizedPositionRef = useRef(normalizedPosition)
   const [isAdjusting, setIsAdjusting] = useState(false)
   const [isSavingPosition, setIsSavingPosition] = useState(false)
-  const [draftPosition, setDraftPosition] = useState(() => normalizeCoverPosition(position))
+  const [draftPosition, setDraftPosition] = useState(() => normalizedPosition)
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3000'
-  const normalizedPosition = normalizeCoverPosition(position)
   const coverUrl = (() => {
     if (!url) return undefined
     const normalized = url.replace(/\\/g, '/')
@@ -62,6 +65,8 @@ const Cover = ({ url, position, preview }: CoverProps) => {
   })()
 
   useEffect(() => {
+    if (normalizedPosition === lastNormalizedPositionRef.current) return
+    lastNormalizedPositionRef.current = normalizedPosition
     if (isAdjusting) return
     setDraftPosition(normalizedPosition)
   }, [isAdjusting, normalizedPosition])
@@ -84,17 +89,19 @@ const Cover = ({ url, position, preview }: CoverProps) => {
 
   const onSavePosition = async () => {
     if (!params.documentId) {
-      toast.error('Missing document ID for cover update')
+      toast.error(t('MissingDocumentId'))
       return
     }
     setIsSavingPosition(true)
     try {
       const nextPosition = Math.round(clamp(draftPosition, 0, 100) * 10) / 10
+      setDraftPosition(nextPosition)
       await update(params.documentId as string, { coverPosition: nextPosition })
       bump()
       setIsAdjusting(false)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to save cover position')
+      const fallbackMessage = t('SaveCoverPositionFailed')
+      toast.error(error instanceof Error ? error.message : fallbackMessage)
     } finally {
       setIsSavingPosition(false)
     }
@@ -149,13 +156,14 @@ const Cover = ({ url, position, preview }: CoverProps) => {
           fill
           className="object-cover"
           style={{ objectPosition: `center ${draftPosition}%` }}
-          alt="Cover"
+          alt={t('CoverAlt')}
           draggable={false}
         />
       )}
       {isAdjusting && (
-        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-black/30 text-xs font-medium text-white">
-          Drag to reposition
+        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-black/30 text-center text-xs font-medium text-white">
+          <MoveVertical className="h-5 w-5" />
+          <span>{t('DragToReposition')}</span>
         </div>
       )}
       {url && !preview && !isAdjusting && (
@@ -167,7 +175,7 @@ const Cover = ({ url, position, preview }: CoverProps) => {
             size="sm"
           >
             <ImageIcon className="mr-2 h-4 w-4" />
-            Change Cover
+            {t('ChangeCover')}
           </Button>
           <Button
             onClick={onStartAdjust}
@@ -176,12 +184,12 @@ const Cover = ({ url, position, preview }: CoverProps) => {
             size="sm"
           >
             <MoveVertical className="mr-2 h-4 w-4" />
-            Adjust Position
+            {t('AdjustPosition')}
           </Button>
           <ConfirmModal onConfirm={onRemove}>
             <Button className="text-xs text-muted-foreground" variant="outline" size="sm">
               <X className="mr-2 h-4 w-4" />
-              Remove Cover
+              {t('RemoveCover')}
             </Button>
           </ConfirmModal>
         </div>
@@ -195,10 +203,10 @@ const Cover = ({ url, position, preview }: CoverProps) => {
             size="sm"
             disabled={isSavingPosition}
           >
-            Save Position
+            {t('SavePosition')}
           </Button>
           <Button onClick={onCancelAdjust} className="text-xs" variant="outline" size="sm">
-            Cancel
+            {t('Cancel')}
           </Button>
         </div>
       )}

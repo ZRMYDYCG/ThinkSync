@@ -125,6 +125,17 @@
       "Language": "Language",
       "CurrentSupportedLanguageIsEnglishAndChinese": "Current supported language is English and Chinese"
     },
+    "cover": {
+      "CoverAlt": "Cover image",
+      "ChangeCover": "Change cover",
+      "AdjustPosition": "Adjust position",
+      "RemoveCover": "Remove cover",
+      "SavePosition": "Save position",
+      "Cancel": "Cancel",
+      "DragToReposition": "Drag to reposition",
+      "MissingDocumentId": "Missing document ID for cover update",
+      "SaveCoverPositionFailed": "Failed to save cover position"
+    },
     "AuthModal": {
       "LoggedInSuccessfully": "Logged in successfully",
       "AccountCreatedSuccessfully": "Account created successfully",

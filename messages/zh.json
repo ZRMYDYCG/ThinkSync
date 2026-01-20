@@ -125,6 +125,17 @@
       "Language": "语言",
       "CurrentSupportedLanguageIsEnglishAndChinese": "当前支持的语言是英文和中文"
     },
+    "cover": {
+      "CoverAlt": "封面图片",
+      "ChangeCover": "更换封面",
+      "AdjustPosition": "调整位置",
+      "RemoveCover": "移除封面",
+      "SavePosition": "保存位置",
+      "Cancel": "取消",
+      "DragToReposition": "拖动以调整位置",
+      "MissingDocumentId": "缺少文档 ID，无法保存封面位置",
+      "SaveCoverPositionFailed": "保存封面位置失败"
+    },
     "AuthModal": {
       "LoggedInSuccessfully": "登录成功",
       "AccountCreatedSuccessfully": "账号创建成功",
