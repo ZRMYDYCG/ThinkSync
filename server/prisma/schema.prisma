@@ -29,6 +29,7 @@ model Document {
   children         Document[] @relation("DocumentToChildren")
   content          String?    @db.LongText
   coverImage       String?
+  coverPosition    Float?
   icon             String?
   isPublished      Boolean    @default(false)
   createdAt        DateTime   @default(now())

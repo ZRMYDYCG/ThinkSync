@@ -6,6 +6,7 @@ export type Document = {
   parentDocumentId: string | null
   content: string | null
   coverImage: string | null
+  coverPosition: number | null
   icon: string | null
   isPublished: boolean
   createdAt: string

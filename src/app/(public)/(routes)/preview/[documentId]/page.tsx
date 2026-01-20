@@ -40,7 +40,11 @@ const DocumentIdPage = () => {
 
   return (
     <div className="pb-40">
-      <Cover preview url={document.coverImage ?? undefined}></Cover>
+      <Cover
+        preview
+        url={document.coverImage ?? undefined}
+        position={document.coverPosition ?? undefined}
+      ></Cover>
       <div className="mx-auto md:max-w-3xl lg:max-w-4xl">
         <Toolbar preview initialData={document}></Toolbar>
         <Editor editable={false} onChange={noop} initialContent={document.content} />

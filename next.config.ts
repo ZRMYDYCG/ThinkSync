@@ -1,11 +1,10 @@
-import type { Editor } from 'launch-ide'
 import type { NextConfig } from 'next'
 
 import { codeInspectorPlugin } from 'code-inspector-plugin'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin()
-const codeEditor = process.env.CODE_EDITOR as Editor | undefined
+const codeEditor = process.env.CODE_EDITOR
 
 const nextConfig: NextConfig = {
   images: {
@@ -36,7 +35,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     rules: codeInspectorPlugin({
       bundler: 'turbopack',
-      editor: codeEditor ?? 'code',
+      editor: codeEditor ?? ('code' as any),
     }),
   },
 }

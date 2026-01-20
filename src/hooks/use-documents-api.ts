@@ -13,6 +13,7 @@ type UpdateDocumentPayload = Partial<{
   title: string
   content: string
   coverImage: string | null
+  coverPosition: number | null
   icon: string | null
   isPublished: boolean
 }>

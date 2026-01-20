@@ -181,6 +181,7 @@ export class DocumentsService {
         title: dto.title,
         content: dto.content,
         coverImage: dto.coverImage,
+        coverPosition: dto.coverPosition,
         icon: dto.icon,
         isPublished: dto.isPublished,
       },
@@ -302,7 +303,7 @@ export class DocumentsService {
     await deleteCoverFile(existing.coverImage)
     return this.prisma.document.update({
       where: { id: documentId },
-      data: { coverImage: null },
+      data: { coverImage: null, coverPosition: null },
     })
   }
 }

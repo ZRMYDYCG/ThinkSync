@@ -146,6 +146,6 @@ export class DocumentsController {
       throw new BadRequestException('Cover file is required')
     }
     const coverImage = `/uploads/covers/${file.filename}`
-    return this.documentsService.update(req.user.userId, id, { coverImage })
+    return this.documentsService.update(req.user.userId, id, { coverImage, coverPosition: 50 })
   }
 }

@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator'
+import { IsBoolean, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator'
 
 export class UpdateDocumentDto {
   @IsOptional()
@@ -12,6 +12,12 @@ export class UpdateDocumentDto {
   @IsOptional()
   @IsString()
   coverImage?: string
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  coverPosition?: number
 
   @IsOptional()
   @IsString()
