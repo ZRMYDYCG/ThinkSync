@@ -114,12 +114,13 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
           placeholder="Enter title"
         />
       ) : (
-        <div
+        <button
+          type="button"
           onClick={enableInput}
-          className="break-words pb-[12px] text-5xl font-bold text-[#3F3F3F] outline-none dark:text-[#CFCFCF]"
+          className="block w-full break-words bg-transparent pb-[12px] text-left text-5xl font-bold text-[#3F3F3F] focus-visible:outline-none dark:text-[#CFCFCF]"
         >
           {initialData.title}
-        </div>
+        </button>
       )}
     </div>
   )

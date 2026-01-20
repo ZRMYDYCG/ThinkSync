@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import React from 'react'
 
 import { LanguageToggle } from '@/components/language-toggle'
 import { ModeToggle } from '@/components/mode-toggle'

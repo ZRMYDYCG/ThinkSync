@@ -1,3 +1,5 @@
+import React from 'react'
+
 import Footer from './_components/footer'
 import Header from './_components/header'
 import Heroes from './_components/heroes'

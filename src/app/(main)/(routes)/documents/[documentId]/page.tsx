@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
 import { useMemo } from 'react'
+import React from 'react'
 
 import Cover from '@/components/cover'
 import { Toolbar } from '@/components/toolbar'

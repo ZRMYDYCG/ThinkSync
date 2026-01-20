@@ -30,6 +30,10 @@
   },
 
   "rules": {
-    "eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
+    "eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "import/no-unassigned-import": [
+      "error",
+      { "allow": ["**/*.css", "**/*.scss", "**/*.sass", "**/*.less"] }
+    ]
   }
 }

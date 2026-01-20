@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import React from 'react'
 
 import { LanguageToggle } from '@/components/language-toggle'
 import { ModeToggle } from '@/components/mode-toggle'

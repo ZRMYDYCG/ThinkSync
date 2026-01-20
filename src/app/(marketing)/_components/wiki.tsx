@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
 import React from 'react'
 
 const Wiki = () => {
@@ -7,7 +8,14 @@ const Wiki = () => {
   return (
     <div className="flex flex-col overflow-hidden rounded-lg transition-colors duration-300 lg:flex-row">
       <div className="order-1 w-full lg:order-none lg:w-1/2">
-        <img src="/wiki-template.png" alt="Wiki Template" className="h-full w-full object-cover" />
+        <Image
+          src="/wiki-template.png"
+          alt="Wiki Template"
+          width={1170}
+          height={762}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="h-full w-full object-cover"
+        />
       </div>
 
       <div className="order-2 w-full p-4 lg:order-none lg:w-1/2 lg:p-8">

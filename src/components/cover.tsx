@@ -3,6 +3,7 @@
 import { ImageIcon, X } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
+import React from 'react'
 
 import ConfirmModal from '@/components/modals/confirm-modal'
 import { Button } from '@/components/ui/button'

@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
         port: '3000',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'qy-red-book.oss-cn-guangzhou.aliyuncs.com',
+        pathname: '/i/**',
+      },
     ],
   },
 

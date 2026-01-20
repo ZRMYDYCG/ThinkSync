@@ -22,15 +22,16 @@ import {
   createBlockNoteAIClient,
   getAISlashMenuItems,
 } from '@blocknote/xl-ai'
-import '@blocknote/xl-ai/style.css'
 import { en as aiEn } from '@blocknote/xl-ai/locales'
+import '@blocknote/xl-ai/style.css'
 import { useTheme } from 'next-themes'
+import React from 'react'
 
 import { useUploadsApi } from '@/hooks/use-uploads-api'
 
 interface EditorProps {
   onChange: (value: string) => void
-  initialContent?: string
+  initialContent?: string | null
   editable?: boolean
 }
 
@@ -48,13 +49,17 @@ const model = createGroq({
 const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   const { resolvedTheme } = useTheme()
   const { uploadImage } = useUploadsApi()
+  const normalizedContent =
+    typeof initialContent === 'string' && initialContent.length > 0 ? initialContent : undefined
 
   const handleUpload = async (file: File) => {
     return uploadImage(file)
   }
 
   const editor = useCreateBlockNote({
-    initialContent: initialContent ? (JSON.parse(initialContent) as PartialBlock[]) : undefined,
+    initialContent: normalizedContent
+      ? (JSON.parse(normalizedContent) as PartialBlock[])
+      : undefined,
     uploadFile: handleUpload,
     dictionary: {
       ...en,

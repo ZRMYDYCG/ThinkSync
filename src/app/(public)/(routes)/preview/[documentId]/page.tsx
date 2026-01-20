@@ -2,19 +2,20 @@
 
 import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import Cover from '@/components/cover'
 import { Toolbar } from '@/components/toolbar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useDocument } from '@/hooks/use-document'
 
+const noop = () => {}
+
 const DocumentIdPage = () => {
   const params = useParams()
 
   const Editor = useMemo(() => dynamic(() => import('@/components/editor'), { ssr: false }), [])
   const { document } = useDocument(params.documentId as string)
-  const onChange = () => {}
 
   if (document === undefined) {
     return (
@@ -42,7 +43,7 @@ const DocumentIdPage = () => {
       <Cover preview url={document.coverImage ?? undefined}></Cover>
       <div className="mx-auto md:max-w-3xl lg:max-w-4xl">
         <Toolbar preview initialData={document}></Toolbar>
-        <Editor editable={false} onChange={onChange} initialContent={document.content} />
+        <Editor editable={false} onChange={noop} initialContent={document.content} />
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
 import React from 'react'
 
 interface FeatureItem {
@@ -8,6 +9,32 @@ interface FeatureItem {
   description: string
   image: string
   reverse?: boolean
+}
+
+const FALLBACK_FEATURE_IMAGE = '/default-feature-image.png'
+
+const FeatureImage = ({ src, alt }: { src: string; alt: string }) => {
+  const [imageSrc, setImageSrc] = React.useState(src)
+
+  React.useEffect(() => {
+    setImageSrc(src)
+  }, [src])
+
+  return (
+    <Image
+      src={imageSrc}
+      alt={alt}
+      width={1200}
+      height={800}
+      sizes="(min-width: 768px) 50vw, 100vw"
+      className="h-auto w-full object-cover"
+      onError={() => {
+        if (imageSrc !== FALLBACK_FEATURE_IMAGE) {
+          setImageSrc(FALLBACK_FEATURE_IMAGE)
+        }
+      }}
+    />
+  )
 }
 
 const Features: React.FC = () => {
@@ -60,14 +87,7 @@ const Features: React.FC = () => {
 
               <div className="flex-1 md:w-1/2">
                 <div className="relative overflow-hidden rounded-xl bg-white shadow-xl transition-shadow duration-300 hover:shadow-2xl dark:bg-gray-800">
-                  <img
-                    src={feature.image}
-                    alt={feature.title}
-                    className="h-full w-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = '/default-feature-image.png'
-                    }}
-                  />
+                  <FeatureImage src={feature.image} alt={feature.title} />
                 </div>
               </div>
             </div>

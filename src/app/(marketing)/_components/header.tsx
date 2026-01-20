@@ -1,8 +1,8 @@
 'use client'
-
 import { ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import React from 'react'
 
 import { Spinner } from '@/components/spinner'
 import { Button } from '@/components/ui/button'

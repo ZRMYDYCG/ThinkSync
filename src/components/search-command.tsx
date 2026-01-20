@@ -2,7 +2,7 @@
 
 import { File } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useAuth } from '@/hooks/use-auth'
 import { useDocumentsList } from '@/hooks/use-documents-list'

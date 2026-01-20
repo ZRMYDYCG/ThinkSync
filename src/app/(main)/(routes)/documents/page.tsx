@@ -3,6 +3,7 @@
 import { PlusCircle } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import React from 'react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -22,6 +23,7 @@ const DocumentsPage = () => {
     }).then((document) => {
       bump()
       router.push(`/documents/${document.id}`)
+      return document
     })
 
     toast.promise(promise, {
