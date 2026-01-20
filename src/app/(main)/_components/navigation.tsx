@@ -70,7 +70,7 @@ const Navigation = () => {
   const resetWidth = useCallback(() => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(false)
-      setIsResetting(false)
+      setIsResetting(true)
 
       sidebarRef.current.style.width = isMobile ? '100%' : '240px'
       navbarRef.current.style.setProperty('width', isMobile ? '0' : 'calc(100% - 240px)')
@@ -126,19 +126,21 @@ const Navigation = () => {
       <aside
         ref={sidebarRef}
         className={cn(
-          'group/sidebar h-full bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999]',
+          'group/sidebar h-full bg-secondary overflow-hidden relative flex w-60 flex-col z-[99999]',
           isResetting && 'transition-all ease-in-out duration-300',
           isMobile && 'w-0',
         )}
       >
-        <div>
+        <div className="shrink-0">
           <UserItem />
           <Item label={tApp('navbar.search')} icon={Search} isSearch onClick={search.onOpen}></Item>
           <Item label={tApp('navbar.setting')} icon={Settings} onClick={setting.onOpen}></Item>
           <Item icon={PlusCircle} label={tApp('navbar.newDocument')} onClick={handleCreate} />
         </div>
-        <div className="mt-4">
+        <div className="mt-4 min-h-0 flex-1 overflow-y-auto">
           <DocumentList />
+        </div>
+        <div className="shrink-0">
           <Popover>
             <PopoverTrigger className="mt-4 w-full">
               <Item label={tApp('navbar.trash')} icon={Trash}></Item>
@@ -165,7 +167,7 @@ const Navigation = () => {
         )}
       >
         {params.documentId ? (
-          <Navbar isCollapsed={isCollapsed} onResizeWidth={resetWidth} />
+          <Navbar isCollapsed={isCollapsed} onResizeWidth={resetWidth} onCollapse={collapse} />
         ) : (
           <nav className="w-full bg-transparent px-3 py-2">
             {isCollapsed && (
