@@ -3,6 +3,7 @@
 import { MoreHorizontalIcon, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
+import React from 'react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -34,6 +35,7 @@ const Menu = ({ documentId }: MenuProps) => {
   const onArchive = () => {
     const promise = archive(documentId).then(() => {
       bump()
+      return true
     })
 
     toast.promise(promise, {

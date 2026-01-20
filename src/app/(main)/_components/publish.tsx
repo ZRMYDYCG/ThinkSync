@@ -2,7 +2,7 @@
 
 import { Check, Copy, Globe } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -37,6 +37,7 @@ const Publish = ({ initialData }: PublishProps) => {
     })
       .then(() => {
         bump()
+        return true
       })
       .finally(() => setIsSubmitting(false))
 
@@ -55,6 +56,7 @@ const Publish = ({ initialData }: PublishProps) => {
     })
       .then(() => {
         bump()
+        return true
       })
       .finally(() => setIsSubmitting(false))
 
@@ -79,14 +81,14 @@ const Publish = ({ initialData }: PublishProps) => {
     <Popover>
       <PopoverTrigger asChild>
         <Button size="sm" variant="ghost">
-          <Globe className="h-4 w-4 text-sky-500"></Globe>
+          <Globe className="h-4 w-4 text-muted-foreground"></Globe>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-72" align="end" alignOffset={8} forceMount>
         {initialData.isPublished ? (
           <div className="space-y-4">
             <div className="flex items-center gap-x-2">
-              <Globe className="h-4 w-4 animate-pulse text-sky-500" />
+              <Globe className="h-4 w-4 animate-pulse text-muted-foreground" />
               <p className="text-sm font-medium text-sky-500">{tTips('ThisDocumentIsPublished')}</p>
             </div>
             <div className="flex items-center">
@@ -114,7 +116,7 @@ const Publish = ({ initialData }: PublishProps) => {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center">
-            <Globe className="mb-2 h-8 w-8 text-muted-foreground text-sky-500"></Globe>
+            <Globe className="mb-2 h-8 w-8 text-muted-foreground"></Globe>
             <p className="mb-2 text-sm font-medium">{tTips('PublishThisDocument')}</p>
             <span className="mb-4 text-xs text-muted-foreground">
               {tTips('ShareYourDocumentWithTheWorld')}
