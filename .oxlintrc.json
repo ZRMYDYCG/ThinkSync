@@ -22,7 +22,15 @@
     "es2022": true
   },
 
-  "ignorePatterns": ["node_modules/", ".next/", "out/", "dist/", "build/", "coverage/"],
+  "ignorePatterns": [
+    "node_modules/",
+    ".next/",
+    "out/",
+    "dist/",
+    "build/",
+    "coverage/",
+    "next-env.d.ts"
+  ],
 
   "categories": {
     "correctness": "error",

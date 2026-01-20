@@ -13,6 +13,8 @@ import { coversDir, uploadsRoot } from '../uploads/uploads-paths'
 import { CreateDocumentDto } from './dto/create-document.dto'
 import { UpdateDocumentDto } from './dto/update-document.dto'
 
+const isWithinRoot = (candidate: string, root: string) => candidate.startsWith(root)
+
 const resolveLocalFileCandidates = (url?: string | null) => {
   if (!url) return null
   let pathname = url
@@ -29,7 +31,6 @@ const resolveLocalFileCandidates = (url?: string | null) => {
   }
   const relativePath = normalized.replace(/^\/uploads\//, '')
   const candidates: string[] = []
-  const isWithinRoot = (candidate: string, root: string) => candidate.startsWith(root)
   const primary = resolve(uploadsRoot, relativePath)
   if (isWithinRoot(primary, uploadsRoot)) {
     candidates.push(primary)
