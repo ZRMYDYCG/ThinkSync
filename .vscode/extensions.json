@@ -1,0 +1,29 @@
+{
+  "recommendations": [
+    // Oxc：oxlint + oxfmt 的 VS Code 集成
+    "oxc.oxc-vscode",
+
+    // Tailwind 智能提示/hover/lint
+    "bradlc.vscode-tailwindcss",
+
+    // 统一缩进/换行等（读 .editorconfig）
+    "EditorConfig.EditorConfig",
+
+    // SCSS 变量/mixin/function 提示
+    "mrmlnc.vscode-scss",
+
+    // PostCSS 语法高亮（如果你有 .pcss/.postcss 文件）
+    "csstools.postcss",
+
+    // （可选）错误提示更醒目（提升开发体验）
+    "usernamehw.errorlens",
+
+    // （可选）Git 增强（看 blame / history 很舒服）
+    "eamodio.gitlens"
+  ],
+  "unwantedRecommendations": [
+    // 不需要 Prettier / ESLint（避免冲突）
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
+}
