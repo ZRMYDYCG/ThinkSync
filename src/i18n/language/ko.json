@@ -1,0 +1,162 @@
+{
+  "Route": {
+    "marketing": {
+      "header": {
+        "title": "아이디어, 문서, 계획을 하나로. 환영합니다",
+        "brandName": "ThinkSync",
+        "subtitle": "ThinkSync는 메모, 문서, 작업을 하나의 정돈된 공간으로 묶는 새로운 워크스페이스입니다.",
+        "enterButton": "ThinkSync 들어가기",
+        "getStartedButton": "무료로 ThinkSync 시작하기"
+      },
+      "features": {
+        "title": "강력한 기능, 탁월한 경험",
+        "description": "다양한 과제를 쉽게 해결할 수 있도록 포괄적이고 강력한 기능을 제공하여 생산성과 사용자 경험을 높입니다.",
+        "items": [
+          {
+            "title": "몰입형 콘텐츠 작성 경험",
+            "description": "Markdown과 리치 텍스트를 혼합해 편집할 수 있는 간결하고 우아한 편집 인터페이스로 콘텐츠 작성에 집중할 수 있습니다."
+          },
+          {
+            "title": "웹 전반에 게시하고 공유",
+            "description": "원클릭 게시 + 광범위한 확산 + 대화형 댓글"
+          }
+        ]
+      },
+      "wiki": {
+        "title": "ThinkSync의 무한한 가능성을 탐색하세요",
+        "items": [
+          {
+            "title": "팀 협업의 새로운 방식",
+            "description": "정보 사일로를 해소하고 부서 간 원활한 협업을 실현하며, 프로젝트 진행 상황을 한눈에 파악할 수 있습니다."
+          },
+          {
+            "title": "지식의 축적과 전수",
+            "description": "기업 지식 베이스를 구축해 경험과 지혜를 축적하고 전수합니다."
+          },
+          {
+            "title": "개인 성장 가속기",
+            "description": "Markdown 지원 개인 지식 시스템을 구축해 학습 노트를 더 전문적으로 만듭니다."
+          }
+        ]
+      },
+      "teamMember": {
+        "title": "프로젝트 구성원",
+        "members": [
+          {
+            "name": "Yi Shao",
+            "alt": "가을바람"
+          },
+          {
+            "name": "Qing Ye",
+            "alt": "빛잎"
+          }
+        ]
+      },
+      "testimonials": {
+        "title": "사용자들의 목소리",
+        "description": "전 세계 수천 명의 만족한 사용자와 함께하세요",
+        "items": [
+          {
+            "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/20/_20250520190857.jpg",
+            "name": "Yi Shao",
+            "role": "제품 관리자",
+            "quote": "이 제품의 사용자 경험은 훌륭합니다!"
+          },
+          {
+            "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/17/41.jpg",
+            "name": "Anonymous User",
+            "role": "프리랜서",
+            "quote": "매우 만족합니다. 인터페이스가 간단하고 사용하기 쉬워요."
+          },
+          {
+            "avatar": "https://qy-red-book.oss-cn-guangzhou.aliyuncs.com/i/2025/05/17/6.jpg",
+            "name": "Alex Johnson",
+            "role": "CTO",
+            "quote": "이 도구는 제 워크플로를 완전히 바꿔 놓았습니다!"
+          }
+        ]
+      },
+      "footer": {
+        "privacyPolicy": "개인정보처리방침",
+        "termsOfService": "서비스 이용약관"
+      },
+      "navbar": {
+        "login": "로그인",
+        "getStarted": "무료로 ThinkSync 시작하기",
+        "enterApp": "ThinkSync 들어가기",
+        "logout": "로그아웃"
+      },
+      "heroes": {
+        "documentsAlt": "문서",
+        "readingAlt": "읽기"
+      }
+    }
+  },
+  "Pages": {},
+  "Global": {
+    "action": "작업",
+    "edit": "편집",
+    "delete": "삭제",
+    "publish": "게시",
+    "unpublish": "게시 취소"
+  },
+  "App": {
+    "light": "라이트 모드",
+    "dark": "다크 모드",
+    "internationalization": {
+      "zh": "중국어",
+      "en": "영어",
+      "ja": "일본어",
+      "ko": "한국어"
+    },
+    "navbar": {
+      "search": "검색",
+      "setting": "설정",
+      "newDocument": "새 문서",
+      "trash": "휴지통",
+      "logout": "로그아웃"
+    },
+    "tips": {
+      "LastEditedBy": "마지막 편집자",
+      "ThisDocumentIsPublished": "이 문서는 게시되었습니다",
+      "ShareYourDocumentWithTheWorld": "문서를 세상과 공유하세요",
+      "PublishThisDocument": "이 문서를 게시하기",
+      "MySettings": "내 설정",
+      "Appearance": "모양",
+      "CustomizeTheLookAndFeelOfTheApp": "앱의 모양과 느낌을 사용자 지정합니다",
+      "Language": "언어",
+      "CurrentSupportedLanguageIsEnglishAndChinese": "현재 지원되는 언어는 영어, 중국어, 일본어, 한국어입니다"
+    },
+    "cover": {
+      "CoverAlt": "커버 이미지",
+      "ChangeCover": "커버 변경",
+      "AdjustPosition": "위치 조정",
+      "RemoveCover": "커버 제거",
+      "SavePosition": "위치 저장",
+      "Cancel": "취소",
+      "DragToReposition": "드래그하여 위치 조정",
+      "MissingDocumentId": "커버 업데이트를 위한 문서 ID가 없습니다",
+      "SaveCoverPositionFailed": "커버 위치 저장에 실패했습니다"
+    },
+    "AuthModal": {
+      "LoggedInSuccessfully": "로그인에 성공했습니다",
+      "AccountCreatedSuccessfully": "계정이 성공적으로 생성되었습니다",
+      "AuthenticationFailed": "인증에 실패했습니다",
+      "WelcomeBack": "다시 오신 것을 환영합니다",
+      "CreateAnAccount": "계정 만들기",
+      "LoginToContinue": "ThinkSync를 계속하려면 로그인하세요.",
+      "StartOrganizing": "ThinkSync로 노트를 정리하기 시작하세요.",
+      "Name": "이름",
+      "YourName": "이름",
+      "Email": "이메일",
+      "EmailPlaceholder": "you@example.com",
+      "Password": "비밀번호",
+      "Loading": "로딩 중...",
+      "LogIn": "로그인",
+      "CreateAccount": "계정 만들기",
+      "NoAccount": "계정이 없으신가요?",
+      "AlreadyHaveAccount": "이미 계정이 있으신가요?",
+      "CreateOne": "계정 생성"
+    }
+  }
+}

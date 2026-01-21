@@ -105,7 +105,9 @@
     "dark": "深色模式",
     "internationalization": {
       "zh": "中文",
-      "en": "英文"
+      "en": "英文",
+      "ja": "日语",
+      "ko": "韩语"
     },
     "navbar": {
       "search": "搜索",
@@ -123,7 +125,7 @@
       "Appearance": "外观",
       "CustomizeTheLookAndFeelOfTheApp": "自定义应用程序的外观和感觉",
       "Language": "语言",
-      "CurrentSupportedLanguageIsEnglishAndChinese": "当前支持的语言是英文和中文"
+      "CurrentSupportedLanguageIsEnglishAndChinese": "当前支持的语言是英文、中文、日语和韩语"
     },
     "cover": {
       "CoverAlt": "封面图片",

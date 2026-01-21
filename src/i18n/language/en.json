@@ -105,7 +105,9 @@
     "dark": "Dark Mode",
     "internationalization": {
       "zh": "Chinese",
-      "en": "English"
+      "en": "English",
+      "ja": "Japanese",
+      "ko": "Korean"
     },
     "navbar": {
       "search": "Search",
@@ -123,7 +125,7 @@
       "Appearance": "Appearance",
       "CustomizeTheLookAndFeelOfTheApp": "Customize the look and feel of the app",
       "Language": "Language",
-      "CurrentSupportedLanguageIsEnglishAndChinese": "Current supported language is English and Chinese"
+      "CurrentSupportedLanguageIsEnglishAndChinese": "Current supported languages are English, Chinese, Japanese, and Korean"
     },
     "cover": {
       "CoverAlt": "Cover image",

@@ -1,7 +1,7 @@
 'use client'
 
-import { useTranslations, useLocale } from 'next-intl'
-import * as React from 'react'
+import { useLocale, useTranslations } from 'next-intl'
+import React from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -12,46 +12,37 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { setLocale } from '@/i18n'
 import { type Locale, locales } from '@/i18n/config'
-import { cn } from '@/lib/utils'
+
+const LOCALE_LABELS: Record<Locale, string> = {
+  zh: 'ZH',
+  en: 'EN',
+  ja: 'JA',
+  ko: 'KO',
+}
 
 export function LanguageToggle() {
   const t = useTranslations('App.internationalization')
-  const [ZH, EN] = locales
   const locale = useLocale()
-  const isZh = locale === ZH
+  const currentLabel = LOCALE_LABELS[locale as Locale] ?? locale.toUpperCase()
 
-  // 切换语言
   function onChangeLang(value: Locale) {
-    const locale = value as Locale
-    setLocale(locale)
+    setLocale(value)
   }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <span
-            className={cn(
-              'rotate-0 scale-100 transition-all duration-300',
-              !isZh ? '-rotate-90 scale-0' : '',
-            )}
-          >
-            中
-          </span>
-          <span
-            className={cn(
-              'absolute rotate-90 scale-0 transition-all duration-300',
-              !isZh ? 'rotate-0 scale-100' : '',
-            )}
-          >
-            En
-          </span>
+          <span className="text-xs font-semibold">{currentLabel}</span>
           <span className="sr-only">Toggle Language</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => onChangeLang(ZH)}>{t('zh')}</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onChangeLang(EN)}>{t('en')}</DropdownMenuItem>
+        {locales.map((value) => (
+          <DropdownMenuItem key={value} onClick={() => onChangeLang(value)}>
+            {t(value)}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )
