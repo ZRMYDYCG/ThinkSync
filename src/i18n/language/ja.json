@@ -127,6 +127,28 @@
       "Language": "言語",
       "CurrentSupportedLanguageIsEnglishAndChinese": "現在サポートされている言語は英語・中国語・日本語・韓国語です"
     },
+    "userMenu": {
+      "Account": "アカウント",
+      "EditProfile": "プロフィールを編集",
+      "Avatar": "アバター",
+      "Uploading": "アップロード中...",
+      "UploadAvatar": "アバターをクリックしてアップロード",
+      "UploadingAvatar": "アバターをアップロード中...",
+      "DisplayName": "表示名",
+      "DisplayNamePlaceholder": "表示名を入力",
+      "Cancel": "キャンセル",
+      "Save": "保存",
+      "Saving": "保存中..."
+    },
+    "toast": {
+      "Archiving": "アーカイブ中...",
+      "DocumentArchived": "ドキュメントをアーカイブしました",
+      "ArchiveFailed": "ドキュメントのアーカイブに失敗しました",
+      "AvatarUploadFailed": "アバターのアップロードに失敗しました",
+      "LoginRequired": "先にログインしてください",
+      "ProfileUpdated": "プロフィールを更新しました",
+      "ProfileUpdateFailed": "プロフィールの更新に失敗しました"
+    },
     "cover": {
       "CoverAlt": "カバー画像",
       "ChangeCover": "カバーを変更",

@@ -29,8 +29,9 @@ const Menu = ({ documentId }: MenuProps) => {
   const { archive } = useDocumentsApi()
   const bump = useDocumentsRefresh((state) => state.bump)
 
-  const tClobal = useTranslations('Global')
-  const tApp = useTranslations('App')
+  const tGlobal = useTranslations('Global')
+  const tTips = useTranslations('App.tips')
+  const tToast = useTranslations('App.toast')
 
   const onArchive = () => {
     const promise = archive(documentId).then(() => {
@@ -39,9 +40,9 @@ const Menu = ({ documentId }: MenuProps) => {
     })
 
     toast.promise(promise, {
-      loading: 'Archiving...',
-      success: 'Document archived',
-      error: 'Failed to archive document',
+      loading: tToast('Archiving'),
+      success: tToast('DocumentArchived'),
+      error: tToast('ArchiveFailed'),
     })
 
     router.push('/documents')
@@ -57,11 +58,11 @@ const Menu = ({ documentId }: MenuProps) => {
         <DropdownMenuContent className="w-60" align="end" alignOffset={8} forceMount>
           <DropdownMenuItem onClick={onArchive}>
             <Trash className="mr-2 h-4 w-4" />
-            {tClobal('delete')}
+            {tGlobal('delete')}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <div className="p-2 text-xs text-muted-foreground">
-            {tApp('tips.lastEditedBy')}: {user?.name ?? user?.email}
+            {tTips('LastEditedBy')}: {user?.name ?? user?.email}
           </div>
         </DropdownMenuContent>
       </DropdownMenu>

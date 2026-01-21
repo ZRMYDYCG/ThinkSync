@@ -127,6 +127,28 @@
       "Language": "语言",
       "CurrentSupportedLanguageIsEnglishAndChinese": "当前支持的语言是英文、中文、日语和韩语"
     },
+    "userMenu": {
+      "Account": "账户",
+      "EditProfile": "编辑资料",
+      "Avatar": "头像",
+      "Uploading": "上传中...",
+      "UploadAvatar": "点击头像上传",
+      "UploadingAvatar": "正在上传头像...",
+      "DisplayName": "昵称",
+      "DisplayNamePlaceholder": "输入昵称",
+      "Cancel": "取消",
+      "Save": "保存",
+      "Saving": "保存中..."
+    },
+    "toast": {
+      "Archiving": "正在归档...",
+      "DocumentArchived": "文档已归档",
+      "ArchiveFailed": "归档失败",
+      "AvatarUploadFailed": "头像上传失败",
+      "LoginRequired": "请先登录",
+      "ProfileUpdated": "资料已更新",
+      "ProfileUpdateFailed": "更新失败"
+    },
     "cover": {
       "CoverAlt": "封面图片",
       "ChangeCover": "更换封面",

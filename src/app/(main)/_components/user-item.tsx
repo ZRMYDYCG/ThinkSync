@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronsLeftRight } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -26,9 +27,12 @@ import { useAuth } from '@/hooks/use-auth'
 import { useUploadsApi } from '@/hooks/use-uploads-api'
 
 const UserItem = () => {
+  const tMenu = useTranslations('App.userMenu')
+  const tNavbar = useTranslations('App.navbar')
+  const tToast = useTranslations('App.toast')
   const { user, logout, updateProfile } = useAuth()
   const { uploadImage } = useUploadsApi()
-  const displayName = user?.name ?? user?.email ?? 'Account'
+  const displayName = user?.name ?? user?.email ?? tMenu('Account')
   const initial = (Array.from(displayName.trim())[0] ?? 'A').toUpperCase()
   const secondaryText = user?.email && user.email !== displayName ? user.email : null
 
@@ -59,7 +63,7 @@ const UserItem = () => {
       const url = await uploadImage(file)
       setAvatarUrl(url)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : '头像上传失败')
+      toast.error(error instanceof Error ? error.message : tToast('AvatarUploadFailed'))
     } finally {
       setIsUploadingAvatar(false)
     }
@@ -67,7 +71,7 @@ const UserItem = () => {
 
   const onSave = async () => {
     if (!user) {
-      toast.error('请先登录')
+      toast.error(tToast('LoginRequired'))
       return
     }
     setIsSubmitting(true)
@@ -76,10 +80,10 @@ const UserItem = () => {
         name: name.trim() ? name.trim() : null,
         avatarUrl,
       })
-      toast.success('资料已更新')
+      toast.success(tToast('ProfileUpdated'))
       setIsEditOpen(false)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : '更新失败')
+      toast.error(error instanceof Error ? error.message : tToast('ProfileUpdateFailed'))
     } finally {
       setIsSubmitting(false)
     }
@@ -129,10 +133,10 @@ const UserItem = () => {
             disabled={!user}
             onClick={() => setIsEditOpen(true)}
           >
-            编辑资料
+            {tMenu('EditProfile')}
           </DropdownMenuItem>
           <DropdownMenuItem className="w-full cursor-pointer" onClick={logout}>
-            Log out
+            {tNavbar('logout')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -140,12 +144,12 @@ const UserItem = () => {
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>编辑资料</DialogTitle>
+            <DialogTitle>{tMenu('EditProfile')}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="block text-center">头像</Label>
+              <Label className="block text-center">{tMenu('Avatar')}</Label>
               <div className="flex flex-col items-center justify-center gap-y-2">
                 <button
                   type="button"
@@ -161,7 +165,7 @@ const UserItem = () => {
                   </Avatar>
                   {isUploadingAvatar && (
                     <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/70 text-xs font-medium text-foreground">
-                      上传中...
+                      {tMenu('Uploading')}
                     </div>
                   )}
                 </button>
@@ -174,18 +178,18 @@ const UserItem = () => {
                   disabled={isUploadingAvatar || isSubmitting}
                 />
                 <div className="text-xs text-muted-foreground">
-                  {isUploadingAvatar ? '正在上传头像...' : '点击头像上传'}
+                  {isUploadingAvatar ? tMenu('UploadingAvatar') : tMenu('UploadAvatar')}
                 </div>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="profile-name">昵称</Label>
+              <Label htmlFor="profile-name">{tMenu('DisplayName')}</Label>
               <Input
                 id="profile-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="输入昵称"
+                placeholder={tMenu('DisplayNamePlaceholder')}
                 disabled={isSubmitting}
               />
             </div>
@@ -193,10 +197,10 @@ const UserItem = () => {
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setIsEditOpen(false)}>
-              取消
+              {tMenu('Cancel')}
             </Button>
             <Button type="button" onClick={onSave} disabled={isSubmitting || isUploadingAvatar}>
-              {isSubmitting ? '保存中...' : '保存'}
+              {isSubmitting ? tMenu('Saving') : tMenu('Save')}
             </Button>
           </DialogFooter>
         </DialogContent>

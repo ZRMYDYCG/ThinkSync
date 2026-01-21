@@ -127,6 +127,28 @@
       "Language": "언어",
       "CurrentSupportedLanguageIsEnglishAndChinese": "현재 지원되는 언어는 영어, 중국어, 일본어, 한국어입니다"
     },
+    "userMenu": {
+      "Account": "계정",
+      "EditProfile": "프로필 편집",
+      "Avatar": "프로필 사진",
+      "Uploading": "업로드 중...",
+      "UploadAvatar": "프로필 사진을 클릭하여 업로드",
+      "UploadingAvatar": "프로필 사진 업로드 중...",
+      "DisplayName": "표시 이름",
+      "DisplayNamePlaceholder": "표시 이름을 입력",
+      "Cancel": "취소",
+      "Save": "저장",
+      "Saving": "저장 중..."
+    },
+    "toast": {
+      "Archiving": "보관 중...",
+      "DocumentArchived": "문서를 보관했습니다",
+      "ArchiveFailed": "문서 보관에 실패했습니다",
+      "AvatarUploadFailed": "프로필 사진 업로드에 실패했습니다",
+      "LoginRequired": "먼저 로그인하세요",
+      "ProfileUpdated": "프로필이 업데이트되었습니다",
+      "ProfileUpdateFailed": "프로필 업데이트에 실패했습니다"
+    },
     "cover": {
       "CoverAlt": "커버 이미지",
       "ChangeCover": "커버 변경",

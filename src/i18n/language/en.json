@@ -127,6 +127,28 @@
       "Language": "Language",
       "CurrentSupportedLanguageIsEnglishAndChinese": "Current supported languages are English, Chinese, Japanese, and Korean"
     },
+    "userMenu": {
+      "Account": "Account",
+      "EditProfile": "Edit profile",
+      "Avatar": "Avatar",
+      "Uploading": "Uploading...",
+      "UploadAvatar": "Click avatar to upload",
+      "UploadingAvatar": "Uploading avatar...",
+      "DisplayName": "Display name",
+      "DisplayNamePlaceholder": "Enter display name",
+      "Cancel": "Cancel",
+      "Save": "Save",
+      "Saving": "Saving..."
+    },
+    "toast": {
+      "Archiving": "Archiving...",
+      "DocumentArchived": "Document archived",
+      "ArchiveFailed": "Failed to archive document",
+      "AvatarUploadFailed": "Failed to upload avatar",
+      "LoginRequired": "Please log in first",
+      "ProfileUpdated": "Profile updated",
+      "ProfileUpdateFailed": "Failed to update profile"
+    },
     "cover": {
       "CoverAlt": "Cover image",
       "ChangeCover": "Change cover",
