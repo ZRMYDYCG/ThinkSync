@@ -1,6 +1,6 @@
 'use client'
 
-import { MenuIcon, PlusCircle, Search, Settings, Trash } from 'lucide-react'
+import { PlusCircle, Search, Settings, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useRef, ElementRef, useState, useEffect, useCallback } from 'react'
@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils'
 import DocumentList from './document-list'
 import Item from './item'
 import Navbar from './navbar'
+import { TabBar } from './tab-bar'
 import TrashBox from './trash-box'
 import UserItem from './user-item'
 
@@ -142,7 +143,7 @@ const Navigation = () => {
         </div>
         <div className="shrink-0">
           <Popover>
-            <PopoverTrigger className="mt-4 w-full">
+            <PopoverTrigger asChild className="mt-4 w-full">
               <Item label={tApp('navbar.trash')} icon={Trash}></Item>
             </PopoverTrigger>
             <PopoverContent className="w-72 p-0" side={isMobile ? 'bottom' : 'right'}>
@@ -166,17 +167,8 @@ const Navigation = () => {
           isMobile && 'left-0 w-full',
         )}
       >
-        {params.documentId ? (
-          <Navbar isCollapsed={isCollapsed} onResizeWidth={resetWidth} onCollapse={collapse} />
-        ) : (
-          <nav className="w-full bg-transparent px-3 py-2">
-            {isCollapsed && (
-              <button type="button" onClick={resetWidth} aria-label="Open navigation">
-                <MenuIcon className="h-6 w-6 text-muted-foreground" />
-              </button>
-            )}
-          </nav>
-        )}
+        <TabBar isCollapsed={isCollapsed} onExpandNav={resetWidth} onCollapseNav={collapse} />
+        {params.documentId ? <Navbar /> : <nav className="w-full bg-transparent px-3 py-2" />}
       </div>
     </>
   )

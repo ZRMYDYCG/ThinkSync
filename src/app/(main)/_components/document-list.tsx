@@ -3,7 +3,7 @@
 import { FileIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { useDocumentsList } from '@/hooks/use-documents-list'
 import { cn } from '@/lib/utils'

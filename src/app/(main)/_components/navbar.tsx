@@ -1,26 +1,31 @@
 'use client'
 
-import { ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import React from 'react'
 
 import { useDocument } from '@/hooks/use-document'
+import { useTabsStore } from '@/store/tabs-store'
 
 import Banner from './banner'
 import Menu from './menu'
 import Publish from './publish'
 import Title from './title'
 
-interface NavbarProps {
-  isCollapsed: boolean
-  onResizeWidth: () => void
-  onCollapse: () => void
-}
-
-const Navbar = ({ isCollapsed, onResizeWidth, onCollapse }: NavbarProps) => {
+const Navbar = () => {
   const params = useParams()
 
   const { document } = useDocument(params.documentId as string)
+  const openTab = useTabsStore((s) => s.openTab)
+
+  React.useEffect(() => {
+    if (!document) return
+    openTab({
+      docId: document.id,
+      title: document.title,
+      icon: document.icon ?? undefined,
+      route: `/documents/${document.id}`,
+    })
+  }, [document, openTab])
 
   if (document === undefined) {
     return (
@@ -39,16 +44,7 @@ const Navbar = ({ isCollapsed, onResizeWidth, onCollapse }: NavbarProps) => {
 
   return (
     <>
-      <nav className="flex w-full items-center gap-x-4 bg-background px-3 py-2 dark:bg-[#1F1F1F]">
-        {isCollapsed ? (
-          <button type="button" onClick={onResizeWidth} aria-label="Expand navigation">
-            <ChevronsRight className="h-6 w-6 text-muted-foreground" />
-          </button>
-        ) : (
-          <button type="button" onClick={onCollapse} aria-label="Collapse navigation">
-            <ChevronsLeft className="h-6 w-6 text-muted-foreground" />
-          </button>
-        )}
+      <nav className="flex w-full items-center bg-background px-3 py-2 dark:bg-[#1F1F1F]">
         <div className="flex w-full items-center justify-between">
           <Title initialData={document}></Title>
           <div className="flex items-center gap-x-2">

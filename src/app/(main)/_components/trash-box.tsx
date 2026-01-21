@@ -29,10 +29,11 @@ const TrashBox = () => {
     router.push(`/documents/${documentId}`)
   }
 
-  const onRestore = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, documentId: string) => {
+  const onRestore = (event: React.MouseEvent, documentId: string) => {
     event.preventDefault()
     const promise = restore(documentId).then(() => {
       bump()
+      return null
     })
 
     toast.promise(promise, {
@@ -45,6 +46,7 @@ const TrashBox = () => {
   const onRemove = (documentId: string) => {
     const promise = remove(documentId).then(() => {
       bump()
+      return null
     })
 
     toast.promise(promise, {
@@ -84,23 +86,33 @@ const TrashBox = () => {
         {filteredDocuments?.map((document) => (
           <div
             key={document.id}
-            role="button"
-            onClick={() => onClick(document.id)}
             className="flex w-full items-center justify-between rounded-sm text-sm text-primary hover:bg-primary/5"
           >
-            <span className="truncate pl-2">{document.title}</span>
+            <button
+              type="button"
+              onClick={() => onClick(document.id)}
+              className="min-w-0 flex-1 truncate pl-2 text-left"
+              title={document.title}
+            >
+              {document.title}
+            </button>
             <div className="flex items-center">
-              <div
+              <button
+                type="button"
                 onClick={(e) => onRestore(e, document.id)}
-                role="button"
                 className="rounded-sm p-2 hover:bg-neutral-200"
+                aria-label="Restore"
               >
                 <Undo className="h-4 w-4 text-muted-foreground" />
-              </div>
+              </button>
               <ConfirmModal onConfirm={() => onRemove(document.id)}>
-                <div role="button" className="rounded-sm p-2 hover:bg-neutral-200">
+                <button
+                  type="button"
+                  className="rounded-sm p-2 hover:bg-neutral-200"
+                  aria-label="Delete"
+                >
                   <Trash className="h-4 w-4 text-muted-foreground" />
-                </div>
+                </button>
               </ConfirmModal>
             </div>
           </div>

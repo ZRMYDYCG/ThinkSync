@@ -50,7 +50,7 @@ const Menu = ({ documentId }: MenuProps) => {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <Button size="sm" variant="ghost" className="h-4 w-4">
             <MoreHorizontalIcon />
           </Button>

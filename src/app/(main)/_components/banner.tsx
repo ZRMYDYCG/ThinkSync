@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import React from 'react'
 import { toast } from 'sonner'
 
 import ConfirmModal from '@/components/modals/confirm-modal'
@@ -21,6 +22,7 @@ const Banner = ({ documentId }: BannerProps) => {
   const onRemove = async () => {
     const promise = remove(documentId).then(() => {
       bump()
+      return null
     })
     toast.promise(promise, {
       loading: 'Removing...',
@@ -33,6 +35,7 @@ const Banner = ({ documentId }: BannerProps) => {
   const onRestore = async () => {
     const promise = restore(documentId).then(() => {
       bump()
+      return null
     })
 
     toast.promise(promise, {

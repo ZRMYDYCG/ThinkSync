@@ -107,7 +107,7 @@ export const SearchCommand = () => {
 
   const { groups, now } = useMemo(() => {
     const now = new Date()
-    const sortedDocuments = [...(documents ?? [])].sort(
+    const sortedDocuments = (documents ?? []).toSorted(
       (a, b) => getDocumentTimestamp(b) - getDocumentTimestamp(a),
     )
     const groups: Record<DateGroupKey, Document[]> = {
