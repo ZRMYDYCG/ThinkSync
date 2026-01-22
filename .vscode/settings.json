@@ -8,5 +8,6 @@
   },
 
   "oxc.fmt.configPath": ".oxfmtrc.jsonc",
-  "oxc.configPath": ".oxlintrc.json"
+  "oxc.configPath": ".oxlintrc.json",
+  "prisma.pinToPrisma6": true
 }

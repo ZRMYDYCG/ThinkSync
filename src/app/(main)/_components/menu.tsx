@@ -51,8 +51,8 @@ const Menu = ({ documentId }: MenuProps) => {
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="sm" variant="ghost" className="h-4 w-4">
-            <MoreHorizontalIcon />
+          <Button size="sm" variant="ghost">
+            <MoreHorizontalIcon className="h-4 w-4 text-muted-foreground" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-60" align="end" alignOffset={8} forceMount>

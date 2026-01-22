@@ -3,7 +3,6 @@
 import { ChevronsLeft, ChevronsRight, Maximize2, Minimize2 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
 
 import {
   AlertDialog,
@@ -43,7 +42,6 @@ export const TabBar = ({ isCollapsed, onExpandNav, onCollapseNav }: TabBarProps)
 
   const tabs = useTabsStore((s) => s.tabs)
   const activeId = useTabsStore((s) => s.activeId)
-  const lastMaxTabsBlockedAt = useTabsStore((s) => s.lastMaxTabsBlockedAt)
   const openTab = useTabsStore((s) => s.openTab)
   const setActive = useTabsStore((s) => s.setActive)
   const closeTab = useTabsStore((s) => s.closeTab)
@@ -78,13 +76,6 @@ export const TabBar = ({ isCollapsed, onExpandNav, onCollapseNav }: TabBarProps)
       route: pathname,
     })
   }, [getDocIdFromPathname, openTab, pathname])
-
-  useEffect(() => {
-    if (!lastMaxTabsBlockedAt) return
-    toast.message('打开的标签过多', {
-      description: '当前标签都处于未保存状态（或已固定），请先手动关闭一些标签。',
-    })
-  }, [lastMaxTabsBlockedAt])
 
   const updateScrollMasks = useCallback(() => {
     const el = scrollRef.current

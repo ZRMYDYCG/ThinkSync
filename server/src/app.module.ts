@@ -6,8 +6,10 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 // Register AI Module
 import { AuthModule } from './auth/auth.module'
+import { CollabModule } from './collab/collab.module'
 import { DocumentsModule } from './documents/documents.module'
 import { PrismaModule } from './prisma/prisma.module'
+import { RoomsModule } from './rooms/rooms.module'
 import { UploadsModule } from './uploads/uploads.module'
 
 @Module({
@@ -17,6 +19,8 @@ import { UploadsModule } from './uploads/uploads.module'
     AiModule,
     AuthModule,
     DocumentsModule,
+    RoomsModule,
+    CollabModule,
     UploadsModule,
   ],
   controllers: [AppController],

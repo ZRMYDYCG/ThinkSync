@@ -20,12 +20,9 @@ export type Tab = {
   lastActiveAt: number
 }
 
-const MAX_TABS = 12
-
 type TabsState = {
   tabs: Tab[]
   activeId: string | null
-  lastMaxTabsBlockedAt: number | null
   openTab: (meta: TabMeta) => void
   setActive: (tabId: string) => void
   closeTab: (tabId: string, options?: { force?: boolean }) => void
@@ -60,10 +57,9 @@ const selectNextActiveIdAfterClose = (tabs: Tab[], closingIndex: number) => {
 
 export const useTabsStore = create<TabsState>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       tabs: [],
       activeId: null,
-      lastMaxTabsBlockedAt: null,
       openTab: (meta) => {
         const now = Date.now()
         const id = meta.docId
@@ -101,24 +97,6 @@ export const useTabsStore = create<TabsState>()(
 
           return { tabs: nextTabs, activeId: id }
         })
-
-        const { tabs, activeId } = get()
-        if (tabs.length <= MAX_TABS) return
-
-        const candidates = tabs
-          .filter((t) => !t.pinned && !t.isDirty && t.id !== activeId)
-          .toSorted((a, b) => a.lastActiveAt - b.lastActiveAt)
-
-        if (candidates.length === 0) {
-          set({ lastMaxTabsBlockedAt: now })
-          return
-        }
-
-        const toCloseCount = tabs.length - MAX_TABS
-        const toClose = new Set(candidates.slice(0, toCloseCount).map((t) => t.id))
-        set((state) => ({
-          tabs: state.tabs.filter((t) => !toClose.has(t.id)),
-        }))
       },
       setActive: (tabId) => {
         const now = Date.now()

@@ -159,7 +159,7 @@ export const TabItem = ({
               'select-none transition-[padding,background-color,color,border-color]',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
               isActive
-                ? 'bg-background text-foreground border-border border-b-transparent shadow-sm'
+                ? 'bg-background text-foreground shadow-sm'
                 : 'bg-muted/30 text-muted-foreground border-transparent hover:bg-muted/60 hover:text-foreground',
               !isRenaming && 'hover:pr-9',
               tab.pinned && 'justify-center px-1 hover:justify-start hover:pl-2 hover:pr-9',

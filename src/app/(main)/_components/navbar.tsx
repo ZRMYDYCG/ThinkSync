@@ -1,8 +1,10 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import React from 'react'
 
+import { CollabControl } from '@/components/collab-control'
 import { useDocument } from '@/hooks/use-document'
 import { useTabsStore } from '@/store/tabs-store'
 
@@ -16,6 +18,10 @@ const Navbar = () => {
 
   const { document } = useDocument(params.documentId as string)
   const openTab = useTabsStore((s) => s.openTab)
+
+  const tTips = useTranslations('App.tips')
+
+  const docId = params.documentId as string
 
   React.useEffect(() => {
     if (!document) return
@@ -48,6 +54,10 @@ const Navbar = () => {
         <div className="flex w-full items-center justify-between">
           <Title initialData={document}></Title>
           <div className="flex items-center gap-x-2">
+            <span className="text-xs text-muted-foreground">
+              {tTips('LastEdited')} {new Date(document.updatedAt).toLocaleString()}
+            </span>
+            <CollabControl docId={docId} />
             <Publish initialData={document}></Publish>
             <Menu documentId={document.id} />
           </div>

@@ -8,14 +8,17 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  password  String
-  name      String?
-  avatarUrl String?
-  documents Document[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id             String       @id @default(cuid())
+  email          String       @unique
+  password       String
+  name           String?
+  avatarUrl      String?
+  documents      Document[]
+  ownedRooms     Room[]       @relation("RoomOwner")
+  roomMembers    RoomMember[]
+  sentInvites    RoomInvite[] @relation("RoomInviter")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model Document {
@@ -35,7 +38,84 @@ model Document {
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
 
+  room Room?
+
   @@index([userId])
   @@index([userId, parentDocumentId])
   @@index([userId, isArchived])
+}
+
+enum RoomRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+model Room {
+  id         String     @id @default(cuid())
+  documentId String     @unique
+  document   Document   @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  ownerId    String
+  owner      User       @relation("RoomOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  title      String
+  members    RoomMember[]
+  invites    RoomInvite[]
+  updates    CollabUpdate[]
+  snapshot   CollabSnapshot?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@index([ownerId])
+}
+
+model RoomMember {
+  id       String   @id @default(cuid())
+  roomId   String
+  userId   String
+  role     RoomRole
+  room     Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt DateTime @default(now())
+
+  @@unique([roomId, userId])
+  @@index([userId])
+}
+
+model RoomInvite {
+  id        String    @id @default(cuid())
+  roomId    String
+  inviterId String
+  token     String    @unique
+  role      RoomRole
+  expiresAt DateTime?
+  maxUses   Int       @default(1)
+  usedCount Int       @default(0)
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  room      Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  inviter   User      @relation("RoomInviter", fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+}
+
+model CollabUpdate {
+  id        String   @id @default(cuid())
+  roomId    String
+  seq       Int
+  update    Bytes
+  createdAt DateTime @default(now())
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, seq])
+  @@index([roomId])
+}
+
+model CollabSnapshot {
+  id        String   @id @default(cuid())
+  roomId    String   @unique
+  state     Bytes
+  seq       Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
 }
