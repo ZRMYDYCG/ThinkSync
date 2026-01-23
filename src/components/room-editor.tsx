@@ -130,7 +130,7 @@ export const RoomEditor = ({
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-background">
       <BlockNoteView
         editor={editor}
         editable={editable}

@@ -9,14 +9,12 @@ import { twMerge } from 'tailwind-merge'
 import { Spinner } from './spinner'
 
 const variants = {
-  base: 'relative rounded-md flex justify-center items-center flex-col cursor-pointer min-h-[150px] min-w-[200px] border border-dashed border-gray-400 dark:border-gray-300 transition-colors duration-200 ease-in-out',
-  image:
-    'border-0 p-0 min-h-0 min-w-0 relative shadow-md bg-slate-200 dark:bg-slate-900 rounded-md',
+  base: 'relative rounded-md flex justify-center items-center flex-col cursor-pointer min-h-[150px] min-w-[200px] border border-dashed border-border transition-colors duration-200 ease-in-out',
+  image: 'border-0 p-0 min-h-0 min-w-0 relative shadow-md bg-muted rounded-md',
   active: 'border-2',
-  disabled:
-    'bg-gray-200 border-gray-300 cursor-default pointer-events-none bg-opacity-30 dark:bg-gray-700',
-  accept: 'border border-blue-500 bg-blue-500 bg-opacity-10',
-  reject: 'border border-red-700 bg-red-700 bg-opacity-10',
+  disabled: 'bg-muted/60 border-border cursor-default pointer-events-none',
+  accept: 'border border-primary bg-primary/10',
+  reject: 'border border-destructive bg-destructive/10',
 }
 
 type InputProps = {
@@ -117,7 +115,7 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="relative">
         {disabled && (
-          <div className="absolute inset-y-0 z-50 flex h-full w-full items-center justify-center bg-background/80">
+          <div className="bg-background/80 absolute inset-y-0 z-50 flex h-full w-full items-center justify-center">
             <Spinner size="lg" />
           </div>
         )}
@@ -142,9 +140,9 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
               unoptimized={imageUrl.startsWith('blob:') || imageUrl.startsWith('data:')}
             />
           ) : (
-            <div className="flex flex-col items-center justify-center text-xs text-gray-400">
+            <div className="text-muted-foreground flex flex-col items-center justify-center text-xs">
               <UploadCloudIcon className="mb-2 h-7 w-7" />
-              <div className="text-gray-400">Click or drag file to this area to upload</div>
+              <div className="text-muted-foreground">Click or drag file to this area to upload</div>
             </div>
           )}
 
@@ -152,20 +150,20 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               aria-label="Remove image"
-              className="group absolute right-0 top-0 -translate-y-1/4 translate-x-1/4 transform border-0 bg-transparent p-0"
+              className="group absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 transform border-0 bg-transparent p-0"
               onClick={(e) => {
                 e.stopPropagation()
                 void onChange?.(undefined)
               }}
             >
-              <div className="flex h-5 w-5 items-center justify-center rounded-md border border-solid border-gray-500 bg-white transition-all duration-300 hover:h-6 hover:w-6 dark:border-gray-400 dark:bg-black">
-                <X className="text-gray-500 dark:text-gray-400" width={16} height={16} />
+              <div className="border-border bg-background flex h-5 w-5 items-center justify-center rounded-md border border-solid transition-all duration-300 hover:h-6 hover:w-6">
+                <X className="text-muted-foreground" width={16} height={16} />
               </div>
             </button>
           )}
         </div>
 
-        <div className="mt-1 text-xs text-red-500">{errorMessage}</div>
+        <div className="text-destructive mt-1 text-xs">{errorMessage}</div>
       </div>
     )
   },
@@ -178,7 +176,7 @@ const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HT
       <button
         className={twMerge(
           'focus-visible:ring-ring inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50',
-          'border border-gray-400 text-gray-400 shadow hover:bg-gray-100 hover:text-gray-500 dark:border-gray-600 dark:text-gray-100 dark:hover:bg-gray-700',
+          'border border-border text-muted-foreground shadow hover:bg-accent hover:text-accent-foreground',
           'h-6 rounded-md px-2 text-xs',
           className,
         )}

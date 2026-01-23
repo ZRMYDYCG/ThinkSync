@@ -80,7 +80,7 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
     onChange(JSON.stringify(editor.document, null, 2))
   }
   return (
-    <div className="bg-white">
+    <div className="bg-background">
       <BlockNoteView
         editor={editor}
         editable={editable}

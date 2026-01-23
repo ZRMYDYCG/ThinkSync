@@ -32,7 +32,7 @@ const Navbar = () => {
 
   if (document === undefined) {
     return (
-      <nav className="flex w-full items-center justify-between bg-background px-3 py-2 dark:bg-[#1F1F1F]">
+      <nav className="bg-background flex w-full items-center justify-between px-3 py-2">
         <Title.Skeleton />
         <div className="flex items-center gap-x-2">
           <Menu.Skeleton />
@@ -47,11 +47,11 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex w-full items-center bg-background px-3 py-2 dark:bg-[#1F1F1F]">
+      <nav className="bg-background flex w-full items-center px-3 py-2">
         <div className="flex w-full items-center justify-between">
           <Title initialData={document}></Title>
           <div className="flex items-center gap-x-2">
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               {tTips('LastEdited')} {new Date(document.updatedAt).toLocaleString()}
             </span>
             <div id="collab-control-slot" className="flex items-center" />

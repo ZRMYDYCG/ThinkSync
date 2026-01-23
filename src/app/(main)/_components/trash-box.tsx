@@ -76,17 +76,17 @@ const TrashBox = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Filter by title..."
-          className="h-7 bg-secondary px-2 focus-visible:ring-transparent"
+          className="bg-secondary h-7 px-2 focus-visible:ring-transparent"
         ></Input>
       </div>
       <div className="mt-2 px-1 pb-1">
-        <p className="hidden pb-2 text-center text-xs text-muted-foreground last:block">
+        <p className="text-muted-foreground hidden pb-2 text-center text-xs last:block">
           No documents found
         </p>
         {filteredDocuments?.map((document) => (
           <div
             key={document.id}
-            className="flex w-full items-center justify-between rounded-sm text-sm text-primary hover:bg-primary/5"
+            className="text-primary hover:bg-primary/5 flex w-full items-center justify-between rounded-sm text-sm"
           >
             <button
               type="button"
@@ -100,18 +100,18 @@ const TrashBox = () => {
               <button
                 type="button"
                 onClick={(e) => onRestore(e, document.id)}
-                className="rounded-sm p-2 hover:bg-neutral-200"
+                className="hover:bg-accent rounded-sm p-2"
                 aria-label="Restore"
               >
-                <Undo className="h-4 w-4 text-muted-foreground" />
+                <Undo className="text-muted-foreground h-4 w-4" />
               </button>
               <ConfirmModal onConfirm={() => onRemove(document.id)}>
                 <button
                   type="button"
-                  className="rounded-sm p-2 hover:bg-neutral-200"
+                  className="hover:bg-accent rounded-sm p-2"
                   aria-label="Delete"
                 >
-                  <Trash className="h-4 w-4 text-muted-foreground" />
+                  <Trash className="text-muted-foreground h-4 w-4" />
                 </button>
               </ConfirmModal>
             </div>
