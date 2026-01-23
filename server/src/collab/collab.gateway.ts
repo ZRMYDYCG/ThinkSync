@@ -136,18 +136,50 @@ export class CollabGateway {
 
   async handleDisconnect(client: AuthedSocket) {
     const roomId = client.data.roomId
-    const clientId = client.data.clientId
-    if (!roomId || clientId === undefined) {
+    const userId = client.data.userId
+    let clientId = client.data.clientId
+
+    if (!roomId) {
       return
     }
+
     try {
       const runtime = await this.collabService.getRuntime(roomId)
-      if (!runtime.awareness.getStates().has(clientId)) {
+      const beforeStates = runtime.awareness.getStates().size
+
+      // 找到所有属于该用户的 awareness states（可能有多个 stale clientIds）
+      const staleClientIds: number[] = []
+      if (clientId !== undefined && runtime.awareness.getStates().has(clientId)) {
+        staleClientIds.push(clientId)
+      }
+
+      // 如果没有找到 clientId 或状态不存在，尝试通过 userId 查找所有匹配的
+      if (staleClientIds.length === 0 && userId) {
+        for (const [cid, state] of runtime.awareness.getStates()) {
+          if (state?.user?.id === userId) {
+            staleClientIds.push(cid)
+          }
+        }
+      }
+
+      if (staleClientIds.length === 0) {
+        this.logger.warn(
+          `No awareness states found to remove room=${roomId} user=${userId} clientId=${clientId}`,
+        )
         return
       }
-      removeAwarenessStates(runtime.awareness, [clientId], this)
-      const update = Buffer.from(encodeAwarenessUpdate(runtime.awareness, [clientId]))
+
+      // 移除该用户的所有 stale awareness states
+      removeAwarenessStates(runtime.awareness, staleClientIds, this)
+
+      // 广播移除更新给房间内其他用户
+      const update = Buffer.from(encodeAwarenessUpdate(runtime.awareness, staleClientIds))
       client.to(this.roomChannel(roomId)).emit('awareness:update', { update })
+
+      const afterStates = runtime.awareness.getStates().size
+      this.logger.log(
+        `Client disconnected room=${roomId} user=${userId} clientIds=${staleClientIds.join(',')} states=${beforeStates}->${afterStates}`,
+      )
     } catch (e) {
       this.logger.error('Failed to cleanup awareness on disconnect', e as Error)
     }

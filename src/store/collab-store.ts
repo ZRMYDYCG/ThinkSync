@@ -19,9 +19,9 @@ export type Member = {
 }
 
 type CollabState = {
-  // 协同开关状态
-  collabEnabled: boolean
-  // 房间信息
+  // 当前激活的文档ID（用于区分不同文档的协同状态）
+  activeDocId: string | null
+  // 房间信息（roomId 存在即表示协同开启）
   roomId: string | null
   myRole: RoomRole | null
   // 连接状态
@@ -32,7 +32,7 @@ type CollabState = {
   members: Member[]
   contentByDoc: Record<string, string | null>
   // Actions
-  setCollabEnabled: (enabled: boolean) => void
+  setActiveDocId: (docId: string | null) => void
   setRoomId: (id: string | null) => void
   setMyRole: (role: RoomRole | null) => void
   setStatus: (status: CollabStatus) => void
@@ -43,7 +43,7 @@ type CollabState = {
 }
 
 export const useCollabStore = create<CollabState>((set) => ({
-  collabEnabled: false,
+  activeDocId: null,
   roomId: null,
   myRole: null,
   status: 'disconnected',
@@ -51,7 +51,7 @@ export const useCollabStore = create<CollabState>((set) => ({
   members: [],
   contentByDoc: {},
 
-  setCollabEnabled: (enabled) => set({ collabEnabled: enabled }),
+  setActiveDocId: (docId) => set({ activeDocId: docId }),
   setRoomId: (id) => set({ roomId: id }),
   setMyRole: (role) => set({ myRole: role }),
   setStatus: (status) => set({ status }),
@@ -62,7 +62,7 @@ export const useCollabStore = create<CollabState>((set) => ({
 
   reset: () =>
     set({
-      collabEnabled: false,
+      activeDocId: null,
       roomId: null,
       myRole: null,
       status: 'disconnected',

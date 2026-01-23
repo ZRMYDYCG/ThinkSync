@@ -38,7 +38,7 @@ export class RoomsService {
   async createRoom(userId: string, dto: CreateRoomDto) {
     const document = await this.prisma.document.findUnique({
       where: { id: dto.documentId },
-      select: { id: true, title: true, userId: true },
+      select: { id: true, title: true, userId: true, isCollabEnabled: true },
     })
     if (!document) {
       throw new NotFoundException('Document not found')
@@ -60,21 +60,35 @@ export class RoomsService {
           data: { roomId: existing.id, userId, role: RoomRole.OWNER },
         })
       }
+      // 确保 isCollabEnabled 为 true
+      if (!document.isCollabEnabled) {
+        await this.prisma.document.update({
+          where: { id: document.id },
+          data: { isCollabEnabled: true },
+        })
+      }
       return existing
     }
 
-    return this.prisma.room.create({
-      data: {
-        documentId: document.id,
-        ownerId: userId,
-        title: document.title,
-        members: {
-          create: {
-            userId,
-            role: RoomRole.OWNER,
+    return this.prisma.$transaction(async (tx) => {
+      const room = await tx.room.create({
+        data: {
+          documentId: document.id,
+          ownerId: userId,
+          title: document.title,
+          members: {
+            create: {
+              userId,
+              role: RoomRole.OWNER,
+            },
           },
         },
-      },
+      })
+      await tx.document.update({
+        where: { id: document.id },
+        data: { isCollabEnabled: true },
+      })
+      return room
     })
   }
 
@@ -90,17 +104,34 @@ export class RoomsService {
   }
 
   async getRoomByDocument(documentId: string, userId: string) {
+    const doc = await this.prisma.document.findUnique({
+      where: { id: documentId },
+      select: { id: true, userId: true, isCollabEnabled: true },
+    })
+    if (!doc) {
+      return { room: null, myRole: null, isCollabEnabled: false, isOwner: false }
+    }
     const room = await this.prisma.room.findUnique({
       where: { documentId },
     })
     if (!room) {
-      return { room: null, myRole: null }
+      return {
+        room: null,
+        myRole: null,
+        isCollabEnabled: doc.isCollabEnabled,
+        isOwner: doc.userId === userId,
+      }
     }
     const member = await this.prisma.roomMember.findUnique({
       where: { roomId_userId: { roomId: room.id, userId } },
       select: { role: true },
     })
-    return { room, myRole: member?.role ?? null }
+    return {
+      room,
+      myRole: member?.role ?? null,
+      isCollabEnabled: doc.isCollabEnabled,
+      isOwner: doc.userId === userId,
+    }
   }
 
   async getMembers(roomId: string, userId: string) {
@@ -248,5 +279,26 @@ export class RoomsService {
     }
     await this.prisma.roomMember.delete({ where: { id: memberId } })
     return { removed: true }
+  }
+
+  async disableCollab(documentId: string, userId: string) {
+    const document = await this.prisma.document.findUnique({
+      where: { id: documentId },
+      select: { id: true, userId: true, isCollabEnabled: true, room: true },
+    })
+    if (!document) {
+      throw new NotFoundException('Document not found')
+    }
+    if (document.userId !== userId) {
+      throw new ForbiddenException('Only owner can disable collab')
+    }
+    if (!document.isCollabEnabled) {
+      return { disabled: true }
+    }
+    await this.prisma.document.update({
+      where: { id: documentId },
+      data: { isCollabEnabled: false },
+    })
+    return { disabled: true }
   }
 }

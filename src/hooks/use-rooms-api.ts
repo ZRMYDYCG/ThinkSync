@@ -22,6 +22,8 @@ type GetRoomResponse = {
 type GetRoomByDocumentResponse = {
   room: Room | null
   myRole: RoomRole | null
+  isCollabEnabled: boolean
+  isOwner: boolean
 }
 
 type AcceptInviteResponse = {
@@ -84,6 +86,12 @@ export const useRoomsApi = () => {
     [request],
   )
 
+  const disableCollab = useCallback(
+    (documentId: string) =>
+      request<{ disabled: true }>(`/documents/${documentId}/disable-collab`, { method: 'POST' }),
+    [request],
+  )
+
   return {
     createRoom,
     getRoom,
@@ -93,5 +101,6 @@ export const useRoomsApi = () => {
     acceptInvite,
     revokeInvite,
     listInvites,
+    disableCollab,
   }
 }

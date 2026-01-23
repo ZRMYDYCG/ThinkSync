@@ -16,6 +16,7 @@ import { CollabSocketProvider } from '@/lib/collab-socket-provider'
 import { useAuthStore } from '@/store/auth-store'
 import { useCollabStore } from '@/store/collab-store'
 import { useTabsStore } from '@/store/tabs-store'
+import { RoomRole } from '@/types/room'
 
 import { CollabControl } from './_components/collab-control'
 
@@ -48,21 +49,16 @@ const DocumentIdPage = () => {
   const docId = params.documentId as string
   const { document, refetch } = useDocument(docId)
   const { update } = useDocumentsApi()
-  const { createRoom, getRoom, getRoomByDocument, getMembers, acceptInvite } = useRoomsApi()
+  const { createRoom, getRoom, getRoomByDocument, getMembers, acceptInvite, disableCollab } =
+    useRoomsApi()
   const token = useAuthStore((s) => s.token)
   const user = useAuthStore((s) => s.user)
   const setDirty = useTabsStore((s) => s.setDirty)
 
   // 从 store 获取协同状态
-  const collabEnabled = useCollabStore((s) => s.collabEnabled)
-  const myRole = useCollabStore((s) => s.myRole)
-  const roomId = useCollabStore((s) => s.roomId)
   const status = useCollabStore((s) => s.status)
   const presence = useCollabStore((s) => s.presence)
   const members = useCollabStore((s) => s.members)
-  const setCollabEnabled = useCollabStore((s) => s.setCollabEnabled)
-  const setRoomId = useCollabStore((s) => s.setRoomId)
-  const setMyRole = useCollabStore((s) => s.setMyRole)
   const setStatus = useCollabStore((s) => s.setStatus)
   const setPresence = useCollabStore((s) => s.setPresence)
   const setMembers = useCollabStore((s) => s.setMembers)
@@ -74,11 +70,16 @@ const DocumentIdPage = () => {
   const changeSeqRef = useRef(0)
   const inviteToken = searchParams.get('invite')
 
+  // 本地协同状态
+  const [localRoomId, setLocalRoomId] = useState<string | null>(null)
+  const [localMyRole, setLocalMyRole] = useState<RoomRole | null>(null)
+  const [localIsOwner, setLocalIsOwner] = useState(false)
+  const collabEnabled = localRoomId !== null
+
   const [isJoiningInvite, setIsJoiningInvite] = useState(false)
   const [joinInviteError, setJoinInviteError] = useState<string | null>(null)
   const [provider, setProvider] = useState<CollabSocketProvider | null>(null)
   const [ydoc, setYdoc] = useState<Y.Doc | null>(null)
-  const [isNewRoom, setIsNewRoom] = useState(false)
   const [collabSeed, setCollabSeed] = useState<string | null>(null)
   const [collabSeedKey, setCollabSeedKey] = useState(0)
   const [nonCollabSeed, setNonCollabSeed] = useState<string | null>(null)
@@ -86,11 +87,8 @@ const DocumentIdPage = () => {
   const [collabSlot, setCollabSlot] = useState<HTMLElement | null>(null)
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const presenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const collabStateRef = useRef<{ roomId: string | null; myRole: typeof myRole }>({
-    roomId,
-    myRole,
-  })
+  const providerRef = useRef<CollabSocketProvider | null>(null)
+  const ydocRef = useRef<Y.Doc | null>(null)
 
   useEffect(() => {
     if (sharedContent !== undefined) {
@@ -122,31 +120,42 @@ const DocumentIdPage = () => {
   }, [collabEnabled, collabSeed, nonCollabSeed, sharedContent])
 
   useEffect(() => {
-    collabStateRef.current = { roomId, myRole }
-  }, [roomId, myRole])
-
-  useEffect(() => {
     let active = true
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
+
     const resolveSlot = () => {
       const el = globalThis.document?.getElementById('collab-control-slot') ?? null
       if (active) {
         setCollabSlot(el)
       }
     }
+
+    // 立即检查
     resolveSlot()
-    const id = window.setTimeout(resolveSlot, 0)
+
+    // 延迟检查（确保 DOM 渲染完成）
+    timeoutId = setTimeout(resolveSlot, 100)
+
+    // 监听 DOM 变化
+    const observer = new MutationObserver(resolveSlot)
+    const container = globalThis.document?.body
+    if (container) {
+      observer.observe(container, { childList: true, subtree: true })
+    }
+
     return () => {
       active = false
-      window.clearTimeout(id)
+      clearTimeout(timeoutId)
+      observer.disconnect()
     }
-  }, [docId])
+  }, [docId, collabEnabled])
 
   useEffect(() => {
     const handler = async (event: Event) => {
       const e = event as CustomEvent<{ docId?: string }>
       if (!e.detail?.docId || e.detail.docId !== docId) return
       if (!contentRef.current) return
-      if (collabEnabled && myRole !== 'OWNER' && myRole !== 'EDITOR') return
+      if (collabEnabled && localMyRole !== 'OWNER' && localMyRole !== 'EDITOR') return
       const seq = ++changeSeqRef.current
       setDirty(docId, true)
       await update(docId, { content: contentRef.current })
@@ -154,11 +163,25 @@ const DocumentIdPage = () => {
     }
     window.addEventListener('thinksync:tab-save-request', handler)
     return () => window.removeEventListener('thinksync:tab-save-request', handler)
-  }, [collabEnabled, docId, myRole, setDirty, update])
+  }, [collabEnabled, docId, localMyRole, setDirty, update])
 
+  // 初始化协同状态（文档切换或 token/user 准备好时执行）
   useEffect(() => {
-    if (!token || !user) return
+    let canceled = false
+
     const init = async () => {
+      // 切换文档时先重置本地状态
+      setLocalRoomId(null)
+      setLocalMyRole(null)
+      setLocalIsOwner(false)
+      setMembers([])
+
+      // 如果没有 token 或 user，直接返回
+      if (!token || !user) {
+        return
+      }
+
+      // 处理邀请链接
       if (inviteToken) {
         setIsJoiningInvite(true)
         setJoinInviteError(null)
@@ -169,9 +192,9 @@ const DocumentIdPage = () => {
             router.replace(`/documents/${roomResp.room.documentId}`)
             return
           }
-          setRoomId(accepted.roomId)
-          setMyRole(accepted.role)
-          setCollabEnabled(true)
+          if (canceled) return
+          setLocalRoomId(accepted.roomId)
+          setLocalMyRole(accepted.role)
           await refetch()
 
           const next = new URL(window.location.href)
@@ -186,77 +209,84 @@ const DocumentIdPage = () => {
         }
       }
 
-      if (!collabEnabled) {
-        setRoomId(null)
-        setMyRole(null)
-        return
-      }
-
+      // 检查该文档的协同状态
       const byDoc = await getRoomByDocument(docId)
-      setRoomId(byDoc.room?.id ?? null)
-      setMyRole(byDoc.myRole ?? null)
+      if (canceled) return
+
+      // 只有 isCollabEnabled 为 true 时才进入协同
+      if (byDoc.isCollabEnabled && byDoc.room && byDoc.myRole) {
+        setLocalRoomId(byDoc.room.id)
+        setLocalMyRole(byDoc.myRole)
+      }
+      // 设置文档所有者状态
+      setLocalIsOwner(byDoc.isOwner)
     }
 
-    init().catch(() => {
-      setRoomId(null)
-      setMyRole(null)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    init()
+
+    return () => {
+      canceled = true
+    }
   }, [
-    acceptInvite,
-    collabEnabled,
     docId,
-    getRoom,
-    getRoomByDocument,
-    inviteToken,
-    refetch,
-    router,
     token,
     user,
+    inviteToken,
+    acceptInvite,
+    getRoom,
+    getRoomByDocument,
+    refetch,
+    router,
+    setLocalRoomId,
+    setLocalMyRole,
+    setLocalIsOwner,
+    setMembers,
+    setIsJoiningInvite,
+    setJoinInviteError,
   ])
 
+  // 协同连接管理
   useEffect(() => {
-    if (!collabEnabled) return
-    if (!token || !user) return
+    if (!collabEnabled || !token || !user) {
+      // 清理旧连接
+      if (providerRef.current) {
+        providerRef.current.destroy()
+        providerRef.current = null
+      }
+      if (ydocRef.current) {
+        ydocRef.current.destroy()
+        ydocRef.current = null
+      }
+      setProvider(null)
+      setYdoc(null)
+      setPresence([])
+      setStatus('disconnected')
+      return
+    }
 
-    const run = async () => {
-      let currentRoomId = collabStateRef.current.roomId
-      let role = collabStateRef.current.myRole
-      let shouldSeed = false
+    let canceled = false
 
-      const byDoc = await getRoomByDocument(docId)
-      if (!currentRoomId || byDoc.room?.id !== currentRoomId) {
-        currentRoomId = byDoc.room?.id ?? null
-        role = byDoc.myRole ?? null
+    // 如果没有本地 roomId，不建立连接
+    if (!localRoomId || !localMyRole) {
+      return
+    }
+
+    const init = async () => {
+      // 清理旧连接
+      if (providerRef.current) {
+        providerRef.current.destroy()
+        providerRef.current = null
+      }
+      if (ydocRef.current) {
+        ydocRef.current.destroy()
+        ydocRef.current = null
       }
 
-      if (!currentRoomId) {
-        const created = await createRoom({ documentId: docId })
-        currentRoomId = created.id
-        role = 'OWNER'
-        shouldSeed = true
-      } else if (!role) {
-        if (byDoc.room?.id === currentRoomId && byDoc.myRole) {
-          role = byDoc.myRole
-        } else {
-          const created = await createRoom({ documentId: docId })
-          currentRoomId = created.id
-          const roomResp = await getRoom(created.id)
-          role = roomResp.myRole
-        }
-      }
-
-      if (!currentRoomId || !role) {
-        setCollabEnabled(false)
-        return
-      }
-
-      setRoomId(currentRoomId)
-      setMyRole(role)
-      setIsNewRoom(shouldSeed)
+      const currentRoomId = localRoomId
+      const role = localMyRole
 
       const memberResp = await getMembers(currentRoomId)
+      if (canceled) return
       setMembers(
         memberResp.map((m) => ({
           id: m.id,
@@ -267,23 +297,28 @@ const DocumentIdPage = () => {
       )
 
       const doc = new Y.Doc()
+      ydocRef.current = doc
+
       const canEdit = () => role === 'OWNER' || role === 'EDITOR'
       const p = new CollabSocketProvider(
         doc,
         { baseUrl: API_BASE_URL, roomId: currentRoomId, token },
         canEdit,
       )
+      providerRef.current = p
 
       const myName = user.name ?? user.email ?? 'User'
       const myColor = user.id ? colorFromString(user.id) : '#888888'
       p.awareness.setLocalStateField('user', { id: user.id, name: myName, color: myColor })
 
       const statusListener = (e: { status: 'connecting' | 'connected' | 'disconnected' }) => {
+        if (canceled) return
         setStatus(e.status)
       }
       p.on('status', statusListener)
 
       const updatePresence = () => {
+        if (canceled) return
         const entries: Array<{ clientId: number; userId?: string; name?: string; color?: string }> =
           []
         for (const [clientId, state] of p.awareness.getStates()) {
@@ -295,75 +330,46 @@ const DocumentIdPage = () => {
             color: typeof u?.color === 'string' ? u.color : undefined,
           })
         }
-        if (presenceTimerRef.current) {
-          clearTimeout(presenceTimerRef.current)
-        }
-        presenceTimerRef.current = setTimeout(() => {
-          setPresence(entries)
-        }, 0)
+        setPresence(entries)
       }
 
-      const awarenessListener = () => updatePresence()
-      p.awareness.on('change', awarenessListener)
+      p.awareness.on('change', updatePresence)
       updatePresence()
 
       setProvider(p)
       setYdoc(doc)
-
-      return () => {
-        if (presenceTimerRef.current) {
-          clearTimeout(presenceTimerRef.current)
-          presenceTimerRef.current = null
-        }
-        p.off('status', statusListener)
-        p.awareness.off('change', awarenessListener)
-        p.destroy()
-        doc.destroy()
-      }
     }
 
-    let alive = true
-    let cleanup: (() => void) | undefined
-    run()
-      .then((c) => {
-        if (!alive) {
-          c?.()
-          return null
-        }
-        cleanup = c
-        return null
-      })
-      .catch(() => {
-        if (!alive) return
-        resetCollab()
-        return null
-      })
+    init()
 
     return () => {
-      alive = false
-      if (saveTimerRef.current) {
-        clearTimeout(saveTimerRef.current)
-        saveTimerRef.current = null
+      canceled = true
+      // 清理连接
+      if (providerRef.current) {
+        providerRef.current.destroy()
+        providerRef.current = null
       }
-      setPresence([])
-      setMembers([])
+      if (ydocRef.current) {
+        ydocRef.current.destroy()
+        ydocRef.current = null
+      }
       setProvider(null)
       setYdoc(null)
-      setIsNewRoom(false)
+      setPresence([])
       setStatus('disconnected')
-      cleanup?.()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     collabEnabled,
-    createRoom,
-    docId,
-    getMembers,
-    getRoom,
-    getRoomByDocument,
-    resetCollab,
     token,
     user,
+    localRoomId,
+    localMyRole,
+    getMembers,
+    setProvider,
+    setYdoc,
+    setPresence,
+    setMembers,
+    setStatus,
   ])
 
   const onChange = async (content: string) => {
@@ -375,10 +381,16 @@ const DocumentIdPage = () => {
     if (changeSeqRef.current === seq) setDirty(docId, false)
   }
 
-  const canEditCollab = myRole === 'OWNER' || myRole === 'EDITOR'
-  const canInvite = collabEnabled && myRole === 'OWNER'
-  const onToggleCollab = () => {
+  const canEditCollab = localMyRole === 'OWNER' || localMyRole === 'EDITOR'
+  const canInvite = collabEnabled && localMyRole === 'OWNER'
+
+  const onToggleCollab = async () => {
+    // 只有文档所有者可以切换协同状态
+    if (!localIsOwner) return
+
     if (collabEnabled) {
+      // 关闭协同
+      await disableCollab(docId)
       const seed = contentRef.current ?? sharedContent ?? document?.content ?? null
       if (seed !== null) {
         contentRef.current = seed
@@ -386,9 +398,18 @@ const DocumentIdPage = () => {
         setNonCollabSeed(seed)
         setNonCollabSeedKey((value) => value + 1)
       }
+      // 重置本地状态
+      setLocalRoomId(null)
+      setLocalMyRole(null)
+      setMembers([])
       resetCollab()
       return
     }
+    // 开启协同：创建 Room
+    const created = await createRoom({ documentId: docId })
+    setLocalRoomId(created.id)
+    setLocalMyRole('OWNER')
+
     const seed = contentRef.current ?? sharedContent ?? document?.content ?? null
     if (seed !== null) {
       contentRef.current = seed
@@ -396,7 +417,6 @@ const DocumentIdPage = () => {
       setCollabSeed(seed)
       setCollabSeedKey((value) => value + 1)
     }
-    setCollabEnabled(true)
   }
 
   if (document === undefined) {
@@ -433,7 +453,7 @@ const DocumentIdPage = () => {
           </div>
         </div>
         {collabEnabled ? (
-          provider && ydoc && myRole && user ? (
+          provider && ydoc && localMyRole && user ? (
             <RoomEditor
               ydoc={ydoc}
               provider={provider}
@@ -486,10 +506,11 @@ const DocumentIdPage = () => {
           collabEnabled={collabEnabled}
           onToggleCollab={onToggleCollab}
           status={status}
-          myRole={myRole}
+          myRole={localMyRole}
           canEditCollab={canEditCollab}
           canInvite={canInvite}
-          roomId={roomId}
+          isOwner={localIsOwner}
+          roomId={localRoomId}
           docId={docId}
           presence={presence}
           members={members}
@@ -511,16 +532,14 @@ const DocumentIdPage = () => {
             <Toolbar initialData={document}></Toolbar>
           </div>
           {collabEnabled ? (
-            provider && ydoc && myRole && user ? (
+            provider && ydoc && localMyRole && user ? (
               <RoomEditor
                 key={collabSeedKey}
                 ydoc={ydoc}
                 provider={provider}
                 editable={canEditCollab}
                 user={{ name: myName, color: myColor }}
-                initialContent={
-                  collabSeed ?? sharedContent ?? (isNewRoom ? document.content : null)
-                }
+                initialContent={collabSeed ?? sharedContent ?? document.content ?? null}
                 onChange={onCollabChange}
               />
             ) : (

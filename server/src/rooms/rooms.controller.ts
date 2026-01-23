@@ -109,4 +109,10 @@ export class RoomsController {
       Number.isFinite(parsed) ? parsed : 3,
     )
   }
+
+  @Post('documents/:documentId/disable-collab')
+  @UseGuards(JwtAuthGuard)
+  async disableCollab(@Req() req: AuthRequest, @Param('documentId') documentId: string) {
+    return this.roomsService.disableCollab(documentId, req.user?.userId ?? '')
+  }
 }

@@ -23,6 +23,7 @@ interface CollabControlProps {
   myRole: RoomRole | null
   canEditCollab: boolean
   canInvite: boolean
+  isOwner: boolean
   roomId: string | null
   docId: string
   presence: Array<{ clientId: number; userId?: string; name?: string; color?: string }>
@@ -36,6 +37,7 @@ export const CollabControl = ({
   myRole,
   canEditCollab,
   canInvite,
+  isOwner,
   roomId,
   docId,
   presence,
@@ -43,16 +45,18 @@ export const CollabControl = ({
 }: CollabControlProps) => {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Button
-        variant={collabEnabled ? 'default' : 'outline'}
-        size="sm"
-        className="h-8 rounded-full px-3"
-        onClick={onToggleCollab}
-        aria-pressed={collabEnabled}
-      >
-        <Users className="h-4 w-4" />
-        {collabEnabled ? '协作已开启' : '协作已关闭'}
-      </Button>
+      {isOwner ? (
+        <Button
+          variant={collabEnabled ? 'default' : 'outline'}
+          size="sm"
+          className="h-8 rounded-full px-3"
+          onClick={onToggleCollab}
+          aria-pressed={collabEnabled}
+        >
+          <Users className="h-4 w-4" />
+          {collabEnabled ? '协作已开启' : '协作已关闭'}
+        </Button>
+      ) : null}
 
       {collabEnabled ? (
         <div className="flex items-center gap-1 pr-1">
