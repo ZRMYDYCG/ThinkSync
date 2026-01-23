@@ -1,3 +1,85 @@
 .bn-editor {
-  border-radius: 0 !important;
+  border-radius: var(--radius);
+}
+
+/* 暗色模式适配 */
+.dark .bn-editor,
+.bn-container[data-color-scheme='dark'] .bn-editor {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* 确保编辑器在暗色模式下正确显示 */
+.dark .bn-block-outer,
+.bn-container[data-color-scheme='dark'] .bn-block-outer {
+  color: var(--foreground);
+}
+
+.dark .bn-inline-content,
+.bn-container[data-color-scheme='dark'] .bn-inline-content {
+  color: var(--foreground);
+}
+
+/* 引用块在暗色模式下的样式 */
+.dark [data-content-type='quote'] blockquote,
+.bn-container[data-color-scheme='dark'] [data-content-type='quote'] blockquote {
+  border-left-color: var(--muted-foreground);
+  color: var(--muted-foreground);
+}
+
+/* 代码块在暗色模式下的样式 */
+.dark .bn-block-content[data-content-type='codeBlock'],
+.bn-container[data-color-scheme='dark'] .bn-block-content[data-content-type='codeBlock'] {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+/* 分隔线在暗色模式下的样式 */
+.dark [data-content-type='pageBreak'] > div,
+.bn-container[data-color-scheme='dark'] [data-content-type='pageBreak'] > div {
+  border-top-color: var(--border);
+}
+
+/* 列表标记在暗色模式下的样式 */
+.dark .bn-block-group .bn-block-group .bn-block-outer:not([data-prev-depth-changed])::before,
+.bn-container[data-color-scheme='dark']
+  .bn-block-group
+  .bn-block-group
+  .bn-block-outer:not([data-prev-depth-changed])::before {
+  border-left-color: var(--muted-foreground);
+}
+
+/* 添加文件按钮在暗色模式下的样式 */
+.dark [data-file-block] .bn-add-file-button,
+.bn-container[data-color-scheme='dark'] [data-file-block] .bn-add-file-button {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.dark [data-file-block] .bn-add-file-button:hover,
+.bn-container[data-color-scheme='dark'] [data-file-block] .bn-add-file-button:hover,
+.dark [data-file-block] .bn-file-name-with-icon:hover,
+.bn-container[data-color-scheme='dark'] [data-file-block] .bn-file-name-with-icon:hover {
+  background-color: var(--accent);
+}
+
+/* 占位符在暗色模式下的样式 */
+.dark .bn-inline-content:has(> .ProseMirror-trailingBreak):before,
+.bn-container[data-color-scheme='dark']
+  .bn-inline-content:has(> .ProseMirror-trailingBreak):before {
+  color: var(--muted-foreground);
+}
+
+/* 表格在暗色模式下的样式 */
+.dark .bn-editor [data-content-type='table'] th,
+.bn-container[data-color-scheme='dark'] .bn-editor [data-content-type='table'] th,
+.dark .bn-editor [data-content-type='table'] td,
+.bn-container[data-color-scheme='dark'] .bn-editor [data-content-type='table'] td {
+  border-color: var(--border);
+}
+
+/* 选中状态在暗色模式下的样式 */
+.dark .bn-block-content.ProseMirror-selectednode > *,
+.bn-container[data-color-scheme='dark'] .bn-block-content.ProseMirror-selectednode > * {
+  outline-color: var(--primary);
 }

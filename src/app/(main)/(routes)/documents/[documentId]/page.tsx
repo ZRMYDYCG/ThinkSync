@@ -424,7 +424,7 @@ const DocumentIdPage = () => {
       <div>
         <Cover.Skeleton></Cover.Skeleton>
         <div className="mx-auto mt-10 md:max-w-3xl lg:max-w-4xl">
-          <div className="space-y-4 pl-8 pt-4">
+          <div className="space-y-4 pt-4 pl-8">
             <Skeleton className="h-14 w-[80%]"></Skeleton>
             <Skeleton className="h-10 w-[60%]"></Skeleton>
             <Skeleton className="h-8 w-[50%]"></Skeleton>
@@ -442,7 +442,7 @@ const DocumentIdPage = () => {
     return (
       <div className="mx-auto max-w-3xl px-8 py-10">
         <div className="mb-6 flex items-center justify-between gap-3">
-          <div className="min-w-0 text-sm text-muted-foreground">
+          <div className="text-muted-foreground min-w-0 text-sm">
             {inviteToken || isJoiningInvite
               ? isJoiningInvite
                 ? '正在加入协同…'
@@ -476,7 +476,7 @@ const DocumentIdPage = () => {
               }}
             />
           ) : (
-            <div className="py-6 text-sm text-muted-foreground">正在连接协同…</div>
+            <div className="text-muted-foreground py-6 text-sm">正在连接协同…</div>
           )
         ) : null}
       </div>
@@ -500,28 +500,32 @@ const DocumentIdPage = () => {
 
   const myName = user?.name ?? user?.email ?? 'User'
   const myColor = user?.id ? colorFromString(user.id) : '#888888'
-  const collabControl = collabSlot
-    ? createPortal(
-        <CollabControl
-          collabEnabled={collabEnabled}
-          onToggleCollab={onToggleCollab}
-          status={status}
-          myRole={localMyRole}
-          canEditCollab={canEditCollab}
-          canInvite={canInvite}
-          isOwner={localIsOwner}
-          roomId={localRoomId}
-          docId={docId}
-          presence={presence}
-          members={members}
-        />,
-        collabSlot,
-      )
-    : null
+  const collabControlNode = (
+    <CollabControl
+      collabEnabled={collabEnabled}
+      onToggleCollab={onToggleCollab}
+      status={status}
+      myRole={localMyRole}
+      canEditCollab={canEditCollab}
+      canInvite={canInvite}
+      isOwner={localIsOwner}
+      roomId={localRoomId}
+      docId={docId}
+      presence={presence}
+      members={members}
+    />
+  )
+  const collabControl = collabSlot ? createPortal(collabControlNode, collabSlot) : null
+  const shouldRenderInlineCollab = !collabSlot && (localIsOwner || collabEnabled)
 
   return (
     <React.Fragment>
       {collabControl}
+      {shouldRenderInlineCollab ? (
+        <div className="mx-auto flex w-full max-w-4xl justify-end px-3 py-2 md:px-0">
+          {collabControlNode}
+        </div>
+      ) : null}
       <div className="pb-40">
         <Cover
           url={document.coverImage ?? undefined}
@@ -543,7 +547,7 @@ const DocumentIdPage = () => {
                 onChange={onCollabChange}
               />
             ) : (
-              <div className="px-8 py-6 text-sm text-muted-foreground">正在连接协同…</div>
+              <div className="text-muted-foreground px-8 py-6 text-sm">正在连接协同…</div>
             )
           ) : (
             <Editor
