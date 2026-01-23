@@ -29,7 +29,8 @@
     "dist/",
     "build/",
     "coverage/",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "admin/**"
   ],
 
   "categories": {

@@ -11,6 +11,54 @@ import { Document } from '@/types/document'
 
 import Item from './item'
 
+// 空状态图标组件
+const EmptyStateIcon = () => (
+  <svg
+    width="48"
+    height="48"
+    viewBox="0 0 48 48"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-muted-foreground/40"
+  >
+    {/* 文档主体 */}
+    <path
+      d="M12 8C12 5.79086 13.7909 4 16 4H28L36 12V40C36 42.2091 34.2091 44 32 44H16C13.7909 44 12 42.2091 12 40V8Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+    {/* 折角 */}
+    <path
+      d="M28 4V12H36"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    {/* 内部线条 */}
+    <path
+      d="M18 22H30"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M18 28H26"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    {/* 装饰性圆点 */}
+    <circle cx="34" cy="32" r="2" fill="currentColor" style={{ opacity: 0.6 }} />
+    <circle cx="34" cy="38" r="2" fill="currentColor" style={{ opacity: 0.6 }} />
+  </svg>
+)
+
 interface DocumentListProps {
   parentDocumentId?: string
   level?: number
@@ -50,6 +98,22 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
           </>
         )}
       </>
+    )
+  }
+
+  // 空状态：使用 flex 布局填满剩余空间并垂直居中
+  if (documents.length === 0) {
+    return (
+      <div
+        className={cn(
+          'flex flex-col items-center justify-center flex-1 min-h-[200px] text-muted-foreground',
+          level > 0 && 'hidden',
+        )}
+      >
+        <EmptyStateIcon />
+        <p className="mt-3 text-sm font-medium">暂无文档</p>
+        <p className="mt-1 text-xs text-muted-foreground/60">点击上方「新建文档」开始吧</p>
+      </div>
     )
   }
 

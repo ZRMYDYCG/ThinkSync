@@ -1,0 +1,10 @@
+export function SkipToMain() {
+  return (
+    <a
+      className={`z-999 fixed start-44 -translate-y-52 whitespace-nowrap bg-primary px-4 py-2 text-sm font-medium text-primary-foreground opacity-95 shadow-sm transition hover:bg-primary/90 focus:translate-y-3 focus:transform focus-visible:ring-1 focus-visible:ring-ring`}
+      href="#content"
+    >
+      Skip to Main
+    </a>
+  )
+}
