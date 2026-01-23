@@ -27,6 +27,18 @@ const asUint8Array = (value: unknown) => {
   if (ArrayBuffer.isView(value)) {
     return new Uint8Array(value.buffer, value.byteOffset, value.byteLength)
   }
+  if (Array.isArray(value) && value.every((item) => typeof item === 'number')) {
+    return new Uint8Array(value)
+  }
+  if (value && typeof value === 'object') {
+    const candidate = value as { type?: string; data?: unknown }
+    if (candidate.type === 'Buffer' && Array.isArray(candidate.data)) {
+      return new Uint8Array(candidate.data as number[])
+    }
+    if (Array.isArray(candidate.data) && candidate.data.every((item) => typeof item === 'number')) {
+      return new Uint8Array(candidate.data as number[])
+    }
+  }
   return null
 }
 
@@ -130,6 +142,9 @@ export class CollabGateway {
     }
     try {
       const runtime = await this.collabService.getRuntime(roomId)
+      if (!runtime.awareness.getStates().has(clientId)) {
+        return
+      }
       removeAwarenessStates(runtime.awareness, [clientId], this)
       const update = Buffer.from(encodeAwarenessUpdate(runtime.awareness, [clientId]))
       client.to(this.roomChannel(roomId)).emit('awareness:update', { update })
@@ -172,6 +187,12 @@ export class CollabGateway {
     const update = asUint8Array(payload?.update)
     if (!update || update.length === 0) {
       client.emit('doc:error', { message: 'Invalid update' })
+      try {
+        const { update: fullUpdate, seq } = await this.collabService.encodeFullState(roomId)
+        client.emit('sync:state', { update: Buffer.from(fullUpdate), seq })
+      } catch (syncError) {
+        this.logger.error(`Failed to resync room=${roomId}`, syncError as Error)
+      }
       return
     }
 
@@ -182,6 +203,14 @@ export class CollabGateway {
     } catch (e) {
       this.logger.error(`Failed to persist update room=${roomId}`, e as Error)
       client.emit('doc:error', { message: 'Persist failed' })
+      try {
+        const { update: fullUpdate, seq } = await this.collabService.encodeFullState(roomId)
+        this.server
+          .to(this.roomChannel(roomId))
+          .emit('sync:state', { update: Buffer.from(fullUpdate), seq })
+      } catch (syncError) {
+        this.logger.error(`Failed to resync room=${roomId}`, syncError as Error)
+      }
     }
   }
 

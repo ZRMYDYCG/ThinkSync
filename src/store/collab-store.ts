@@ -30,6 +30,7 @@ type CollabState = {
   presence: Presence[]
   // 房间成员
   members: Member[]
+  contentByDoc: Record<string, string | null>
   // Actions
   setCollabEnabled: (enabled: boolean) => void
   setRoomId: (id: string | null) => void
@@ -37,6 +38,7 @@ type CollabState = {
   setStatus: (status: CollabStatus) => void
   setPresence: (presence: Presence[]) => void
   setMembers: (members: Member[]) => void
+  setContent: (docId: string, content: string | null) => void
   reset: () => void
 }
 
@@ -47,6 +49,7 @@ export const useCollabStore = create<CollabState>((set) => ({
   status: 'disconnected',
   presence: [],
   members: [],
+  contentByDoc: {},
 
   setCollabEnabled: (enabled) => set({ collabEnabled: enabled }),
   setRoomId: (id) => set({ roomId: id }),
@@ -54,6 +57,8 @@ export const useCollabStore = create<CollabState>((set) => ({
   setStatus: (status) => set({ status }),
   setPresence: (presence) => set({ presence }),
   setMembers: (members) => set({ members }),
+  setContent: (docId, content) =>
+    set((state) => ({ contentByDoc: { ...state.contentByDoc, [docId]: content } })),
 
   reset: () =>
     set({

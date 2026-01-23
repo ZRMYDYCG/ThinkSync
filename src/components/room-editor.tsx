@@ -32,9 +32,18 @@ type Props = {
   user: { name: string; color: string }
   initialContent?: string | null
   onChange?: (content: string) => void
+  onReady?: (getContent: () => string) => void
 }
 
-export const RoomEditor = ({ ydoc, provider, editable, user, initialContent, onChange }: Props) => {
+export const RoomEditor = ({
+  ydoc,
+  provider,
+  editable,
+  user,
+  initialContent,
+  onChange,
+  onReady,
+}: Props) => {
   const { resolvedTheme } = useTheme()
   const { uploadImage } = useUploadsApi()
 
@@ -73,6 +82,48 @@ export const RoomEditor = ({ ydoc, provider, editable, user, initialContent, onC
       [parsedInitialContent, provider, uploadImage, user, ydoc],
     ),
   )
+
+  const seedAppliedRef = React.useRef(false)
+
+  React.useEffect(() => {
+    seedAppliedRef.current = false
+  }, [initialContent])
+
+  React.useEffect(() => {
+    if (!editable) return
+    if (!parsedInitialContent || parsedInitialContent.length === 0) return
+    const seedContent = () => {
+      if (seedAppliedRef.current) return
+      const current = Array.isArray(editor.document) ? editor.document : []
+      editor.replaceBlocks(current, parsedInitialContent)
+      onChange?.(JSON.stringify(editor.document, null, 2))
+      seedAppliedRef.current = true
+    }
+    const onSync = (isSynced: boolean) => {
+      if (!isSynced) return
+      setTimeout(seedContent, 0)
+    }
+    provider.on('sync', onSync)
+    if (provider.isSynced()) {
+      setTimeout(seedContent, 0)
+    }
+    return () => provider.off('sync', onSync)
+  }, [editable, editor, initialContent, onChange, parsedInitialContent, provider, ydoc])
+
+  React.useEffect(() => {
+    if (!onReady) return
+    onReady(() => JSON.stringify(editor.document, null, 2))
+  }, [editor, onReady])
+
+  React.useEffect(() => {
+    if (!onChange) return
+    const handleUpdate = (_: Uint8Array, origin: unknown) => {
+      if (origin !== provider) return
+      onChange(JSON.stringify(editor.document, null, 2))
+    }
+    ydoc.on('update', handleUpdate)
+    return () => ydoc.off('update', handleUpdate)
+  }, [editor, onChange, provider, ydoc])
 
   const onContentChange = () => {
     onChange?.(JSON.stringify(editor.document, null, 2))

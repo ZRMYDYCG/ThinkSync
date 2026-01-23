@@ -89,7 +89,13 @@ export class CollabService {
       const runtime = await this.getRuntime(roomId)
       const nextSeq = runtime.lastSeq + 1
 
-      Y.applyUpdate(runtime.ydoc, update)
+      try {
+        Y.applyUpdate(runtime.ydoc, update)
+      } catch (e) {
+        this.logger.error(`Failed to apply update room=${roomId} seq=${nextSeq}`, e as Error)
+        this.runtimes.delete(roomId)
+        throw e
+      }
 
       await this.prisma.collabUpdate.create({
         data: {

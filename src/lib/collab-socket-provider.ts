@@ -24,6 +24,18 @@ const asUint8Array = (value: unknown) => {
   if (ArrayBuffer.isView(value)) {
     return new Uint8Array(value.buffer, value.byteOffset, value.byteLength)
   }
+  if (Array.isArray(value) && value.every((item) => typeof item === 'number')) {
+    return new Uint8Array(value)
+  }
+  if (value && typeof value === 'object') {
+    const candidate = value as { type?: string; data?: unknown }
+    if (candidate.type === 'Buffer' && Array.isArray(candidate.data)) {
+      return new Uint8Array(candidate.data as number[])
+    }
+    if (Array.isArray(candidate.data) && candidate.data.every((item) => typeof item === 'number')) {
+      return new Uint8Array(candidate.data as number[])
+    }
+  }
   return null
 }
 
@@ -31,6 +43,7 @@ export class CollabSocketProvider {
   private readonly socket: Socket
   private readonly listeners: Partial<Record<EventName, Set<ListenerMap[EventName]>>> = {}
   private isApplyingRemoteUpdate = false
+  private synced = false
   readonly awareness: Awareness
   private readonly ydocUpdateHandler: (update: Uint8Array, origin: unknown) => void
   private readonly awarenessUpdateHandler: (args: {
@@ -62,6 +75,7 @@ export class CollabSocketProvider {
     })
 
     this.socket.on('disconnect', () => {
+      this.synced = false
       this.emit('status', { status: 'disconnected' })
     })
 
@@ -71,9 +85,12 @@ export class CollabSocketProvider {
       this.isApplyingRemoteUpdate = true
       try {
         Y.applyUpdate(this.ydoc, update, this)
+      } catch {
+        return
       } finally {
         this.isApplyingRemoteUpdate = false
       }
+      this.synced = true
       this.emit('sync', true)
     })
 
@@ -83,6 +100,8 @@ export class CollabSocketProvider {
       this.isApplyingRemoteUpdate = true
       try {
         Y.applyUpdate(this.ydoc, update, this)
+      } catch {
+        return
       } finally {
         this.isApplyingRemoteUpdate = false
       }
@@ -134,6 +153,10 @@ export class CollabSocketProvider {
 
   disconnect() {
     this.socket.disconnect()
+  }
+
+  isSynced() {
+    return this.synced
   }
 
   destroy() {

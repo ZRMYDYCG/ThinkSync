@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import * as Y from 'yjs'
 
 import Cover from '@/components/cover'
@@ -15,6 +16,8 @@ import { CollabSocketProvider } from '@/lib/collab-socket-provider'
 import { useAuthStore } from '@/store/auth-store'
 import { useCollabStore } from '@/store/collab-store'
 import { useTabsStore } from '@/store/tabs-store'
+
+import { CollabControl } from './_components/collab-control'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3000'
 
@@ -54,12 +57,17 @@ const DocumentIdPage = () => {
   const collabEnabled = useCollabStore((s) => s.collabEnabled)
   const myRole = useCollabStore((s) => s.myRole)
   const roomId = useCollabStore((s) => s.roomId)
+  const status = useCollabStore((s) => s.status)
+  const presence = useCollabStore((s) => s.presence)
+  const members = useCollabStore((s) => s.members)
   const setCollabEnabled = useCollabStore((s) => s.setCollabEnabled)
   const setRoomId = useCollabStore((s) => s.setRoomId)
   const setMyRole = useCollabStore((s) => s.setMyRole)
   const setStatus = useCollabStore((s) => s.setStatus)
   const setPresence = useCollabStore((s) => s.setPresence)
   const setMembers = useCollabStore((s) => s.setMembers)
+  const sharedContent = useCollabStore((s) => s.contentByDoc[docId])
+  const setSharedContent = useCollabStore((s) => s.setContent)
   const resetCollab = useCollabStore((s) => s.reset)
 
   const contentRef = useRef<string | null>(null)
@@ -71,20 +79,67 @@ const DocumentIdPage = () => {
   const [provider, setProvider] = useState<CollabSocketProvider | null>(null)
   const [ydoc, setYdoc] = useState<Y.Doc | null>(null)
   const [isNewRoom, setIsNewRoom] = useState(false)
+  const [collabSeed, setCollabSeed] = useState<string | null>(null)
+  const [collabSeedKey, setCollabSeedKey] = useState(0)
+  const [nonCollabSeed, setNonCollabSeed] = useState<string | null>(null)
+  const [nonCollabSeedKey, setNonCollabSeedKey] = useState(0)
+  const [collabSlot, setCollabSlot] = useState<HTMLElement | null>(null)
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const presenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const collabStateRef = useRef<{ roomId: string | null; myRole: typeof myRole }>({
     roomId,
     myRole,
   })
 
   useEffect(() => {
+    if (sharedContent !== undefined) {
+      contentRef.current = sharedContent
+      return
+    }
     contentRef.current = document?.content ?? null
-  }, [document?.content])
+  }, [document?.content, sharedContent])
+
+  useEffect(() => {
+    if (sharedContent !== undefined) return
+    if (!document) return
+    setSharedContent(docId, document.content ?? null)
+  }, [docId, document, setSharedContent, sharedContent])
+
+  useEffect(() => {
+    if (sharedContent === undefined) return
+    if (collabEnabled) {
+      if (collabSeed === null) {
+        setCollabSeed(sharedContent)
+        setCollabSeedKey((value) => value + 1)
+      }
+      return
+    }
+    if (nonCollabSeed === null) {
+      setNonCollabSeed(sharedContent)
+      setNonCollabSeedKey((value) => value + 1)
+    }
+  }, [collabEnabled, collabSeed, nonCollabSeed, sharedContent])
 
   useEffect(() => {
     collabStateRef.current = { roomId, myRole }
   }, [roomId, myRole])
+
+  useEffect(() => {
+    let active = true
+    const resolveSlot = () => {
+      const el = globalThis.document?.getElementById('collab-control-slot') ?? null
+      if (active) {
+        setCollabSlot(el)
+      }
+    }
+    resolveSlot()
+    const id = window.setTimeout(resolveSlot, 0)
+    return () => {
+      active = false
+      window.clearTimeout(id)
+    }
+  }, [docId])
 
   useEffect(() => {
     const handler = async (event: Event) => {
@@ -104,7 +159,6 @@ const DocumentIdPage = () => {
   useEffect(() => {
     if (!token || !user) return
     const init = async () => {
-      setCollabEnabled(true)
       if (inviteToken) {
         setIsJoiningInvite(true)
         setJoinInviteError(null)
@@ -241,7 +295,12 @@ const DocumentIdPage = () => {
             color: typeof u?.color === 'string' ? u.color : undefined,
           })
         }
-        setPresence(entries)
+        if (presenceTimerRef.current) {
+          clearTimeout(presenceTimerRef.current)
+        }
+        presenceTimerRef.current = setTimeout(() => {
+          setPresence(entries)
+        }, 0)
       }
 
       const awarenessListener = () => updatePresence()
@@ -252,6 +311,10 @@ const DocumentIdPage = () => {
       setYdoc(doc)
 
       return () => {
+        if (presenceTimerRef.current) {
+          clearTimeout(presenceTimerRef.current)
+          presenceTimerRef.current = null
+        }
         p.off('status', statusListener)
         p.awareness.off('change', awarenessListener)
         p.destroy()
@@ -305,6 +368,7 @@ const DocumentIdPage = () => {
 
   const onChange = async (content: string) => {
     contentRef.current = content
+    setSharedContent(docId, content)
     const seq = ++changeSeqRef.current
     setDirty(docId, true)
     await update(docId, { content })
@@ -312,6 +376,28 @@ const DocumentIdPage = () => {
   }
 
   const canEditCollab = myRole === 'OWNER' || myRole === 'EDITOR'
+  const canInvite = collabEnabled && myRole === 'OWNER'
+  const onToggleCollab = () => {
+    if (collabEnabled) {
+      const seed = contentRef.current ?? sharedContent ?? document?.content ?? null
+      if (seed !== null) {
+        contentRef.current = seed
+        setSharedContent(docId, seed)
+        setNonCollabSeed(seed)
+        setNonCollabSeedKey((value) => value + 1)
+      }
+      resetCollab()
+      return
+    }
+    const seed = contentRef.current ?? sharedContent ?? document?.content ?? null
+    if (seed !== null) {
+      contentRef.current = seed
+      setSharedContent(docId, seed)
+      setCollabSeed(seed)
+      setCollabSeedKey((value) => value + 1)
+    }
+    setCollabEnabled(true)
+  }
 
   if (document === undefined) {
     return (
@@ -356,6 +442,7 @@ const DocumentIdPage = () => {
               initialContent={null}
               onChange={async (content: string) => {
                 contentRef.current = content
+                setSharedContent(docId, content)
                 if (!canEditCollab) return
                 setDirty(docId, true)
                 if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
@@ -378,6 +465,7 @@ const DocumentIdPage = () => {
 
   const onCollabChange = async (content: string) => {
     contentRef.current = content
+    setSharedContent(docId, content)
     if (!canEditCollab) return
     setDirty(docId, true)
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
@@ -392,9 +480,27 @@ const DocumentIdPage = () => {
 
   const myName = user?.name ?? user?.email ?? 'User'
   const myColor = user?.id ? colorFromString(user.id) : '#888888'
+  const collabControl = collabSlot
+    ? createPortal(
+        <CollabControl
+          collabEnabled={collabEnabled}
+          onToggleCollab={onToggleCollab}
+          status={status}
+          myRole={myRole}
+          canEditCollab={canEditCollab}
+          canInvite={canInvite}
+          roomId={roomId}
+          docId={docId}
+          presence={presence}
+          members={members}
+        />,
+        collabSlot,
+      )
+    : null
 
   return (
     <React.Fragment>
+      {collabControl}
       <div className="pb-40">
         <Cover
           url={document.coverImage ?? undefined}
@@ -404,22 +510,28 @@ const DocumentIdPage = () => {
           <div className="relative">
             <Toolbar initialData={document}></Toolbar>
           </div>
-
           {collabEnabled ? (
             provider && ydoc && myRole && user ? (
               <RoomEditor
+                key={collabSeedKey}
                 ydoc={ydoc}
                 provider={provider}
                 editable={canEditCollab}
                 user={{ name: myName, color: myColor }}
-                initialContent={isNewRoom ? document.content : null}
+                initialContent={
+                  collabSeed ?? sharedContent ?? (isNewRoom ? document.content : null)
+                }
                 onChange={onCollabChange}
               />
             ) : (
               <div className="px-8 py-6 text-sm text-muted-foreground">正在连接协同…</div>
             )
           ) : (
-            <Editor onChange={onChange} initialContent={document.content} />
+            <Editor
+              key={nonCollabSeedKey}
+              onChange={onChange}
+              initialContent={nonCollabSeed ?? sharedContent ?? document.content}
+            />
           )}
         </div>
       </div>
