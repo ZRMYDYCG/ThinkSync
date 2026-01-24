@@ -1,9 +1,9 @@
 'use client'
 
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import React, { useState } from 'react'
-import { Virtuoso } from 'react-virtuoso'
+import React, { useRef, useState, useEffect, useCallback } from 'react'
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
@@ -47,8 +47,22 @@ export default function FlashThoughtDialog({ open, onOpenChange }: FlashThoughtD
   const tFlash = useTranslations('App.flashThoughts')
   const { user } = useAuth()
 
+  const virtuosoRef = useRef<VirtuosoHandle>(null)
   const [isPublishOpen, setIsPublishOpen] = useState(false)
   const [filterMode, setFilterMode] = useState<'all' | 'following' | 'mine'>('all')
+
+  const scrollToTop = useCallback(() => {
+    virtuosoRef.current?.scrollToIndex({
+      index: 0,
+      align: 'start',
+      behavior: 'smooth',
+    })
+  }, [])
+
+  useEffect(() => {
+    scrollToTop()
+  }, [filterMode, scrollToTop])
+
   const seedFlashThoughts: FlashThought[] = [
     {
       id: 'seed-1',
@@ -281,21 +295,32 @@ export default function FlashThoughtDialog({ open, onOpenChange }: FlashThoughtD
               {tFlash('empty')}
             </div>
           ) : (
-            <Virtuoso
-              data={filteredThoughts}
-              className="pr-1"
-              style={{ height: '60vh' }}
-              itemContent={(index, item) => (
-                <div className={index === 0 ? '' : 'pt-4'}>
-                  <FlashThoughtItem
-                    item={item}
-                    authorName={authorName}
-                    authorAvatar={authorAvatar}
-                    setFlashThoughts={setFlashThoughts}
-                  />
-                </div>
-              )}
-            />
+            <div className="relative">
+              <Virtuoso
+                ref={virtuosoRef}
+                data={filteredThoughts}
+                className="pr-1"
+                style={{ height: '60vh' }}
+                itemContent={(index, item) => (
+                  <div className={index === 0 ? '' : 'pt-4'}>
+                    <FlashThoughtItem
+                      item={item}
+                      authorName={authorName}
+                      authorAvatar={authorAvatar}
+                      setFlashThoughts={setFlashThoughts}
+                    />
+                  </div>
+                )}
+              />
+              <Button
+                size="icon"
+                variant="secondary"
+                className="absolute right-4 bottom-4 z-10 h-9 w-9 shadow-md"
+                onClick={scrollToTop}
+              >
+                <ChevronUp className="h-4 w-4" />
+              </Button>
+            </div>
           )}
         </DialogContent>
       </Dialog>
