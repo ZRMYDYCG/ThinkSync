@@ -7,6 +7,7 @@ import { AppService } from './app.service'
 // Register AI Module
 import { AuthModule } from './auth/auth.module'
 import { DocumentsModule } from './documents/documents.module'
+import { FlashThoughtsModule } from './flash-thoughts/flash-thoughts.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { UploadsModule } from './uploads/uploads.module'
 
@@ -17,6 +18,7 @@ import { UploadsModule } from './uploads/uploads.module'
     AiModule,
     AuthModule,
     DocumentsModule,
+    FlashThoughtsModule,
     UploadsModule,
   ],
   controllers: [AppController],

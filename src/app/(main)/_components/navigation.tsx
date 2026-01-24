@@ -1,6 +1,6 @@
 'use client'
 
-import { PlusCircle, Search, Settings, Sparkles, Trash } from 'lucide-react'
+import { PlusCircle, Search, Settings, Trash, Lightbulb } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useRef, ElementRef, useState, useEffect, useCallback } from 'react'
@@ -140,7 +140,7 @@ const Navigation = () => {
           <Item label={tApp('navbar.setting')} icon={Settings} onClick={setting.onOpen}></Item>
           <Item icon={PlusCircle} label={tApp('navbar.newDocument')} onClick={handleCreate} />
           <Item
-            icon={Sparkles}
+            icon={Lightbulb}
             label={tApp('navbar.flashThoughts')}
             onClick={() => setIsFlashOpen(true)}
           />

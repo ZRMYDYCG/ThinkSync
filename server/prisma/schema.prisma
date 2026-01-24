@@ -14,6 +14,9 @@ model User {
   name           String?
   avatarUrl      String?
   documents      Document[]
+  flashThoughts  FlashThought[]
+  flashThoughtLikes FlashThoughtLike[]
+  flashThoughtComments FlashThoughtComment[]
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }
@@ -38,4 +41,59 @@ model Document {
   @@index([userId])
   @@index([userId, parentDocumentId])
   @@index([userId, isArchived])
+}
+
+model FlashThought {
+  id        String              @id @default(cuid())
+  userId    String
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String              @db.LongText
+  images    FlashThoughtImage[]
+  likes     FlashThoughtLike[]
+  comments  FlashThoughtComment[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model FlashThoughtImage {
+  id       String       @id @default(cuid())
+  thoughtId String
+  thought  FlashThought @relation(fields: [thoughtId], references: [id], onDelete: Cascade)
+  url      String
+  order    Int          @default(0)
+
+  @@index([thoughtId])
+}
+
+model FlashThoughtLike {
+  id        String       @id @default(cuid())
+  thoughtId String
+  thought   FlashThought @relation(fields: [thoughtId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime     @default(now())
+
+  @@unique([thoughtId, userId])
+  @@index([userId])
+}
+
+model FlashThoughtComment {
+  id        String              @id @default(cuid())
+  thoughtId String
+  thought   FlashThought        @relation(fields: [thoughtId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId  String?
+  parent    FlashThoughtComment? @relation("FlashThoughtCommentToReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   FlashThoughtComment[] @relation("FlashThoughtCommentToReplies")
+  content   String              @db.LongText
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  @@index([thoughtId])
+  @@index([userId])
+  @@index([parentId])
 }
