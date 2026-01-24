@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import React from 'react'
 
 import {
@@ -20,6 +21,7 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal = ({ children, onConfirm }: ConfirmModalProps) => {
+  const tConfirmModal = useTranslations('App.confirmModal')
   const handleConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation()
     onConfirm()
@@ -31,12 +33,14 @@ const ConfirmModal = ({ children, onConfirm }: ConfirmModalProps) => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{tConfirmModal('title')}</AlertDialogTitle>
         </AlertDialogHeader>
-        <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+        <AlertDialogDescription>{tConfirmModal('description')}</AlertDialogDescription>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={(e) => e.stopPropagation()}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm}>Confirm</AlertDialogAction>
+          <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+            {tConfirmModal('cancel')}
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirm}>{tConfirmModal('confirm')}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

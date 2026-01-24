@@ -126,18 +126,51 @@
       "titlePlaceholder": "제목 입력",
       "untitled": "제목 없음"
     },
+    "confirmModal": {
+      "title": "정말 계속하시겠어요?",
+      "description": "이 작업은 되돌릴 수 없습니다.",
+      "cancel": "취소",
+      "confirm": "확인"
+    },
+    "documentsPage": {
+      "your": "당신",
+      "emptyAlt": "비어 있음",
+      "welcome": "{name}님의 ThinkSync에 오신 것을 환영합니다",
+      "createNote": "노트 만들기",
+      "creatingNote": "노트를 만드는 중...",
+      "noteCreated": "노트를 만들었습니다!",
+      "createNoteFailed": "노트 만들기에 실패했습니다."
+    },
     "flashThoughts": {
       "title": "플래시 노트",
       "subtitle": "모든 사용자에게 보이는 즉시 메모",
+      "community": "커뮤니티",
+      "members": "{count}명",
+      "thoughtCount": "{count}개의 플래시 노트",
       "publish": "게시",
+      "filterLabel": "필터",
+      "all": "전체",
+      "following": "팔로잉",
+      "mine": "내 것",
       "publishTitle": "플래시 노트 게시",
       "publishDescription": "텍스트와 이미지를 함께 게시할 수 있습니다",
       "contentPlaceholder": "지금 떠오른 생각을 기록하세요...",
       "image": "이미지",
+      "imageLabel": "사진",
       "empty": "아직 플래시 노트가 없습니다. 첫 게시를 남겨보세요.",
       "anonymous": "익명",
       "submit": "게시",
-      "cancel": "취소"
+      "cancel": "취소",
+      "like": "좋아요",
+      "commentCount": "댓글 {count}개",
+      "commentPlaceholder": "댓글 추가...",
+      "commentEmpty": "아직 댓글이 없습니다",
+      "showComments": "펼치기",
+      "hideComments": "접기",
+      "commentsCollapsed": "댓글이 접혀 있습니다",
+      "reply": "답글",
+      "replyCount": "답글 {count}개",
+      "replyPlaceholder": "이 댓글에 답글..."
     },
     "tips": {
       "LastEditedBy": "마지막 편집자",

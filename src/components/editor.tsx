@@ -5,7 +5,7 @@ import '@blocknote/mantine/style.css'
 import '@/assets/css/editor.css'
 import { createOpenAI } from '@ai-sdk/openai'
 import { PartialBlock, filterSuggestionItems } from '@blocknote/core'
-import { en } from '@blocknote/core/locales'
+import * as coreLocales from '@blocknote/core/locales'
 import { BlockNoteView } from '@blocknote/mantine'
 import { useCreateBlockNote } from '@blocknote/react'
 import {
@@ -21,8 +21,9 @@ import {
   createAIExtension,
   getAISlashMenuItems,
 } from '@blocknote/xl-ai'
-import { en as aiEn } from '@blocknote/xl-ai/locales'
+import * as aiLocales from '@blocknote/xl-ai/locales'
 import '@blocknote/xl-ai/style.css'
+import { useLocale } from 'next-intl'
 import { useTheme } from 'next-themes'
 import React, { useCallback, useMemo } from 'react'
 
@@ -43,6 +44,7 @@ const model = openai('Qwen/QwQ-32B')
 
 const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   const { resolvedTheme } = useTheme()
+  const locale = useLocale()
   const { uploadImage } = useUploadsApi()
   const normalizedContent =
     typeof initialContent === 'string' && initialContent.length > 0 ? initialContent : undefined
@@ -53,27 +55,32 @@ const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
     },
     [uploadImage],
   )
+  const dictionary = useMemo(() => {
+    const coreFallback = coreLocales.en
+    const aiFallback = (aiLocales as Record<string, any>).en
+    const coreDictionary =
+      (coreLocales as Record<string, typeof coreLocales.en>)[locale] ?? coreFallback
+    const aiDictionary = (aiLocales as Record<string, any>)[locale] ?? aiFallback
+    return {
+      ...coreDictionary,
+      ai: aiDictionary,
+    }
+  }, [locale])
 
   const editor = useCreateBlockNote(
-    useMemo(
-      () =>
-        ({
-          initialContent: normalizedContent
-            ? (JSON.parse(normalizedContent) as PartialBlock[])
-            : undefined,
-          uploadFile: handleUpload,
-          dictionary: {
-            ...en,
-            ai: aiEn,
-          },
-          extensions: [
-            createAIExtension({
-              model,
-            }),
-          ],
-        }) as any,
-      [normalizedContent, handleUpload],
-    ),
+    {
+      initialContent: normalizedContent
+        ? (JSON.parse(normalizedContent) as PartialBlock[])
+        : undefined,
+      uploadFile: handleUpload,
+      dictionary,
+      extensions: [
+        createAIExtension({
+          model,
+        }),
+      ],
+    } as any,
+    [normalizedContent, handleUpload, dictionary],
   )
 
   const onContentChange = () => {

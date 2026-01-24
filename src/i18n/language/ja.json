@@ -126,18 +126,51 @@
       "titlePlaceholder": "タイトルを入力",
       "untitled": "無題"
     },
+    "confirmModal": {
+      "title": "本当に実行しますか？",
+      "description": "この操作は元に戻せません。",
+      "cancel": "キャンセル",
+      "confirm": "確認"
+    },
+    "documentsPage": {
+      "your": "あなた",
+      "emptyAlt": "空",
+      "welcome": "{name}の ThinkSync へようこそ",
+      "createNote": "ノートを作成",
+      "creatingNote": "ノートを作成中...",
+      "noteCreated": "ノートを作成しました！",
+      "createNoteFailed": "ノートの作成に失敗しました。"
+    },
     "flashThoughts": {
       "title": "フラッシュノート",
       "subtitle": "全ユーザーに見える即時メモ",
+      "community": "コミュニティ",
+      "members": "{count} 人",
+      "thoughtCount": "{count} 件のフラッシュノート",
       "publish": "投稿",
+      "filterLabel": "絞り込み",
+      "all": "すべて",
+      "following": "フォロー中",
+      "mine": "自分",
       "publishTitle": "フラッシュノートを投稿",
       "publishDescription": "テキストと画像を組み合わせられます",
       "contentPlaceholder": "今のアイデアを記録...",
       "image": "画像",
+      "imageLabel": "写真",
       "empty": "まだフラッシュノートがありません。最初の投稿をしましょう。",
       "anonymous": "匿名",
       "submit": "投稿",
-      "cancel": "キャンセル"
+      "cancel": "キャンセル",
+      "like": "いいね",
+      "commentCount": "{count} 件のコメント",
+      "commentPlaceholder": "コメントを追加...",
+      "commentEmpty": "コメントはまだありません",
+      "showComments": "表示",
+      "hideComments": "非表示",
+      "commentsCollapsed": "コメントを折りたたみました",
+      "reply": "返信",
+      "replyCount": "{count} 件の返信",
+      "replyPlaceholder": "このコメントに返信..."
     },
     "tips": {
       "LastEditedBy": "最終編集者",

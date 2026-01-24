@@ -126,6 +126,21 @@
       "titlePlaceholder": "Enter title",
       "untitled": "Untitled"
     },
+    "confirmModal": {
+      "title": "Are you absolutely sure?",
+      "description": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "documentsPage": {
+      "your": "your",
+      "emptyAlt": "Empty",
+      "welcome": "Welcome to {name}'s ThinkSync",
+      "createNote": "Create a note",
+      "creatingNote": "Creating note...",
+      "noteCreated": "Note created!",
+      "createNoteFailed": "Failed to create note."
+    },
     "flashThoughts": {
       "title": "Flash Thoughts",
       "subtitle": "Quick notes visible to all users",

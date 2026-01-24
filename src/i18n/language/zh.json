@@ -126,6 +126,21 @@
       "titlePlaceholder": "输入标题",
       "untitled": "未命名"
     },
+    "confirmModal": {
+      "title": "确定要继续吗？",
+      "description": "此操作无法撤销。",
+      "cancel": "取消",
+      "confirm": "确认"
+    },
+    "documentsPage": {
+      "your": "你的",
+      "emptyAlt": "空状态",
+      "welcome": "欢迎来到{name}的 ThinkSync",
+      "createNote": "新建文档",
+      "creatingNote": "正在创建文档...",
+      "noteCreated": "文档已创建！",
+      "createNoteFailed": "创建文档失败。"
+    },
     "flashThoughts": {
       "title": "闪念",
       "subtitle": "所有用户都能看到的即时记录",
