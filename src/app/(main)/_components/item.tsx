@@ -31,18 +31,16 @@ interface ItemProps {
   icon: LucideIcon
 }
 
-const Item = ({
-  id,
-  label,
-  onClick,
-  icon: Icon,
-  active,
-  documentIcon,
-  isSearch,
-  level = 0,
-  onExpand,
-  expanded,
-}: ItemProps) => {
+type ItemComponent = React.ForwardRefExoticComponent<
+  ItemProps & React.RefAttributes<HTMLElement>
+> & {
+  Skeleton: ({ level }: { level: number }) => React.ReactElement
+}
+
+const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
+  { id, label, onClick, icon: Icon, active, documentIcon, isSearch, level = 0, onExpand, expanded },
+  ref,
+) {
   const router = useRouter()
   const { user } = useAuth()
   const { create, archive } = useDocumentsApi()
@@ -96,6 +94,7 @@ const Item = ({
   if (!id) {
     return (
       <button
+        ref={ref as React.Ref<HTMLButtonElement>}
         type="button"
         onClick={onClick}
         style={{
@@ -119,6 +118,7 @@ const Item = ({
 
   return (
     <div
+      ref={ref as React.Ref<HTMLDivElement>}
       style={{
         paddingLeft: level ? `${level * 12 + 12}px` : '12px',
       }}
@@ -181,7 +181,7 @@ const Item = ({
       </div>
     </div>
   )
-}
+}) as ItemComponent
 
 Item.Skeleton = function ItemSkeleton({ level }: { level: number }) {
   return (

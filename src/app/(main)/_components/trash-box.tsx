@@ -79,7 +79,7 @@ const TrashBox = () => {
           className="bg-secondary h-7 px-2 focus-visible:ring-transparent"
         ></Input>
       </div>
-      <div className="mt-2 px-1 pb-1">
+      <div className="mt-2 max-h-80 overflow-y-auto px-1 pb-1">
         <p className="text-muted-foreground hidden pb-2 text-center text-xs last:block">
           No documents found
         </p>

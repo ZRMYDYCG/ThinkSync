@@ -1,11 +1,15 @@
 'use client'
 
-import { FileIcon } from 'lucide-react'
+import { FileIcon, Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { toast } from 'sonner'
 
+import { Button } from '@/components/ui/button'
+import { useDocumentsApi } from '@/hooks/use-documents-api'
 import { useDocumentsList } from '@/hooks/use-documents-list'
+import { useDocumentsRefresh } from '@/hooks/use-documents-refresh'
 import { Document } from '@/types/document'
 
 import Item from './item'
@@ -69,6 +73,8 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
   const router = useRouter()
 
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
+  const { create } = useDocumentsApi()
+  const bump = useDocumentsRefresh((state) => state.bump)
 
   const onExpand = (documentId: string) => {
     setExpanded((prevExpanded) => ({
@@ -86,6 +92,22 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
     router.push(`/documents/${documentId}`)
   }
 
+  const handleCreate = () => {
+    const promise = create({
+      title: 'Untitled',
+    }).then((document) => {
+      bump()
+      router.push(`/documents/${document.id}`)
+      return document
+    })
+
+    toast.promise(promise, {
+      loading: 'Creating document...',
+      success: 'Document created!',
+      error: 'Failed to create document',
+    })
+  }
+
   if (documents === undefined) {
     return (
       <>
@@ -100,7 +122,6 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
     )
   }
 
-  // 空状态：使用 flex 布局填满剩余空间并垂直居中
   if (documents.length === 0) {
     if (level > 0) {
       return (
@@ -116,10 +137,16 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
     }
 
     return (
-      <div className="text-muted-foreground flex min-h-[200px] flex-1 flex-col items-center justify-center">
+      <div className="text-muted-foreground flex h-full min-h-[200px] flex-col items-center justify-center gap-2 px-6 text-center">
         <EmptyStateIcon />
-        <p className="mt-3 text-sm font-medium">暂无文档</p>
-        <p className="text-muted-foreground/60 mt-1 text-xs">点击上方「新建文档」开始吧</p>
+        <div className="space-y-1">
+          <p className="text-foreground text-sm font-medium">暂无文档</p>
+          <p className="text-muted-foreground/70 text-xs">创建一个新文档开始记录想法</p>
+        </div>
+        <Button type="button" variant="secondary" size="sm" className="mt-2" onClick={handleCreate}>
+          <Plus />
+          新建文档
+        </Button>
       </div>
     )
   }
