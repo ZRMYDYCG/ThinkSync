@@ -4,7 +4,6 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
-import { RoomRole } from '@prisma/client'
 import { existsSync } from 'fs'
 import { unlink } from 'fs/promises'
 import { basename, resolve } from 'path'
@@ -113,20 +112,7 @@ export class DocumentsService {
       throw new UnauthorizedException('Not authenticated')
     }
     if (document.userId !== userId) {
-      const room = await this.prisma.room.findUnique({
-        where: { documentId },
-        select: { id: true },
-      })
-      if (!room) {
-        throw new ForbiddenException('Document does not belong to user')
-      }
-      const member = await this.prisma.roomMember.findUnique({
-        where: { roomId_userId: { roomId: room.id, userId } },
-        select: { id: true },
-      })
-      if (!member) {
-        throw new ForbiddenException('Document does not belong to user')
-      }
+      throw new ForbiddenException('Document does not belong to user')
     }
     return document
   }
@@ -185,28 +171,7 @@ export class DocumentsService {
       throw new UnauthorizedException('Not authenticated')
     }
     if (existing.userId !== userId) {
-      const room = await this.prisma.room.findUnique({
-        where: { documentId },
-        select: { id: true },
-      })
-      if (!room) {
-        throw new ForbiddenException('Document does not belong to user')
-      }
-      const member = await this.prisma.roomMember.findUnique({
-        where: { roomId_userId: { roomId: room.id, userId } },
-        select: { role: true },
-      })
-      if (!member || member.role === RoomRole.VIEWER) {
-        throw new ForbiddenException('Document does not belong to user')
-      }
-
-      return this.prisma.document.update({
-        where: { id: documentId },
-        data: {
-          title: dto.title,
-          content: dto.content,
-        },
-      })
+      throw new ForbiddenException('Document does not belong to user')
     }
     const shouldReplaceCover =
       dto.coverImage !== undefined && dto.coverImage !== existing.coverImage

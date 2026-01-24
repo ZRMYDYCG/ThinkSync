@@ -54,7 +54,6 @@ const Navbar = () => {
             <span className="text-muted-foreground text-xs">
               {tTips('LastEdited')} {new Date(document.updatedAt).toLocaleString()}
             </span>
-            <div id="collab-control-slot" className="flex items-center" />
             <Publish initialData={document}></Publish>
             <Menu documentId={document.id} />
           </div>
