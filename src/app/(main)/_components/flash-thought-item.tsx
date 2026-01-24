@@ -18,40 +18,25 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
+import { FlashThought, FlashThoughtComment } from '@/types/flash-thought'
 
-type FlashThoughtComment = {
-  id: string
-  authorName: string
-  authorAvatar?: string | null
-  content: string
-  createdAt: string
-  replies: FlashThoughtComment[]
-}
-
-type FlashThought = {
-  id: string
-  authorName: string
-  authorAvatar?: string | null
-  content: string
-  images: string[]
-  createdAt: string
-  likedByMe: boolean
-  likeCount: number
-  comments: FlashThoughtComment[]
-}
+const countComments = (comments: FlashThoughtComment[]): number =>
+  comments.reduce((total, comment) => total + 1 + countComments(comment.replies), 0)
 
 export interface FlashThoughtItemProps {
   item: FlashThought
   authorName: string
   authorAvatar: string | null
-  setFlashThoughts: React.Dispatch<React.SetStateAction<FlashThought[]>>
+  onToggleLike: (thoughtId: string) => Promise<void>
+  onAddComment: (thoughtId: string, content: string, parentId?: string) => Promise<boolean>
 }
 
 const FlashThoughtItem = ({
   item,
   authorName,
   authorAvatar,
-  setFlashThoughts,
+  onToggleLike,
+  onAddComment,
 }: FlashThoughtItemProps) => {
   const tFlash = useTranslations('App.flashThoughts')
   const [commentDraft, setCommentDraft] = useState('')
@@ -64,73 +49,27 @@ const FlashThoughtItem = ({
   const timeLabel = Number.isNaN(createdAt.getTime()) ? '' : createdAt.toLocaleString()
   const initial = Array.from(item.authorName.trim())[0]?.toUpperCase() ?? 'A'
 
-  const countComments = (comments: FlashThoughtComment[]): number =>
-    comments.reduce((total, comment) => total + 1 + countComments(comment.replies), 0)
-
-  const addReplyToComments = (
-    comments: FlashThoughtComment[],
-    parentId: string,
-    reply: FlashThoughtComment,
-  ): FlashThoughtComment[] =>
-    comments.map((comment) =>
-      comment.id === parentId
-        ? { ...comment, replies: [reply, ...comment.replies] }
-        : { ...comment, replies: addReplyToComments(comment.replies, parentId, reply) },
-    )
-
-  const handleToggleLike = () => {
-    setFlashThoughts((prev) =>
-      prev.map((entry) =>
-        entry.id === item.id
-          ? {
-              ...entry,
-              likedByMe: !entry.likedByMe,
-              likeCount: entry.likeCount + (entry.likedByMe ? -1 : 1),
-            }
-          : entry,
-      ),
-    )
+  const handleToggleLike = async () => {
+    await onToggleLike(item.id)
   }
 
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     const draft = commentDraft.trim()
     if (!draft) return
-    const nextComment: FlashThoughtComment = {
-      id: `${item.id}-comment-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      authorName,
-      authorAvatar,
-      content: draft,
-      createdAt: new Date().toISOString(),
-      replies: [],
+    const success = await onAddComment(item.id, draft)
+    if (success) {
+      setCommentDraft('')
     }
-    setFlashThoughts((prev) =>
-      prev.map((entry) =>
-        entry.id === item.id ? { ...entry, comments: [nextComment, ...entry.comments] } : entry,
-      ),
-    )
-    setCommentDraft('')
   }
 
-  const handleAddReply = (commentId: string) => {
+  const handleAddReply = async (commentId: string) => {
     const draft = replyDrafts[commentId]?.trim()
     if (!draft) return
-    const nextReply: FlashThoughtComment = {
-      id: `${commentId}-reply-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      authorName,
-      authorAvatar,
-      content: draft,
-      createdAt: new Date().toISOString(),
-      replies: [],
+    const success = await onAddComment(item.id, draft, commentId)
+    if (success) {
+      setReplyDrafts((prev) => ({ ...prev, [commentId]: '' }))
+      setOpenReplyInputs((prev) => ({ ...prev, [commentId]: false }))
     }
-    setFlashThoughts((prev) =>
-      prev.map((entry) =>
-        entry.id === item.id
-          ? { ...entry, comments: addReplyToComments(entry.comments, commentId, nextReply) }
-          : entry,
-      ),
-    )
-    setReplyDrafts((prev) => ({ ...prev, [commentId]: '' }))
-    setOpenReplyInputs((prev) => ({ ...prev, [commentId]: false }))
   }
 
   const toggleReplyInput = (commentId: string) => {

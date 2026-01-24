@@ -18,7 +18,8 @@ import {
 export interface PublishFlashThoughtDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onPublish: (content: string, images: File[]) => void
+  onPublish: (content: string, images: File[]) => Promise<void>
+  isSubmitting?: boolean
 }
 
 type PublishImageItem = {
@@ -31,6 +32,7 @@ const PublishFlashThoughtDialog = ({
   open,
   onOpenChange,
   onPublish,
+  isSubmitting = false,
 }: PublishFlashThoughtDialogProps) => {
   const tFlash = useTranslations('App.flashThoughts')
   const [content, setContent] = useState('')
@@ -39,7 +41,7 @@ const PublishFlashThoughtDialog = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const maxContentLength = 500
-  const publishDisabled = content.trim().length === 0 && images.length === 0
+  const publishDisabled = (content.trim().length === 0 && images.length === 0) || isSubmitting
 
   const handleClose = (nextOpen: boolean) => {
     onOpenChange(nextOpen)
@@ -50,16 +52,20 @@ const PublishFlashThoughtDialog = ({
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (publishDisabled) return
-    onPublish(
-      content,
-      images.map((item) => item.file),
-    )
-    setContent('')
-    images.forEach((item) => URL.revokeObjectURL(item.preview))
-    setImages([])
-    onOpenChange(false)
+    try {
+      await onPublish(
+        content,
+        images.map((item) => item.file),
+      )
+      setContent('')
+      images.forEach((item) => URL.revokeObjectURL(item.preview))
+      setImages([])
+      onOpenChange(false)
+    } catch {
+      return
+    }
   }
 
   const handleFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,7 +192,7 @@ const PublishFlashThoughtDialog = ({
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => handleClose(false)}>
+          <Button variant="outline" onClick={() => handleClose(false)} disabled={isSubmitting}>
             {tFlash('cancel')}
           </Button>
           <Button onClick={handleSubmit} disabled={publishDisabled}>
