@@ -35,6 +35,8 @@ const colorFromString = (value: string) => {
   return `#${toHex((r + 256) % 256)}${toHex((g + 256) % 256)}${toHex((b + 256) % 256)}`
 }
 
+type PresenceEntry = { clientId: number; userId?: string; name?: string; color?: string }
+
 const DocumentIdPage = () => {
   const params = useParams()
   const router = useRouter()
@@ -89,6 +91,8 @@ const DocumentIdPage = () => {
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const providerRef = useRef<CollabSocketProvider | null>(null)
   const ydocRef = useRef<Y.Doc | null>(null)
+  const pendingPresenceRef = useRef<PresenceEntry[] | null>(null)
+  const presenceUpdateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (sharedContent !== undefined) {
@@ -259,6 +263,11 @@ const DocumentIdPage = () => {
       }
       setProvider(null)
       setYdoc(null)
+      if (presenceUpdateTimerRef.current) {
+        clearTimeout(presenceUpdateTimerRef.current)
+        presenceUpdateTimerRef.current = null
+      }
+      pendingPresenceRef.current = null
       setPresence([])
       setStatus('disconnected')
       return
@@ -319,8 +328,7 @@ const DocumentIdPage = () => {
 
       const updatePresence = () => {
         if (canceled) return
-        const entries: Array<{ clientId: number; userId?: string; name?: string; color?: string }> =
-          []
+        const entries: PresenceEntry[] = []
         for (const [clientId, state] of p.awareness.getStates()) {
           const u = (state as any)?.user
           entries.push({
@@ -330,7 +338,15 @@ const DocumentIdPage = () => {
             color: typeof u?.color === 'string' ? u.color : undefined,
           })
         }
-        setPresence(entries)
+        pendingPresenceRef.current = entries
+        if (presenceUpdateTimerRef.current) return
+        presenceUpdateTimerRef.current = setTimeout(() => {
+          presenceUpdateTimerRef.current = null
+          const next = pendingPresenceRef.current
+          if (!next) return
+          pendingPresenceRef.current = null
+          setPresence(next)
+        }, 0)
       }
 
       p.awareness.on('change', updatePresence)
@@ -355,6 +371,11 @@ const DocumentIdPage = () => {
       }
       setProvider(null)
       setYdoc(null)
+      if (presenceUpdateTimerRef.current) {
+        clearTimeout(presenceUpdateTimerRef.current)
+        presenceUpdateTimerRef.current = null
+      }
+      pendingPresenceRef.current = null
       setPresence([])
       setStatus('disconnected')
     }

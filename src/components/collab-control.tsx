@@ -25,9 +25,10 @@ export const CollabControl = ({ docId }: CollabControlProps) => {
   const tTips = useTranslations('App.tips')
   const { getMembers } = useRoomsApi()
 
-  const { collabEnabled, myRole, presence, members, roomId, setMembers } = useCollabStore()
+  const { myRole, presence, members, roomId, setMembers } = useCollabStore()
   const [isRefreshing, setIsRefreshing] = React.useState(false)
 
+  const collabEnabled = roomId !== null
   const canInvite = collabEnabled && myRole === 'OWNER'
 
   const refreshMembers = React.useCallback(async () => {
@@ -57,7 +58,7 @@ export const CollabControl = ({ docId }: CollabControlProps) => {
           <DialogTrigger asChild>
             <button
               type="button"
-              className="flex items-center gap-2 rounded-full px-2 py-1 text-xs text-muted-foreground transition hover:bg-accent"
+              className="text-muted-foreground hover:bg-accent flex items-center gap-2 rounded-full px-2 py-1 text-xs transition"
               title={tTips('collabMembers')}
             >
               <div className="flex -space-x-2">
@@ -74,7 +75,7 @@ export const CollabControl = ({ docId }: CollabControlProps) => {
                   </Avatar>
                 ))}
                 {presence.length > 4 ? (
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full border bg-muted text-[10px] text-muted-foreground">
+                  <div className="bg-muted text-muted-foreground flex h-6 w-6 items-center justify-center rounded-full border text-[10px]">
                     +{presence.length - 4}
                   </div>
                 ) : null}
@@ -111,12 +112,12 @@ export const CollabControl = ({ docId }: CollabControlProps) => {
                       />
                       <div className="min-w-0 truncate">{m.name ?? m.userId}</div>
                     </div>
-                    <div className="text-xs text-muted-foreground">{m.role}</div>
+                    <div className="text-muted-foreground text-xs">{m.role}</div>
                   </div>
                 )
               })}
               {members.length === 0 ? (
-                <div className="text-xs text-muted-foreground">{tTips('collabNoMembers')}</div>
+                <div className="text-muted-foreground text-xs">{tTips('collabNoMembers')}</div>
               ) : null}
             </div>
           </DialogContent>
@@ -131,7 +132,7 @@ export const CollabControl = ({ docId }: CollabControlProps) => {
         ) : null}
         {useCollabStore.getState().roomId && !myRole ? (
           <div
-            className="flex items-center gap-1 rounded-full px-2 py-1 text-xs text-muted-foreground"
+            className="text-muted-foreground flex items-center gap-1 rounded-full px-2 py-1 text-xs"
             title={tTips('collabNeedInvite')}
           >
             <Lock className="h-3.5 w-3.5" />
