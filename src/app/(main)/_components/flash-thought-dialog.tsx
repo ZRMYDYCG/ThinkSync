@@ -6,13 +6,7 @@ import React, { useState } from 'react'
 import { Virtuoso } from 'react-virtuoso'
 
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -252,13 +246,7 @@ export default function FlashThoughtDialog({ open, onOpenChange }: FlashThoughtD
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[820px]">
-          <DialogHeader className="flex flex-col gap-3">
-            <div className="space-y-1">
-              <DialogTitle>{tFlash('title')}</DialogTitle>
-              <DialogDescription>{tFlash('subtitle')}</DialogDescription>
-            </div>
-          </DialogHeader>
+        <DialogContent className="sm:max-w-[820px] [&>button]:hidden">
           <div className="flex items-center justify-between">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
