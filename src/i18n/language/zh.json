@@ -117,6 +117,15 @@
       "trash": "回收站",
       "logout": "退出登录"
     },
+    "trashBox": {
+      "filterPlaceholder": "按标题筛选..."
+    },
+    "toolbar": {
+      "addIcon": "添加图标",
+      "addCover": "添加封面",
+      "titlePlaceholder": "输入标题",
+      "untitled": "未命名"
+    },
     "flashThoughts": {
       "title": "闪念",
       "subtitle": "所有用户都能看到的即时记录",

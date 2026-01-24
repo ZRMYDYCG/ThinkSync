@@ -117,6 +117,15 @@
       "trash": "ゴミ箱",
       "logout": "ログアウト"
     },
+    "trashBox": {
+      "filterPlaceholder": "タイトルで絞り込み..."
+    },
+    "toolbar": {
+      "addIcon": "アイコンを追加",
+      "addCover": "カバーを追加",
+      "titlePlaceholder": "タイトルを入力",
+      "untitled": "無題"
+    },
     "flashThoughts": {
       "title": "フラッシュノート",
       "subtitle": "全ユーザーに見える即時メモ",

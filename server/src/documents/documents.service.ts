@@ -74,6 +74,31 @@ const extractFilename = (url?: string | null) => {
   return basename(normalized)
 }
 
+const defaultLocale = 'zh'
+const localeTitleMap: Record<string, string> = {
+  zh: '未命名',
+  en: 'Untitled',
+  ja: '無題',
+  ko: '제목 없음',
+}
+
+const normalizeLocale = (locale?: string | null) => {
+  if (!locale) return defaultLocale
+  const token = locale.split(',')[0]?.trim().toLowerCase() ?? ''
+  const [primary] = token.split('-')
+  return primary in localeTitleMap ? primary : defaultLocale
+}
+
+const resolveInitialTitle = (title: string | undefined, locale?: string | null) => {
+  const candidate = (title ?? '').trim()
+  const defaultTitles = new Set(Object.values(localeTitleMap))
+  if (!candidate || defaultTitles.has(candidate)) {
+    const resolvedLocale = normalizeLocale(locale)
+    return localeTitleMap[resolvedLocale]
+  }
+  return title ?? ''
+}
+
 const deleteCoverFile = async (url?: string | null) => {
   await deleteLocalFile(url)
   const filename = extractFilename(url)
@@ -148,10 +173,11 @@ export class DocumentsService {
     })
   }
 
-  async create(userId: string, dto: CreateDocumentDto) {
+  async create(userId: string, dto: CreateDocumentDto, locale?: string | null) {
+    const title = resolveInitialTitle(dto.title, locale)
     return this.prisma.document.create({
       data: {
-        title: dto.title,
+        title,
         parentDocumentId: dto.parentDocumentId ?? null,
         userId,
         isPublished: false,

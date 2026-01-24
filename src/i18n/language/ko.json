@@ -117,6 +117,15 @@
       "trash": "휴지통",
       "logout": "로그아웃"
     },
+    "trashBox": {
+      "filterPlaceholder": "제목으로 필터링..."
+    },
+    "toolbar": {
+      "addIcon": "아이콘 추가",
+      "addCover": "커버 추가",
+      "titlePlaceholder": "제목 입력",
+      "untitled": "제목 없음"
+    },
     "flashThoughts": {
       "title": "플래시 노트",
       "subtitle": "모든 사용자에게 보이는 즉시 메모",

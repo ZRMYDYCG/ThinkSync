@@ -1,5 +1,8 @@
+'use client'
+
 import { useCallback } from 'react'
 
+import { defaultLocale } from '@/i18n/config'
 import { useAuthStore } from '@/store/auth-store'
 
 type RequestOptions = {
@@ -40,12 +43,25 @@ const buildUrl = (path: string, params?: RequestOptions['params']) => {
 
 export const useRequest = () => {
   const token = useAuthStore((state) => state.token)
+  const getLocaleFromCookie = () => {
+    if (typeof document === 'undefined') return defaultLocale
+    const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]+)/)
+    return (match?.[1] ?? defaultLocale) as string
+  }
 
   const request = useCallback(
     async <T>(path: string, options: RequestOptions = {}) => {
       const url = buildUrl(path, options.params)
       const headers = new Headers(options.headers)
       const shouldAuth = options.auth !== false
+
+      const locale = getLocaleFromCookie()
+      if (!headers.has('Accept-Language')) {
+        headers.set('Accept-Language', locale)
+      }
+      if (!headers.has('X-Locale')) {
+        headers.set('X-Locale', locale)
+      }
 
       if (shouldAuth && token) {
         headers.set('Authorization', `Bearer ${token}`)

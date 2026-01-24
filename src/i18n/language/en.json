@@ -117,6 +117,15 @@
       "trash": "Trash",
       "logout": "Log out"
     },
+    "trashBox": {
+      "filterPlaceholder": "Filter by title..."
+    },
+    "toolbar": {
+      "addIcon": "Add icon",
+      "addCover": "Add cover",
+      "titlePlaceholder": "Enter title",
+      "untitled": "Untitled"
+    },
     "flashThoughts": {
       "title": "Flash Thoughts",
       "subtitle": "Quick notes visible to all users",

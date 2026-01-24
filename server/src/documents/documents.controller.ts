@@ -29,6 +29,14 @@ import { UpdateDocumentDto } from './dto/update-document.dto'
 
 type AuthRequest = Request & { user?: { userId: string; email: string } }
 
+const readLocale = (req: Request) => {
+  const headerLocale = req.headers['x-locale'] as string | undefined
+  const cookieHeader = req.headers.cookie ?? ''
+  const cookieMatch = cookieHeader.match(/(?:^|; )NEXT_LOCALE=([^;]+)/)
+  const cookieLocale = cookieMatch?.[1]
+  return headerLocale ?? cookieLocale ?? null
+}
+
 const coverStorage = diskStorage({
   destination: (_req, _file, cb) => {
     if (!existsSync(coversDir)) {
@@ -86,7 +94,8 @@ export class DocumentsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Req() req: AuthRequest, @Body() dto: CreateDocumentDto) {
-    return this.documentsService.create(req.user?.userId ?? '', dto)
+    const locale = readLocale(req)
+    return this.documentsService.create(req.user?.userId ?? '', dto, locale)
   }
 
   @Patch(':id')

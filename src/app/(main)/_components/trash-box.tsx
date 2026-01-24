@@ -1,6 +1,7 @@
 'use client'
 
 import { Search, Trash, Undo } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRouter, useParams } from 'next/navigation'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
@@ -18,6 +19,7 @@ const TrashBox = () => {
   const { documents } = useDocumentsList({ type: 'trash' })
   const { restore, remove } = useDocumentsApi()
   const bump = useDocumentsRefresh((state) => state.bump)
+  const tTrashBox = useTranslations('App.trashBox')
 
   const [search, setSearch] = useState('')
 
@@ -75,7 +77,7 @@ const TrashBox = () => {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Filter by title..."
+          placeholder={tTrashBox('filterPlaceholder')}
           className="bg-secondary h-7 px-2 focus-visible:ring-transparent"
         ></Input>
       </div>

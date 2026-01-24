@@ -1,6 +1,7 @@
 'use client'
 
 import { ImageIcon, Smile, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import React, { ElementRef, useRef, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 
@@ -18,6 +19,7 @@ interface ToolbarProps {
 }
 
 export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
+  const t = useTranslations('App.toolbar')
   const inputRef = useRef<ElementRef<'textarea'> | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(initialData.title)
@@ -44,7 +46,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
 
   const onInput = async (value: string) => {
     setValue(value)
-    await update(initialData.id, { title: value || 'Untitled' })
+    await update(initialData.id, { title: value || t('untitled') })
   }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -75,7 +77,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
             onClick={onRemoveIcon}
             variant="outline"
             size="icon"
-            className="rounded-full text-muted-foreground opacity-0 transition group-hover/icon:opacity-100"
+            className="text-muted-foreground rounded-full opacity-0 transition group-hover/icon:opacity-100"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -85,21 +87,21 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
       <div className="flex items-center gap-x-1 py-4 opacity-0 group-hover:opacity-100">
         {!initialData.icon && !preview && (
           <IconPicker asChild onChange={onIconSelect}>
-            <Button className="text-xs text-muted-foreground" variant="outline" size="sm">
+            <Button className="text-muted-foreground text-xs" variant="outline" size="sm">
               <Smile className="mr-2 h-4 w-4"></Smile>
-              Add Icon
+              {t('addIcon')}
             </Button>
           </IconPicker>
         )}
         {!initialData.coverImage && !preview && (
           <Button
             onClick={coverImage.onOpen}
-            className="text-xs text-muted-foreground"
+            className="text-muted-foreground text-xs"
             variant="outline"
             size="sm"
           >
             <ImageIcon className="mr-2 h-4 w-4" />
-            Add Cover
+            {t('addCover')}
           </Button>
         )}
       </div>
@@ -110,16 +112,16 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
           onKeyDown={onKeyDown}
           value={value}
           onChange={(event) => onInput(event.target.value)}
-          className="resize-none break-words bg-transparent text-5xl font-bold text-[#3F3F3F] outline-none dark:text-[#CFCFCF]"
-          placeholder="Enter title"
+          className="resize-none bg-transparent text-5xl font-bold break-words text-[#3F3F3F] outline-none dark:text-[#CFCFCF]"
+          placeholder={t('titlePlaceholder')}
         />
       ) : (
         <button
           type="button"
           onClick={enableInput}
-          className="block w-full break-words bg-transparent pb-[12px] text-left text-5xl font-bold text-[#3F3F3F] focus-visible:outline-none dark:text-[#CFCFCF]"
+          className="block w-full bg-transparent pb-[12px] text-left text-5xl font-bold break-words text-[#3F3F3F] focus-visible:outline-none dark:text-[#CFCFCF]"
         >
-          {initialData.title}
+          {initialData.title || t('untitled')}
         </button>
       )}
     </div>
