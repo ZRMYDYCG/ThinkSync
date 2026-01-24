@@ -113,8 +113,22 @@
       "search": "検索",
       "setting": "設定",
       "newDocument": "新規ドキュメント",
+      "flashThoughts": "フラッシュノート",
       "trash": "ゴミ箱",
       "logout": "ログアウト"
+    },
+    "flashThoughts": {
+      "title": "フラッシュノート",
+      "subtitle": "全ユーザーに見える即時メモ",
+      "publish": "投稿",
+      "publishTitle": "フラッシュノートを投稿",
+      "publishDescription": "テキストと画像を組み合わせられます",
+      "contentPlaceholder": "今のアイデアを記録...",
+      "image": "画像",
+      "empty": "まだフラッシュノートがありません。最初の投稿をしましょう。",
+      "anonymous": "匿名",
+      "submit": "投稿",
+      "cancel": "キャンセル"
     },
     "tips": {
       "LastEditedBy": "最終編集者",

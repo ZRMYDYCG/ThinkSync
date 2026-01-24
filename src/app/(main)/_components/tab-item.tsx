@@ -157,7 +157,7 @@ export const TabItem = ({
             className={cn(
               'group relative flex h-8 items-center gap-2 rounded-md border pl-2 pr-2 text-sm',
               'select-none transition-[padding,background-color,color,border-color]',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+              'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1',
               isActive
                 ? 'bg-background text-foreground shadow-sm'
                 : 'bg-muted/30 text-muted-foreground border-transparent hover:bg-muted/60 hover:text-foreground',
@@ -171,7 +171,7 @@ export const TabItem = ({
             </span>
 
             {tab.pinned ? (
-              <span className="min-w-0 max-w-0 flex-1 overflow-hidden opacity-0 transition-[max-width,opacity] duration-150 ease-out group-hover:max-w-[180px] group-hover:opacity-100">
+              <span className="max-w-0 min-w-0 flex-1 overflow-hidden opacity-0 transition-[max-width,opacity] duration-150 ease-out group-hover:max-w-[180px] group-hover:opacity-100">
                 <span className="block truncate">{tab.title}</span>
               </span>
             ) : (

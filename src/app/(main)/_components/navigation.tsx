@@ -1,6 +1,6 @@
 'use client'
 
-import { PlusCircle, Search, Settings, Trash } from 'lucide-react'
+import { PlusCircle, Search, Settings, Sparkles, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useRef, ElementRef, useState, useEffect, useCallback } from 'react'
@@ -15,6 +15,7 @@ import { useSetting } from '@/hooks/useSetting'
 import { cn } from '@/lib/utils'
 
 import DocumentList from './document-list'
+import FlashThoughtDialog from './flash-thought-dialog'
 import Item from './item'
 import Navbar from './navbar'
 import { TabBar } from './tab-bar'
@@ -39,6 +40,7 @@ const Navigation = () => {
   const navbarRef = useRef<ElementRef<'div'>>(null)
   const [isResetting, setIsResetting] = useState(true)
   const [isCollapsed, setIsCollapsed] = useState(isMobile)
+  const [isFlashOpen, setIsFlashOpen] = useState(false)
 
   const handleMouseDown = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
@@ -137,6 +139,11 @@ const Navigation = () => {
           <Item label={tApp('navbar.search')} icon={Search} isSearch onClick={search.onOpen}></Item>
           <Item label={tApp('navbar.setting')} icon={Settings} onClick={setting.onOpen}></Item>
           <Item icon={PlusCircle} label={tApp('navbar.newDocument')} onClick={handleCreate} />
+          <Item
+            icon={Sparkles}
+            label={tApp('navbar.flashThoughts')}
+            onClick={() => setIsFlashOpen(true)}
+          />
         </div>
         <div className="mt-4 min-h-0 flex-1 overflow-y-auto">
           <DocumentList />
@@ -156,7 +163,7 @@ const Navigation = () => {
           onMouseDown={handleMouseDown}
           onClick={resetWidth}
           aria-label="Resize sidebar"
-          className="absolute right-0 top-0 h-full w-1 cursor-ew-resize bg-primary/10 opacity-0 transition group-hover/sidebar:opacity-100"
+          className="bg-primary/10 absolute top-0 right-0 h-full w-1 cursor-ew-resize opacity-0 transition group-hover/sidebar:opacity-100"
         ></button>
       </aside>
       <div
@@ -170,6 +177,7 @@ const Navigation = () => {
         <TabBar isCollapsed={isCollapsed} onExpandNav={resetWidth} onCollapseNav={collapse} />
         {params.documentId ? <Navbar /> : <nav className="w-full bg-transparent px-3 py-2" />}
       </div>
+      <FlashThoughtDialog open={isFlashOpen} onOpenChange={setIsFlashOpen} />
     </>
   )
 }

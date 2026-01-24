@@ -113,8 +113,22 @@
       "search": "검색",
       "setting": "설정",
       "newDocument": "새 문서",
+      "flashThoughts": "플래시 노트",
       "trash": "휴지통",
       "logout": "로그아웃"
+    },
+    "flashThoughts": {
+      "title": "플래시 노트",
+      "subtitle": "모든 사용자에게 보이는 즉시 메모",
+      "publish": "게시",
+      "publishTitle": "플래시 노트 게시",
+      "publishDescription": "텍스트와 이미지를 함께 게시할 수 있습니다",
+      "contentPlaceholder": "지금 떠오른 생각을 기록하세요...",
+      "image": "이미지",
+      "empty": "아직 플래시 노트가 없습니다. 첫 게시를 남겨보세요.",
+      "anonymous": "익명",
+      "submit": "게시",
+      "cancel": "취소"
     },
     "tips": {
       "LastEditedBy": "마지막 편집자",

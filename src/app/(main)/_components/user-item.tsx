@@ -95,35 +95,35 @@ const UserItem = () => {
         <DropdownMenuTrigger asChild>
           <button
             type="button"
-            className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="hover:bg-primary/5 focus-visible:ring-ring flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-sm transition-colors focus-visible:ring-1 focus-visible:ring-offset-1 focus-visible:outline-none"
           >
             <Avatar className="h-6 w-6">
               <AvatarImage src={user?.avatarUrl ?? undefined} alt={displayName} />
-              <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
+              <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
                 {initial}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1 text-left">
-              <div className="truncate text-sm font-medium leading-5">{displayName}</div>
+              <div className="truncate text-sm leading-5 font-medium">{displayName}</div>
               {secondaryText && (
-                <div className="truncate text-xs text-muted-foreground">{secondaryText}</div>
+                <div className="text-muted-foreground truncate text-xs">{secondaryText}</div>
               )}
             </div>
-            <ChevronsLeftRight className="h-4 w-4 shrink-0 rotate-90 text-muted-foreground" />
+            <ChevronsLeftRight className="text-muted-foreground h-4 w-4 shrink-0 rotate-90" />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-80" align="start" alignOffset={11} forceMount>
           <div className="flex items-center gap-x-3 p-2">
             <Avatar className="h-10 w-10">
               <AvatarImage src={user?.avatarUrl ?? undefined} alt={displayName} />
-              <AvatarFallback className="bg-primary/10 text-base font-semibold text-primary">
+              <AvatarFallback className="bg-primary/10 text-primary text-base font-semibold">
                 {initial}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium">{displayName}</p>
               {secondaryText && (
-                <p className="truncate text-xs text-muted-foreground">{secondaryText}</p>
+                <p className="text-muted-foreground truncate text-xs">{secondaryText}</p>
               )}
             </div>
           </div>
@@ -155,16 +155,16 @@ const UserItem = () => {
                   type="button"
                   onClick={onChooseAvatar}
                   disabled={isUploadingAvatar || isSubmitting}
-                  className="group relative rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-60"
+                  className="group focus-visible:ring-ring relative rounded-full focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60"
                 >
                   <Avatar className="h-16 w-16 cursor-pointer">
                     <AvatarImage src={avatarUrl ?? undefined} alt={displayName} />
-                    <AvatarFallback className="bg-primary/10 text-lg font-semibold text-primary">
+                    <AvatarFallback className="bg-primary/10 text-primary text-lg font-semibold">
                       {initial}
                     </AvatarFallback>
                   </Avatar>
                   {isUploadingAvatar && (
-                    <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/70 text-xs font-medium text-foreground">
+                    <div className="bg-background/70 text-foreground absolute inset-0 flex items-center justify-center rounded-full text-xs font-medium">
                       {tMenu('Uploading')}
                     </div>
                   )}
@@ -177,7 +177,7 @@ const UserItem = () => {
                   onChange={onAvatarFileChange}
                   disabled={isUploadingAvatar || isSubmitting}
                 />
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {isUploadingAvatar ? tMenu('UploadingAvatar') : tMenu('UploadAvatar')}
                 </div>
               </div>
