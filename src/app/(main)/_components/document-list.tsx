@@ -1,6 +1,7 @@
 'use client'
 
 import { FileIcon, Plus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -75,6 +76,8 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const { create } = useDocumentsApi()
   const bump = useDocumentsRefresh((state) => state.bump)
+  const tDocumentList = useTranslations('App.documentList')
+  const tToolbar = useTranslations('App.toolbar')
 
   const onExpand = (documentId: string) => {
     setExpanded((prevExpanded) => ({
@@ -94,7 +97,7 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
 
   const handleCreate = () => {
     const promise = create({
-      title: 'Untitled',
+      title: tToolbar('untitled'),
     }).then((document) => {
       bump()
       router.push(`/documents/${document.id}`)
@@ -102,9 +105,9 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
     })
 
     toast.promise(promise, {
-      loading: 'Creating document...',
-      success: 'Document created!',
-      error: 'Failed to create document',
+      loading: tDocumentList('creating'),
+      success: tDocumentList('created'),
+      error: tDocumentList('createFailed'),
     })
   }
 
@@ -131,7 +134,7 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
           }}
           className="text-muted-foreground/80 text-sm font-medium"
         >
-          No pages inside
+          {tDocumentList('noPagesInside')}
         </p>
       )
     }
@@ -140,12 +143,12 @@ const DocumentList = ({ parentDocumentId, level = 0 }: DocumentListProps) => {
       <div className="text-muted-foreground flex h-full min-h-[200px] flex-col items-center justify-center gap-2 px-6 text-center">
         <EmptyStateIcon />
         <div className="space-y-1">
-          <p className="text-foreground text-sm font-medium">暂无文档</p>
-          <p className="text-muted-foreground/70 text-xs">创建一个新文档开始记录想法</p>
+          <p className="text-foreground text-sm font-medium">{tDocumentList('emptyTitle')}</p>
+          <p className="text-muted-foreground/70 text-xs">{tDocumentList('emptySubtitle')}</p>
         </div>
         <Button type="button" variant="secondary" size="sm" className="mt-2" onClick={handleCreate}>
           <Plus />
-          新建文档
+          {tDocumentList('create')}
         </Button>
       </div>
     )

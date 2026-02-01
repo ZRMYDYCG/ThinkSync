@@ -1,6 +1,7 @@
 'use client'
 
 import { File, SlidersHorizontal } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useMemo, useState } from 'react'
 
@@ -23,12 +24,7 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 type DateGroupKey = 'today' | 'week' | 'month' | 'older'
 
-const GROUPS: Array<{ key: DateGroupKey; label: string }> = [
-  { key: 'today', label: '今天' },
-  { key: 'week', label: '上周' },
-  { key: 'month', label: '过去 30 天' },
-  { key: 'older', label: '更早' },
-]
+const GROUPS: DateGroupKey[] = ['today', 'week', 'month', 'older']
 
 const getDocumentDate = (document: Document) => new Date(document.updatedAt ?? document.createdAt)
 
@@ -53,32 +49,42 @@ const getDateGroup = (date: Date, now: Date): DateGroupKey => {
   return 'older'
 }
 
-const formatTime = (date: Date) => {
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  return `${hours}:${minutes}`
-}
+const formatTime = (date: Date, locale: string) =>
+  new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(date)
 
-const formatDateLabel = (date: Date, now: Date) => {
+const formatMonthDay = (date: Date, locale: string) =>
+  new Intl.DateTimeFormat(locale, { month: 'numeric', day: 'numeric' }).format(date)
+
+const formatYearMonthDay = (date: Date, locale: string) =>
+  new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'numeric', day: 'numeric' }).format(
+    date,
+  )
+
+const formatDateLabel = (
+  date: Date,
+  now: Date,
+  locale: string,
+  tSearch: (key: string, values?: Record<string, string | number | Date>) => string,
+) => {
   if (Number.isNaN(date.getTime())) return ''
   const diffDays = Math.max(0, getDayDiff(date, now))
   if (diffDays === 0) {
-    return `今天 ${formatTime(date)}`
+    return tSearch('todayAt', { time: formatTime(date, locale) })
   }
   if (diffDays < 7) {
-    return `${diffDays} 天前`
+    return tSearch('daysAgo', { count: diffDays })
   }
-  const month = date.getMonth() + 1
-  const day = date.getDate()
   if (date.getFullYear() === now.getFullYear()) {
-    return `${month}月${day}日`
+    return formatMonthDay(date, locale)
   }
-  return `${date.getFullYear()}年${month}月${day}日`
+  return formatYearMonthDay(date, locale)
 }
 
 export const SearchCommand = () => {
   const { user } = useAuth()
   const router = useRouter()
+  const locale = useLocale()
+  const tSearch = useTranslations('App.searchCommand')
   const { documents } = useDocumentsList({ type: 'search' })
   const [isMounted, setIsMounted] = useState(false)
 
@@ -136,8 +142,8 @@ export const SearchCommand = () => {
 
   const placeholderTarget = user?.name ?? user?.email
   const inputPlaceholder = placeholderTarget
-    ? `在 ${placeholderTarget} 的 ThinkSync 中搜索或提问...`
-    : '在你的 ThinkSync 中搜索或提问...'
+    ? tSearch('placeholderWithName', { name: placeholderTarget })
+    : tSearch('placeholder')
   const hintClassName =
     'inline-flex h-5 select-none items-center rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground'
 
@@ -150,42 +156,42 @@ export const SearchCommand = () => {
         rightSlot={
           <button
             type="button"
-            className="flex h-7 w-7 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:bg-muted/60"
-            aria-label="筛选"
+            className="border-border bg-background text-muted-foreground hover:bg-muted/60 flex h-7 w-7 items-center justify-center rounded-full border transition-colors"
+            aria-label={tSearch('filterAriaLabel')}
           >
             <SlidersHorizontal className="h-4 w-4" />
           </button>
         }
       />
       <CommandList className="max-h-none flex-1 px-2 py-2">
-        <CommandEmpty>未找到结果</CommandEmpty>
-        {GROUPS.map(({ key, label }) => {
+        <CommandEmpty>{tSearch('empty')}</CommandEmpty>
+        {GROUPS.map((key) => {
           const items = groups[key]
           if (!items.length) return null
           return (
-            <CommandGroup key={key} heading={label} className="px-2 py-1">
+            <CommandGroup key={key} heading={tSearch(`group.${key}`)} className="px-2 py-1">
               {items.map((document) => {
-                const dateLabel = formatDateLabel(getDocumentDate(document), now)
+                const dateLabel = formatDateLabel(getDocumentDate(document), now, locale, tSearch)
                 return (
                   <CommandItem
                     key={document.id}
                     value={`${document.title}-${document.id}`}
                     title={document.title}
                     onSelect={() => onSelect(document.id)}
-                    className="gap-3 rounded-lg px-3 py-2 data-[selected='true']:bg-muted/70 data-[selected=true]:text-foreground"
+                    className="data-[selected='true']:bg-muted/70 data-[selected=true]:text-foreground gap-3 rounded-lg px-3 py-2"
                   >
-                    <span className="flex h-7 w-7 items-center justify-center text-muted-foreground">
+                    <span className="text-muted-foreground flex h-7 w-7 items-center justify-center">
                       {document.icon ? (
                         <span className="text-[18px]">{document.icon}</span>
                       ) : (
                         <File className="h-4 w-4" />
                       )}
                     </span>
-                    <span className="min-w-0 flex-1 truncate text-sm text-foreground">
+                    <span className="text-foreground min-w-0 flex-1 truncate text-sm">
                       {document.title}
                     </span>
                     {dateLabel ? (
-                      <span className="ml-3 shrink-0 text-xs text-muted-foreground">
+                      <span className="text-muted-foreground ml-3 shrink-0 text-xs">
                         {dateLabel}
                       </span>
                     ) : null}
@@ -196,26 +202,26 @@ export const SearchCommand = () => {
           )
         })}
       </CommandList>
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border/70 px-4 py-2 text-xs text-muted-foreground">
+      <div className="border-border/70 text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 border-t px-4 py-2 text-xs">
         <div className="flex items-center gap-1">
           <kbd className={hintClassName}>↑↓</kbd>
-          <span>选择</span>
+          <span>{tSearch('hint.select')}</span>
         </div>
         <div className="flex items-center gap-1">
           <kbd className={hintClassName}>Enter</kbd>
-          <span>打开</span>
+          <span>{tSearch('hint.open')}</span>
         </div>
         <div className="flex items-center gap-1">
           <kbd className={hintClassName}>Ctrl+Enter</kbd>
-          <span>在新选项卡中打开</span>
+          <span>{tSearch('hint.openInNewTab')}</span>
         </div>
         <div className="flex items-center gap-1">
           <kbd className={hintClassName}>Ctrl+L</kbd>
-          <span>拷贝链接</span>
+          <span>{tSearch('hint.copyLink')}</span>
         </div>
         <div className="flex items-center gap-1">
           <kbd className={hintClassName}>Shift+Ctrl+K</kbd>
-          <span>命令搜索</span>
+          <span>{tSearch('hint.commandSearch')}</span>
         </div>
       </div>
     </CommandDialog>

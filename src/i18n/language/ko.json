@@ -117,6 +117,9 @@
       "trash": "휴지통",
       "logout": "로그아웃"
     },
+    "tabBar": {
+      "emptyState": "문서를 열어 편집을 시작하세요"
+    },
     "trashBox": {
       "filterPlaceholder": "제목으로 필터링..."
     },
@@ -140,6 +143,36 @@
       "creatingNote": "노트를 만드는 중...",
       "noteCreated": "노트를 만들었습니다!",
       "createNoteFailed": "노트 만들기에 실패했습니다."
+    },
+    "documentList": {
+      "noPagesInside": "안에 페이지가 없습니다",
+      "emptyTitle": "문서가 없습니다",
+      "emptySubtitle": "새 문서를 만들어 생각을 기록하세요",
+      "create": "새 문서",
+      "creating": "문서를 만드는 중...",
+      "created": "문서를 만들었습니다!",
+      "createFailed": "문서 만들기에 실패했습니다"
+    },
+    "searchCommand": {
+      "placeholder": "내 ThinkSync에서 검색하거나 질문하세요...",
+      "placeholderWithName": "{name}의 ThinkSync에서 검색하거나 질문하세요...",
+      "filterAriaLabel": "필터",
+      "empty": "결과가 없습니다",
+      "group": {
+        "today": "오늘",
+        "week": "지난주",
+        "month": "지난 30일",
+        "older": "더 이전"
+      },
+      "todayAt": "오늘 {time}",
+      "daysAgo": "{count}일 전",
+      "hint": {
+        "select": "선택",
+        "open": "열기",
+        "openInNewTab": "새 탭에서 열기",
+        "copyLink": "링크 복사",
+        "commandSearch": "명령 검색"
+      }
     },
     "flashThoughts": {
       "title": "플래시 노트",
@@ -215,7 +248,19 @@
       "Cancel": "취소",
       "DragToReposition": "드래그하여 위치 조정",
       "MissingDocumentId": "커버 업데이트를 위한 문서 ID가 없습니다",
-      "SaveCoverPositionFailed": "커버 위치 저장에 실패했습니다"
+      "SaveCoverPositionFailed": "커버 위치 저장에 실패했습니다",
+      "SelectCoverImage": "커버 이미지 선택",
+      "MissingDocumentIdForUpload": "documentId가 없어 커버를 업로드할 수 없습니다",
+      "UploadFailed": "커버 업로드에 실패했습니다"
+    },
+    "singleImageDropzone": {
+      "fileTooLarge": "파일이 너무 큽니다. 최대 크기는 {size}입니다.",
+      "fileInvalidType": "유효하지 않은 파일 유형입니다.",
+      "tooManyFiles": "파일은 {count}개까지만 추가할 수 있습니다.",
+      "fileNotSupported": "이 파일은 지원되지 않습니다.",
+      "selectedImage": "선택된 이미지",
+      "removeImage": "이미지 제거",
+      "uploadHint": "클릭하거나 파일을 이 영역으로 드래그하여 업로드"
     },
     "AuthModal": {
       "LoggedInSuccessfully": "로그인에 성공했습니다",

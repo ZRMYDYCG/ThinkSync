@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
@@ -13,6 +14,7 @@ import { SingleImageDropzone } from '../single-image-dropzone'
 
 export const CoverImageModal = () => {
   const params = useParams()
+  const t = useTranslations('App.cover')
   const { uploadCover } = useDocumentsApi()
   const bump = useDocumentsRefresh((state) => state.bump)
   const [file, setFile] = useState<File>()
@@ -28,7 +30,7 @@ export const CoverImageModal = () => {
   const onChange = async (file?: File) => {
     if (!file) return
     if (!params.documentId) {
-      toast.error('缺少 documentId，无法上传封面')
+      toast.error(t('MissingDocumentIdForUpload'))
       return
     }
 
@@ -39,7 +41,7 @@ export const CoverImageModal = () => {
       bump()
       onClose()
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : '封面上传失败')
+      toast.error(error instanceof Error ? error.message : t('UploadFailed'))
       setIsSubmitting(false)
     }
   }
@@ -48,7 +50,7 @@ export const CoverImageModal = () => {
     <Dialog open={coverImage.isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <h2 className="text-center text-lg font-semibold">Select a cover image</h2>
+          <h2 className="text-center text-lg font-semibold">{t('SelectCoverImage')}</h2>
         </DialogHeader>
         <SingleImageDropzone
           className="w-full outline-none"

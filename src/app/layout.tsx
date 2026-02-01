@@ -12,6 +12,8 @@ import { AuthProvider } from '@/components/providers/auth-provider'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:5200'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -23,8 +25,13 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'ThinkSync',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'ThinkSync',
+    template: '%s | ThinkSync',
+  },
   description: 'A new way to work with notes and tasks',
+  applicationName: 'ThinkSync',
   icons: {
     icon: [
       {
@@ -38,6 +45,38 @@ export const metadata: Metadata = {
         href: '/logo-dark.svg',
       },
     ],
+  },
+  openGraph: {
+    title: 'ThinkSync',
+    description: 'A new way to work with notes and tasks',
+    url: siteUrl,
+    siteName: 'ThinkSync',
+    images: [
+      {
+        url: '/hero.png',
+        width: 1200,
+        height: 630,
+        alt: 'ThinkSync',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ThinkSync',
+    description: 'A new way to work with notes and tasks',
+    images: ['/hero.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
   },
 }
 

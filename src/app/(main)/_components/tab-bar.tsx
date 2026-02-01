@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronsLeft, ChevronsRight, Maximize2, Minimize2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -37,6 +38,7 @@ type DirtyCloseState =
 export const TabBar = ({ isCollapsed, onExpandNav, onCollapseNav }: TabBarProps) => {
   const router = useRouter()
   const pathname = usePathname()
+  const tTabBar = useTranslations('App.tabBar')
   const bump = useDocumentsRefresh((s) => s.bump)
   const { update } = useDocumentsApi()
 
@@ -231,17 +233,17 @@ export const TabBar = ({ isCollapsed, onExpandNav, onCollapseNav }: TabBarProps)
   }, [])
 
   return (
-    <div className="sticky top-0 z-[99999] border-b bg-background">
+    <div className="bg-background sticky top-0 z-[99999] border-b">
       <div className="flex items-stretch">
         {typeof isCollapsed === 'boolean' && onExpandNav && onCollapseNav && (
           <div className="flex shrink-0 items-center px-2 py-1">
             {isCollapsed ? (
               <button type="button" onClick={onExpandNav} aria-label="Expand navigation">
-                <ChevronsRight className="h-5 w-5 text-muted-foreground" />
+                <ChevronsRight className="text-muted-foreground h-5 w-5" />
               </button>
             ) : (
               <button type="button" onClick={onCollapseNav} aria-label="Collapse navigation">
-                <ChevronsLeft className="h-5 w-5 text-muted-foreground" />
+                <ChevronsLeft className="text-muted-foreground h-5 w-5" />
               </button>
             )}
           </div>
@@ -268,8 +270,8 @@ export const TabBar = ({ isCollapsed, onExpandNav, onCollapseNav }: TabBarProps)
               )}
             >
               {tabs.length === 0 ? (
-                <div className="flex h-8 w-full items-center justify-center text-sm text-muted-foreground">
-                  打开一篇文章开始编辑
+                <div className="text-muted-foreground flex h-8 w-full items-center justify-center text-sm">
+                  {tTabBar('emptyState')}
                 </div>
               ) : (
                 tabs.map((tab, index) => (
@@ -329,7 +331,7 @@ export const TabBar = ({ isCollapsed, onExpandNav, onCollapseNav }: TabBarProps)
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+            className="text-muted-foreground hover:bg-muted/60 hover:text-foreground h-8 w-8"
             aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
             onClick={toggleFullscreen}
           >

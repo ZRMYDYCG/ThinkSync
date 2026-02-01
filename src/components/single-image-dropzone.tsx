@@ -1,6 +1,7 @@
 'use client'
 
 import { UploadCloudIcon, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import * as React from 'react'
 import { useDropzone, type DropzoneOptions } from 'react-dropzone'
@@ -35,23 +36,9 @@ const formatFileSize = (bytes: number) => {
   return `${value.toFixed(value >= 10 || index === 0 ? 0 : 1)} ${units[index]}`
 }
 
-const ERROR_MESSAGES = {
-  fileTooLarge(maxSize: number) {
-    return `The file is too large. Max size is ${formatFileSize(maxSize)}.`
-  },
-  fileInvalidType() {
-    return 'Invalid file type.'
-  },
-  tooManyFiles(maxFiles: number) {
-    return `You can only add ${maxFiles} file(s).`
-  },
-  fileNotSupported() {
-    return 'The file is not supported.'
-  },
-}
-
 const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
   ({ dropzoneOptions, width, height, value, className, disabled, onChange }, ref) => {
+    const t = useTranslations('App.singleImageDropzone')
     const imageUrl = React.useMemo(() => {
       if (typeof value === 'string') {
         return value
@@ -100,17 +87,17 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
       if (fileRejections[0]) {
         const { errors } = fileRejections[0]
         if (errors[0]?.code === 'file-too-large') {
-          return ERROR_MESSAGES.fileTooLarge(dropzoneOptions?.maxSize ?? 0)
+          return t('fileTooLarge', { size: formatFileSize(dropzoneOptions?.maxSize ?? 0) })
         } else if (errors[0]?.code === 'file-invalid-type') {
-          return ERROR_MESSAGES.fileInvalidType()
+          return t('fileInvalidType')
         } else if (errors[0]?.code === 'too-many-files') {
-          return ERROR_MESSAGES.tooManyFiles(dropzoneOptions?.maxFiles ?? 0)
+          return t('tooManyFiles', { count: dropzoneOptions?.maxFiles ?? 0 })
         } else {
-          return ERROR_MESSAGES.fileNotSupported()
+          return t('fileNotSupported')
         }
       }
       return undefined
-    }, [fileRejections, dropzoneOptions])
+    }, [fileRejections, dropzoneOptions, t])
 
     return (
       <div className="relative">
@@ -134,7 +121,7 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
             <Image
               className="rounded-md object-cover"
               src={imageUrl}
-              alt={acceptedFiles[0]?.name ?? 'Selected image'}
+              alt={acceptedFiles[0]?.name ?? t('selectedImage')}
               fill
               sizes="100vw"
               unoptimized={imageUrl.startsWith('blob:') || imageUrl.startsWith('data:')}
@@ -142,14 +129,14 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
           ) : (
             <div className="text-muted-foreground flex flex-col items-center justify-center text-xs">
               <UploadCloudIcon className="mb-2 h-7 w-7" />
-              <div className="text-muted-foreground">Click or drag file to this area to upload</div>
+              <div className="text-muted-foreground">{t('uploadHint')}</div>
             </div>
           )}
 
           {imageUrl && !disabled && (
             <button
               type="button"
-              aria-label="Remove image"
+              aria-label={t('removeImage')}
               className="group absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 transform border-0 bg-transparent p-0"
               onClick={(e) => {
                 e.stopPropagation()

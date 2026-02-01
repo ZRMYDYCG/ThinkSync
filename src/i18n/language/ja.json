@@ -117,6 +117,9 @@
       "trash": "ゴミ箱",
       "logout": "ログアウト"
     },
+    "tabBar": {
+      "emptyState": "ドキュメントを開いて編集を始めましょう"
+    },
     "trashBox": {
       "filterPlaceholder": "タイトルで絞り込み..."
     },
@@ -140,6 +143,36 @@
       "creatingNote": "ノートを作成中...",
       "noteCreated": "ノートを作成しました！",
       "createNoteFailed": "ノートの作成に失敗しました。"
+    },
+    "documentList": {
+      "noPagesInside": "中にページはありません",
+      "emptyTitle": "ドキュメントがありません",
+      "emptySubtitle": "新しいドキュメントを作成して記録を始めましょう",
+      "create": "新規ドキュメント",
+      "creating": "ドキュメントを作成中...",
+      "created": "ドキュメントを作成しました！",
+      "createFailed": "ドキュメントの作成に失敗しました"
+    },
+    "searchCommand": {
+      "placeholder": "あなたの ThinkSync で検索または質問...",
+      "placeholderWithName": "{name}の ThinkSync で検索または質問...",
+      "filterAriaLabel": "絞り込み",
+      "empty": "結果が見つかりません",
+      "group": {
+        "today": "今日",
+        "week": "先週",
+        "month": "過去 30 日",
+        "older": "以前"
+      },
+      "todayAt": "今日 {time}",
+      "daysAgo": "{count} 日前",
+      "hint": {
+        "select": "選択",
+        "open": "開く",
+        "openInNewTab": "新しいタブで開く",
+        "copyLink": "リンクをコピー",
+        "commandSearch": "コマンド検索"
+      }
     },
     "flashThoughts": {
       "title": "フラッシュノート",
@@ -215,7 +248,19 @@
       "Cancel": "キャンセル",
       "DragToReposition": "ドラッグして位置を調整",
       "MissingDocumentId": "カバー更新のためのドキュメント ID がありません",
-      "SaveCoverPositionFailed": "カバー位置の保存に失敗しました"
+      "SaveCoverPositionFailed": "カバー位置の保存に失敗しました",
+      "SelectCoverImage": "カバー画像を選択",
+      "MissingDocumentIdForUpload": "documentId が不足しているため、カバーをアップロードできません",
+      "UploadFailed": "カバーのアップロードに失敗しました"
+    },
+    "singleImageDropzone": {
+      "fileTooLarge": "ファイルが大きすぎます。最大サイズは {size} です。",
+      "fileInvalidType": "無効なファイルタイプです。",
+      "tooManyFiles": "ファイルは {count} 個まで追加できます。",
+      "fileNotSupported": "このファイルはサポートされていません。",
+      "selectedImage": "選択された画像",
+      "removeImage": "画像を削除",
+      "uploadHint": "クリックまたはファイルをドラッグしてこの領域にアップロード"
     },
     "AuthModal": {
       "LoggedInSuccessfully": "ログインに成功しました",

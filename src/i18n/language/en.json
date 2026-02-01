@@ -117,6 +117,9 @@
       "trash": "Trash",
       "logout": "Log out"
     },
+    "tabBar": {
+      "emptyState": "Open a document to start editing"
+    },
     "trashBox": {
       "filterPlaceholder": "Filter by title..."
     },
@@ -140,6 +143,36 @@
       "creatingNote": "Creating note...",
       "noteCreated": "Note created!",
       "createNoteFailed": "Failed to create note."
+    },
+    "documentList": {
+      "noPagesInside": "No pages inside",
+      "emptyTitle": "No documents yet",
+      "emptySubtitle": "Create a new document to start capturing ideas",
+      "create": "New document",
+      "creating": "Creating document...",
+      "created": "Document created!",
+      "createFailed": "Failed to create document"
+    },
+    "searchCommand": {
+      "placeholder": "Search or ask in your ThinkSync...",
+      "placeholderWithName": "Search or ask in {name}'s ThinkSync...",
+      "filterAriaLabel": "Filter",
+      "empty": "No results found",
+      "group": {
+        "today": "Today",
+        "week": "Last week",
+        "month": "Past 30 days",
+        "older": "Earlier"
+      },
+      "todayAt": "Today {time}",
+      "daysAgo": "{count} days ago",
+      "hint": {
+        "select": "Select",
+        "open": "Open",
+        "openInNewTab": "Open in new tab",
+        "copyLink": "Copy link",
+        "commandSearch": "Command search"
+      }
     },
     "flashThoughts": {
       "title": "Flash Thoughts",
@@ -215,7 +248,19 @@
       "Cancel": "Cancel",
       "DragToReposition": "Drag to reposition",
       "MissingDocumentId": "Missing document ID for cover update",
-      "SaveCoverPositionFailed": "Failed to save cover position"
+      "SaveCoverPositionFailed": "Failed to save cover position",
+      "SelectCoverImage": "Select a cover image",
+      "MissingDocumentIdForUpload": "Missing documentId, unable to upload cover",
+      "UploadFailed": "Failed to upload cover"
+    },
+    "singleImageDropzone": {
+      "fileTooLarge": "The file is too large. Max size is {size}.",
+      "fileInvalidType": "Invalid file type.",
+      "tooManyFiles": "You can only add {count} file(s).",
+      "fileNotSupported": "The file is not supported.",
+      "selectedImage": "Selected image",
+      "removeImage": "Remove image",
+      "uploadHint": "Click or drag file to this area to upload"
     },
     "AuthModal": {
       "LoggedInSuccessfully": "Logged in successfully",

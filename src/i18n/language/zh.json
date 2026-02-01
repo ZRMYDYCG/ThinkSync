@@ -117,6 +117,9 @@
       "trash": "回收站",
       "logout": "退出登录"
     },
+    "tabBar": {
+      "emptyState": "打开一篇文章开始编辑"
+    },
     "trashBox": {
       "filterPlaceholder": "按标题筛选..."
     },
@@ -140,6 +143,36 @@
       "creatingNote": "正在创建文档...",
       "noteCreated": "文档已创建！",
       "createNoteFailed": "创建文档失败。"
+    },
+    "documentList": {
+      "noPagesInside": "暂无子页面",
+      "emptyTitle": "暂无文档",
+      "emptySubtitle": "创建一个新文档开始记录想法",
+      "create": "新建文档",
+      "creating": "正在创建文档...",
+      "created": "文档已创建！",
+      "createFailed": "创建文档失败"
+    },
+    "searchCommand": {
+      "placeholder": "在你的 ThinkSync 中搜索或提问...",
+      "placeholderWithName": "在 {name} 的 ThinkSync 中搜索或提问...",
+      "filterAriaLabel": "筛选",
+      "empty": "未找到结果",
+      "group": {
+        "today": "今天",
+        "week": "上周",
+        "month": "过去 30 天",
+        "older": "更早"
+      },
+      "todayAt": "今天 {time}",
+      "daysAgo": "{count} 天前",
+      "hint": {
+        "select": "选择",
+        "open": "打开",
+        "openInNewTab": "在新选项卡中打开",
+        "copyLink": "拷贝链接",
+        "commandSearch": "命令搜索"
+      }
     },
     "flashThoughts": {
       "title": "闪念",
@@ -215,7 +248,19 @@
       "Cancel": "取消",
       "DragToReposition": "拖动以调整位置",
       "MissingDocumentId": "缺少文档 ID，无法保存封面位置",
-      "SaveCoverPositionFailed": "保存封面位置失败"
+      "SaveCoverPositionFailed": "保存封面位置失败",
+      "SelectCoverImage": "选择封面图片",
+      "MissingDocumentIdForUpload": "缺少 documentId，无法上传封面",
+      "UploadFailed": "封面上传失败"
+    },
+    "singleImageDropzone": {
+      "fileTooLarge": "文件太大。最大大小为 {size}。",
+      "fileInvalidType": "无效的文件类型。",
+      "tooManyFiles": "您只能添加 {count} 个文件。",
+      "fileNotSupported": "不支持该文件。",
+      "selectedImage": "已选择的图片",
+      "removeImage": "移除图片",
+      "uploadHint": "点击或拖拽文件到此区域上传"
     },
     "AuthModal": {
       "LoggedInSuccessfully": "登录成功",
