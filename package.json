@@ -2,6 +2,7 @@
   "name": "think-sync",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "bun@1.2.18",
   "scripts": {
     "dev": "next dev -p 5200 --turbopack",
     "build": "next build --turbopack",

@@ -2,6 +2,7 @@
   "name": "server",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "bun@1.2.18",
   "description": "",
   "license": "UNLICENSED",
   "author": "",

@@ -22,6 +22,24 @@ ThinkSync是一款基于现代Web技术构建的个人笔记应用，旨在帮�
 - Schadui
 - Blocknote
 
+### 本地开发 🌿
+
+本项目使用 [Bun](https://bun.sh) 作为包管理器与运行时。
+
+```bash
+# 安装 Bun（如尚未安装）
+curl -fsSL https://bun.sh/install | bash
+
+# 安装前端依赖
+bun install
+
+# 启动前端开发服务器
+bun run dev
+
+# 安装并启动后端（在 server 目录）
+cd server && bun install && bun run start:dev
+```
+
 ### 部署 🌿
 
 - Vercel

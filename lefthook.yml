@@ -3,13 +3,13 @@ pre-commit:
   commands:
     fmt:
       glob: '*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx,yml,yaml,html}'
-      run: pnpm oxfmt --write {staged_files}
+      run: bun oxfmt --write {staged_files}
       stage_fixed: true
     lint:
       glob: '*.{js,jsx,ts,tsx}'
-      run: pnpm oxlint {staged_files}
+      run: bun oxlint {staged_files}
 
 commit-msg:
   commands:
     'lint commit message':
-      run: pnpm commitlint --edit {1}
+      run: bun commitlint --edit {1}
