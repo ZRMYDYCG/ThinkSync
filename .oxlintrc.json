@@ -39,6 +39,10 @@
   },
 
   "rules": {
+    "eslint/no-underscore-dangle": [
+      "warn",
+      { "allowAfterThis": true, "allow": ["__src", "__altText", "__key"] }
+    ],
     "eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
     "typescript/no-extraneous-class": ["error", { "allowWithDecorator": true }],
     "import/no-unassigned-import": [

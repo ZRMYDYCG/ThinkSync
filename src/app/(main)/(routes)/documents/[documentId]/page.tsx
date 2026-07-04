@@ -80,7 +80,7 @@ const DocumentIdPage = () => {
         <div className="relative">
           <Toolbar initialData={document}></Toolbar>
         </div>
-        <Editor onChange={onChange} initialContent={document.content} />
+        <Editor key={document.id} onChange={onChange} initialContent={document.content} />
       </div>
     </div>
   )

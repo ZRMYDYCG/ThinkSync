@@ -22,7 +22,7 @@ const DocumentIdPage = () => {
       <div>
         <Cover.Skeleton></Cover.Skeleton>
         <div className="mx-auto mt-10 md:max-w-3xl lg:max-w-4xl">
-          <div className="space-y-4 pl-8 pt-4">
+          <div className="space-y-4 pt-4 pl-8">
             <Skeleton className="h-14 w-[80%]"></Skeleton>
             <Skeleton className="h-10 w-[60%]"></Skeleton>
             <Skeleton className="h-8 w-[50%]"></Skeleton>
@@ -47,7 +47,12 @@ const DocumentIdPage = () => {
       ></Cover>
       <div className="mx-auto md:max-w-3xl lg:max-w-4xl">
         <Toolbar preview initialData={document}></Toolbar>
-        <Editor editable={false} onChange={noop} initialContent={document.content} />
+        <Editor
+          key={document.id}
+          editable={false}
+          onChange={noop}
+          initialContent={document.content}
+        />
       </div>
     </div>
   )
