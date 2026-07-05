@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Geist, Geist_Mono } from 'next/font/google'
+import Script from 'next/script'
 
 import './globals.css'
 import React from 'react'
@@ -11,6 +12,7 @@ import { Toaster } from 'sonner'
 import { AuthProvider } from '@/components/providers/auth-provider'
 import { ModalProvider } from '@/components/providers/modal-provider'
 import { ThemeProvider } from '@/components/providers/theme-provider'
+import { ReactScan } from '@/components/react-scan'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:5200'
 
@@ -89,7 +91,17 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {process.env.NODE_ENV === 'development' && (
+          <Script
+            src="https://unpkg.com/react-scan/dist/auto.global.js"
+            strategy="beforeInteractive"
+            crossOrigin="anonymous"
+          />
+        )}
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ReactScan />
         <AuthProvider>
           <NextIntlClientProvider messages={messages}>
             <ThemeProvider
