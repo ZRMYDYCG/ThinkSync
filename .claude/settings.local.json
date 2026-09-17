@@ -1,5 +1,0 @@
-{
-  "permissions": {
-    "allow": ["mcp__ide__getDiagnostics", "Bash(dir:*)", "Bash(git show:*)"]
-  }
-}
