@@ -1,13 +1,3 @@
 {
-  "editor.defaultFormatter": "oxc.oxc-vscode",
-  "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "file",
-
-  "editor.codeActionsOnSave": {
-    "source.fixAll.oxc": "explicit"
-  },
-
-  "oxc.fmt.configPath": ".oxfmtrc.jsonc",
-  "oxc.configPath": ".oxlintrc.json",
   "prisma.pinToPrisma6": true
 }

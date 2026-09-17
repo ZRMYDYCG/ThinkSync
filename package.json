@@ -6,13 +6,7 @@
     "dev": "next dev -p 5200 --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "oxlint",
-    "lint:fix": "oxlint --fix",
-    "fmt": "oxfmt --write .",
-    "fmt:check": "oxfmt --check .",
-    "typecheck": "tsc --noEmit",
-    "commit": "cz",
-    "prepare": "lefthook install"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@lexical/code": "^0.46.0",
@@ -49,26 +43,14 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.3.1",
-    "@commitlint/config-conventional": "^20.3.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^25.0.9",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "code-inspector-plugin": "^1.3.6",
-    "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
-    "lefthook": "^2.0.15",
-    "oxfmt": "^0.26.0",
-    "oxlint": "^1.41.0",
     "postcss": "^8",
     "tailwindcss": "^4.1.18",
     "typescript": "^5"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   },
   "packageManager": "bun@1.2.18"
 }
